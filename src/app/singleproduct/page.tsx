@@ -16,26 +16,7 @@ import Multi from "../../../public/images/multi.png";
 import sofa4 from "../../../public/images/sofa4.png";
 import Link from "next/link";
 
-type Product = {
-  id: number | string;
-  name: string;
-  image: string;
-  price: number;
-  originalPrice?: number;
-  discount?: number;
-  isSale?: boolean;
-  type?: string;
-  tag?: string;
-  quantity: number;
-};
-
-interface ProductDetailPageProps {
-  addToCart: (product: Product) => void;
-}
-
-export default function ProductDetailPage({
-  // addToCart,
-}: ProductDetailPageProps) {
+export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState("/images/product-sofa.png");
 
@@ -43,14 +24,6 @@ export default function ProductDetailPage({
   const productId = "SS001";
   const productTitle = "Asgaard Sofa";
   const productPrice = 250000;
-
-  const product = {
-    id: productId,
-    name: productTitle,
-    price: productPrice,
-    quantity: quantity,
-    image: activeImage,
-  };
 
   const thumbnails = [
     "/images/Outdoor-sofa .png",
@@ -212,7 +185,6 @@ export default function ProductDetailPage({
             {/* Buttons */}
             <div className="flex space-x-4">
               <button
-                // onClick={() => addToCart(product)}
                 className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
               >
                 Add to Cart
