@@ -83,7 +83,7 @@ export default function Navbar() {
                 href={"/about"}
                 className="text-gray-800 hover:text-gray-600"
               >
-                About
+                Product
               </Link>
               <Link
                 href={"/contact"}

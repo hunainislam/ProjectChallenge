@@ -34,7 +34,7 @@ interface ProductDetailPageProps {
 }
 
 export default function ProductDetailPage({
-  addToCart,
+  // addToCart,
 }: ProductDetailPageProps) {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState("/images/product-sofa.png");
@@ -212,14 +212,16 @@ export default function ProductDetailPage({
             {/* Buttons */}
             <div className="flex space-x-4">
               <button
-                onClick={() => addToCart(product)}
+                // onClick={() => addToCart(product)}
                 className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
               >
                 Add to Cart
               </button>
+              <Link href={"/comparison"}>
               <button className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors">
                 + Compare
               </button>
+              </Link>
             </div>
           </div>
 
