@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Furniture Landing Page",
+  title: "Funiro Landing Page",
   description: "This is E-Commerce App",
 };
 

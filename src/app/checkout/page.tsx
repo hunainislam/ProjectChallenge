@@ -15,114 +15,143 @@ import Image from "next/image";
 export default function Checkout() {
   return (
     <div className="font-poppins w-full bg-white pb-12 leading-[normal] tracking-[0px]">
-      <div className="relative z-0 flex flex-col items-center text-center font-medium">
+      <div className="relative z-0 flex flex-col items-center text-center font-medium overflow-hidden w-full">
+        {/* Hero Section */}
         <Image
           src={Hero1}
-          alt={"no-image"}
+          alt="no-image"
           loading="lazy"
-          className="z-[1] h-80 w-[1536px] flex-shrink-0 object-cover object-center"
+          className="z-[1] w-full h-80 object-cover object-center"
         />
-        <div className="absolute inset-x-[658px] bottom-32 top-[128px] z-[2] flex flex-col items-center justify-center">
-          <div className="flex h-0 flex-shrink-0 flex-col items-center justify-end">
+        <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center px-4 sm:inset-x-20 sm:top-0 sm:bottom-0">
+          <div className="flex flex-col items-center justify-center gap-y-2">
+            {/* Logo */}
             <Image
               src={Logo}
-              alt={"no-image"}
+              alt="no-image"
               loading="lazy"
-              className="h-10 w-16 flex-shrink-0 object-cover object-center"
+              className="h-10 w-16 object-cover"
             />
-            <div className="text-center text-black text-5xl leading-[normal] font-semibold ">
+            <h1 className="text-3xl sm:text-5xl font-semibold leading-tight text-black">
               Checkout
-            </div>
+            </h1>
           </div>
-          <div className="absolute left-[calc(50%_+_-12px_+_-48px)] top-[calc(50%_+_-12px_+_49px)] flex h-6 w-12 flex-shrink-0 flex-col items-center justify-center gap-20">
-            <div className="text-center leading-[normal] mb-12 font-medium">
+          <div className="mt-4 sm:mt-8 flex items-center justify-center">
+            <div className="py-2 text-sm font-medium text-black bg-transparent rounded-md hover:bg-gray-800 hover:text-white">
               Home
             </div>
-          </div>
-        </div>
-        <div className="flex h-0 flex-shrink-0 items-end justify-center">
-          <div className="flex h-6 items-center justify-end pl-14">
-            <div className="flex items-center justify-center -gap-x-4 mb-[245px]">
-              <Image
-                src={RightArrow}
-                alt={"no-image"}
-                className="h-5 w-5 flex-shrink-0"
-              />
-              <div className="font-light leading-[normal]">Checkout</div>
+            <div className="flex items-center gap-2 ml-4">
+              <Image src={RightArrow} alt="no-image" className="h-5 w-5" />
+              <span className="text-sm font-light text-black">Checkout</span>
             </div>
           </div>
         </div>
+        <div className="flex items-center justify-center mt-4 sm:mt-10"></div>
       </div>
-      <div className="flex items-center justify-center bg-white px-24 pb-[52px] pt-16">
-        <div className="flex flex-grow flex-wrap items-start justify-center gap-x-[26px] gap-y-[26px] min-[1430px]:flex-nowrap">
-          <div className="flex flex-col items-start justify-center gap-y-[22px] bg-white pb-[71px] pl-[74px] pr-20 pt-9">
-            <div className="text-4xl font-semibold leading-[normal]">
+      <div className="flex flex-col items-center justify-center bg-white px-6 md:px-12 lg:px-24 pb-10 lg:pb-[52px] pt-8 lg:pt-16">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-center gap-x-6 gap-y-6 lg:gap-x-[26px] lg:gap-y-[26px]">
+          <div className="flex flex-col items-start justify-center gap-y-6 bg-white p-6 md:p-10 lg:pb-[71px] lg:pl-[74px] lg:pr-20 lg:pt-9">
+            <div className="text-2xl md:text-3xl lg:text-4xl font-semibold">
               Billing details
             </div>
-            <div className="flex flex-col items-center justify-end pl-px pt-3.5">
-              <div className="flex flex-wrap items-center justify-center gap-x-[30px] gap-y-[30px] font-medium min-[1430px]:flex-nowrap">
-                <div className="flex flex-col items-start gap-y-[22px] pl-px">
-                  <div>First Name</div>
-                  <div className="h-[75px] w-52 flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
+            <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col sm:flex-row sm:gap-x-6">
+                <div className="flex flex-col gap-y-2">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    className="h-[50px] sm:h-[75px] w-full sm:w-52 rounded-lg border border-neutral-400 p-2"
+                  />
                 </div>
-                <div className="flex flex-col items-start gap-y-[22px] pl-px">
-                  <div>Last Name</div>
-                  <div className="h-[75px] w-52 flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
+                <div className="flex flex-col gap-y-2">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    className="h-[50px] sm:h-[75px] w-full sm:w-52 rounded-lg border border-neutral-400 p-2"
+                  />
                 </div>
               </div>
-            </div>
-            <div className="pt-3.5 font-medium">Company Name (Optional)</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="h-[75px] w-[453px] flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
-            </div>
-            <div className="pt-3.5 font-medium">Country / Region</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="flex flex-wrap items-center justify-center gap-x-80 gap-y-2.5 rounded-[10px] border border-solid border-neutral-400 bg-white py-6 pl-7 pr-[26px] min-[1430px]:flex-nowrap">
-                <div className="text-neutral-400">Sri Lanka</div>
-                <Image
-                  src={Arrow1}
-                  alt={"no-image"}
-                  className="h-5 w-5 flex-shrink-0"
+              <div className="flex flex-col gap-y-2">
+                <label>Company Name (Optional)</label>
+                <input
+                  type="text"
+                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
                 />
               </div>
-            </div>
-            <div className="pt-3.5 font-medium">Street address</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="h-[75px] w-[453px] flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
-            </div>
-            <div className="pt-3.5 font-medium">Town / City</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="h-[75px] w-[453px] flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
-            </div>
-            <div className="pt-3.5 font-medium">Province</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="flex flex-wrap items-center justify-center gap-x-60 gap-y-2.5 rounded-[10px] border border-solid border-neutral-400 bg-white py-6 pl-7 pr-[26px] min-[1430px]:flex-nowrap">
-                <div className="text-neutral-400">Western Province</div>
-                <Image
-                  src={Arrow1}
-                  alt={"no-image"}
-                  className="h-5 w-5 flex-shrink-0"
+              <div className="flex flex-col gap-y-2">
+                <label>Country / Region</label>
+                <div className="flex items-center justify-between rounded-lg border border-neutral-400 p-3">
+                  <span className="text-neutral-400">Sri Lanka</span>
+                  <Image src={Arrow1} alt={"no-image"} className="h-5 w-5" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <label>Street address</label>
+                <input
+                  type="text"
+                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
                 />
               </div>
-            </div>
-            <div className="pt-3.5 font-medium">ZIP code</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="h-[75px] w-[453px] flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
-            </div>
-            <div className="pt-3.5 font-medium">Phone</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="h-[75px] w-[453px] flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
-            </div>
-            <div className="pt-3.5 font-medium">Email address</div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="h-[75px] w-[453px] flex-shrink-0 rounded-[10px] border border-solid border-neutral-400 bg-white" />
-            </div>
-            <div className="flex flex-col items-center justify-end pl-0.5 pt-11">
-              <div className="flex items-center rounded-[10px] border border-solid border-neutral-400 bg-white py-6 pl-7 pr-60">
-                <div className="text-neutral-400">Additional information</div>
+              <div className="flex flex-col gap-y-2">
+                <label>Town / City</label>
+                <input
+                  type="text"
+                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
+                />
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <label>Province</label>
+                <div className="flex items-center justify-between rounded-lg border border-neutral-400 p-3">
+                  <span className="text-neutral-400">Western Province</span>
+                  <Image src={Arrow1} alt={"no-image"} className="h-5 w-5" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <label>ZIP code</label>
+                <input
+                  type="text"
+                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
+                />
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <label>Phone</label>
+                <input
+                  type="text"
+                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
+                />
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <label>Email address</label>
+                <input
+                  type="email"
+                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
+                />
+              </div>
+              <div className="flex flex-col gap-y-4">
+                <label>Additional information</label>
+                <textarea className="h-[100px] sm:h-[150px] w-full rounded-lg border border-neutral-400 p-3"></textarea>
               </div>
             </div>
           </div>
+          {/* <div className="flex flex-col items-start justify-center gap-y-4 bg-white p-6 md:p-10 lg:pb-[86px] lg:pl-[38px] lg:pr-9 lg:pt-[87px]">
+      <div className="flex flex-wrap items-center justify-between w-full text-lg font-medium">
+        <span>Product</span>
+        <span>Subtotal</span>
+      </div>
+      <div className="flex flex-wrap items-center justify-between w-full text-sm font-light">
+        <span>Asgaard sofa</span>
+        <span>Rs. 250,000.00</span>
+      </div>
+      <div className="flex flex-wrap items-center justify-between w-full">
+        <span>Total</span>
+        <span className="text-lg font-bold text-gold">
+          Rs. 250,000.00
+        </span>
+      </div>
+      <button className="w-full rounded-lg border border-black py-3 text-center text-xl">
+        Place order
+      </button>
+    </div> */}
           <div className="flex flex-col items-start justify-center gap-y-[11px] bg-white pb-[86px] pl-[38px] pr-9 pt-[87px]">
             <div className="flex flex-wrap items-center justify-center gap-x-80 gap-y-[18px] text-2xl font-medium leading-[normal] min-[1430px]:flex-nowrap">
               <div>Product</div>
@@ -209,7 +238,7 @@ export default function Checkout() {
               </div>
             </div>
             <div className="flex items-end justify-center self-stretch pl-[7px] pt-7">
-              <div className="flex items-center justify-center rounded-[15px] border border-solid border-x-black border-y-black px-24 py-4">
+              <div className="flex items-center justify-center rounded-[15px] border border-solid border-x-black border-y-black px-8 lg:px-24  py-4">
                 <div className="text-center text-xl leading-[normal]">
                   Place order
                 </div>
@@ -218,68 +247,67 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+
       <div>
-        <div className="flex flex-col justify-end pt-[22px] -mb-12">
-          <div className="z-[2] flex flex-col justify-center bg-orange-50 py-24 pl-12 w-full mt-20">
-            <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-9 leading-normal min-[1430px]:flex-nowrap">
-              <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
-                <Image
-                  src={Trophy}
-                  alt={"no-image"}
-                  className="h-[60px] w-[60px] flex-shrink-0"
-                />
-                <div className="flex flex-col items-start gap-y-0.5">
-                  <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                    High Quality
-                  </div>
-                  <div className="text-xl font-medium leading-normal text-[gray]">
-                    crafted from top materials
-                  </div>
+        <div className="z-[2] flex flex-col justify-center bg-orange-50 py-24 pl-12 w-full">
+          <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-9 leading-normal min-[1430px]:flex-nowrap">
+            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+              <Image
+                src={Trophy}
+                alt={"no-image"}
+                className="h-[60px] w-[60px] flex-shrink-0"
+              />
+              <div className="flex flex-col items-start gap-y-0.5">
+                <div className="text-[25px] self-center font-semibold leading-normal text-neutral-800">
+                  High Quality
+                </div>
+                <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                  crafted from top materials
                 </div>
               </div>
-              <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
-                <Image
-                  src={Guarantee}
-                  alt={"no-image"}
-                  className="h-[60px] w-[60px] flex-shrink-0"
-                />
-                <div className="flex flex-col items-start gap-y-0.5">
-                  <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                    Warranty Protection
-                  </div>
-                  <div className="text-xl font-medium leading-normal text-[gray]">
-                    Over 2 years
-                  </div>
+            </div>
+            <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+              <Image
+                src={Guarantee}
+                alt={"no-image"}
+                className="h-[60px] w-[60px] flex-shrink-0"
+              />
+              <div className="flex flex-col items-start gap-y-0.5">
+                <div className="text-[25px] font-semibold leading-normal text-neutral-800">
+                  Warranty Protection
+                </div>
+                <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                  Over 2 years
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-x-2.5">
-                <Image
-                  src={Sheeping}
-                  alt={"no-image"}
-                  className="h-[60px] w-[60px] flex-shrink-0"
-                />
-                <div className="flex flex-col items-start gap-y-0.5">
-                  <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                    Free Shipping
-                  </div>
-                  <div className="text-xl font-medium leading-normal text-[gray]">
-                    Order over 150 $
-                  </div>
+            </div>
+            <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+              <Image
+                src={Sheeping}
+                alt={"no-image"}
+                className="h-[60px] w-[60px] flex-shrink-0"
+              />
+              <div className="flex flex-col items-start gap-y-0.5">
+                <div className="text-[25px] font-semibold leading-normal text-neutral-800">
+                  Free Shipping Safe
+                </div>
+                <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                  Order over 150 $
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-x-2.5">
-                <Image
-                  src={Customer}
-                  alt={"no-image"}
-                  className="h-[60px] w-[60px] flex-shrink-0"
-                />
-                <div className="flex flex-col items-start gap-y-0.5">
-                  <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                    24 / 7 Support
-                  </div>
-                  <div className="text-xl font-medium leading-normal text-[gray]">
-                    Dedicated support
-                  </div>
+            </div>
+            <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+              <Image
+                src={Customer}
+                alt={"no-image"}
+                className="h-[60px] w-[60px] flex-shrink-0"
+              />
+              <div className="flex flex-col items-start gap-y-0.5">
+                <div className="text-[25px] font-semibold leading-normal text-neutral-800 text-center">
+                  24 / 7 Support Customer
+                </div>
+                <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                  Dedicated support
                 </div>
               </div>
             </div>

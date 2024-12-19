@@ -14,48 +14,45 @@ import Link from "next/link";
 export default function Cart() {
   return (
     <div className="font-poppins w-full bg-white pb-12 tracking-[0px]">
-      <div className="relative z-0 flex flex-col items-center text-center font-medium">
+      <div className="relative z-0 flex flex-col items-center text-center font-medium overflow-hidden w-full">
+        {/* Hero Section */}
         <Image
           src={Hero1}
-          alt={"no-image"}
+          alt="no-image"
           loading="lazy"
-          className="z-[1] h-80 w-[1536px] flex-shrink-0 object-cover object-center"
+          className="z-[1] w-full h-80 object-cover object-center"
         />
-        <div className="absolute inset-x-[658px] bottom-32 top-[128px] z-[2] flex flex-col items-center justify-center">
-          <div className="flex h-0 flex-shrink-0 flex-col items-center justify-end">
+        <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center px-4 sm:inset-x-20 sm:top-0 sm:bottom-0">
+          <div className="flex flex-col items-center justify-center gap-y-2">
+            {/* Logo */}
             <Image
               src={Logo}
-              alt={"no-image"}
+              alt="no-image"
               loading="lazy"
-              className="h-10 w-16 flex-shrink-0 object-cover object-center"
+              className="h-10 w-16 object-cover"
             />
-            <div className="text-center text-black text-5xl leading-[normal] font-semibold ">
+            <h1 className="text-3xl sm:text-5xl font-semibold leading-tight text-black">
               Cart
-            </div>
+            </h1>
           </div>
-          <div className="absolute left-[calc(50%_+_-12px_+_-48px)] top-[calc(50%_+_-12px_+_49px)] flex h-6 w-12 flex-shrink-0 flex-col items-center justify-center gap-20">
-            <div className="text-center leading-[normal] mb-12 font-medium">
+          <div className="mt-4 sm:mt-8 flex items-center justify-center">
+            <div className="py-2 text-sm font-medium text-black bg-transparent rounded-md hover:bg-gray-800 hover:text-white">
               Home
             </div>
-          </div>
-        </div>
-        <div className="flex h-0 flex-shrink-0 items-end justify-center">
-          <div className="flex h-6 items-center justify-end pl-14">
-            <div className="flex items-center justify-center gap-x-2 mb-[245px]">
-              <Image
-                src={RightArrow}
-                alt={"no-image"}
-                className="h-5 w-5 flex-shrink-0"
-              />
-              <div className="font-light leading-[normal]">Cart</div>
+            <div className="flex items-center gap-2 ml-4">
+              <Image src={RightArrow} alt="no-image" className="h-5 w-5" />
+              <span className="text-sm font-light text-black">Cart</span>
             </div>
           </div>
         </div>
+        <div className="flex items-center justify-center mt-4 sm:mt-10"></div>
       </div>
-      <div className="flex items-center justify-center bg-white px-24 pb-16 pt-[72px]">
-        <div className="flex flex-grow flex-wrap items-start justify-center gap-x-[30px] gap-y-[30px] leading-[normal] min-[1430px]:flex-nowrap">
-          <div className="flex flex-col items-start gap-y-14 leading-[normal]">
-            <div className="flex flex-wrap items-center justify-center gap-x-28 gap-y-3 bg-[linen] px-36 pb-4 pt-[15px] font-medium min-[1430px]:flex-nowrap">
+
+      {/* new1 */}
+      <div className="flex items-center justify-center bg-white px-6 sm:px-12 md:px-24 pb-16 pt-[42px]">
+        <div className="flex flex-col lg:flex-row flex-grow flex-wrap items-start justify-center gap-x-[30px] gap-y-[30px] leading-[normal] min-[1430px]:flex-nowrap">
+          <div className="flex flex-col items-start gap-y-14 leading-[normal] w-full lg:w-auto">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 lg:gap-x-28 gap-y-3 bg-[linen] px-6 sm:px-12 lg:px-36 pb-4 pt-[15px] font-medium min-[1430px]:flex-nowrap">
               <div>Product</div>
               <div>Price</div>
               <div className="flex items-center justify-end gap-x-9 pl-6">
@@ -92,16 +89,17 @@ export default function Cart() {
               </div>
             </div>
           </div>
-          <div className="relative flex flex-col items-center justify-end gap-y-11 bg-[linen] px-[75px] pb-20 pt-32">
-            <div className="absolute left-[calc(50%_+_-24px_+_-76.5px)] top-[15px] flex h-12 w-44 flex-shrink-0 items-center justify-center text-center text-[32px] font-semibold leading-[normal]">
+
+          <div className="relative flex flex-col items-center justify-end gap-y-11 bg-[linen] px-6 sm:px-12 lg:px-[75px] pb-20 pt-32 w-full lg:w-auto">
+            <div className="absolute left-[calc(50%_-_76.5px)] top-[15px] flex h-12 w-44 flex-shrink-0 items-center justify-center text-center text-[32px] font-semibold leading-[normal]">
               Cart Totals
             </div>
             <div className="flex flex-col items-start gap-y-8">
-              <div className="flex items-center justify-center gap-x-16 leading-[normal]">
+              <div className="flex items-center justify-center gap-x-6 sm:gap-x-16 leading-[normal]">
                 <div className="font-medium">Subtotal</div>
                 <div className="text-neutral-400">Rs. 250,000.00</div>
               </div>
-              <div className="flex items-start justify-center gap-x-14 font-medium">
+              <div className="flex items-start justify-center gap-x-6 sm:gap-x-14 font-medium">
                 <div className="leading-[normal]">Total</div>
                 <div className="text-xl leading-[normal] text-[darkgoldenrod]">
                   Rs. 250,000.00
@@ -109,7 +107,7 @@ export default function Cart() {
               </div>
             </div>
             <div className="flex items-center justify-center pl-px">
-              <div className="flex items-center justify-center rounded-[15px] border border-solid border-x-black border-y-black px-14 pb-3.5 pt-[13px]">
+              <div className="flex items-center justify-center rounded-[15px] border border-solid border-x-black border-y-black px-10 lg:14 pb-3.5 pt-[13px]">
                 <div className="text-center text-xl leading-[normal]">
                   <Link href={"/checkout"}>Check Out</Link>
                 </div>
@@ -118,67 +116,66 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-end pt-[22px] -mb-8">
-        <div className="z-[2] flex flex-col justify-center bg-orange-50 py-24 pl-12 w-full mt-20">
-          <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-9 leading-normal min-[1430px]:flex-nowrap">
-            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
-              <Image
-                src={Trophy}
-                alt={"no-image"}
-                className="h-[60px] w-[60px] flex-shrink-0"
-              />
-              <div className="flex flex-col items-start gap-y-0.5">
-                <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                  High Quality
-                </div>
-                <div className="text-xl font-medium leading-normal text-[gray]">
-                  crafted from top materials
-                </div>
+
+      <div className="z-[2] flex flex-col justify-center bg-orange-50 py-24 pl-12 w-full">
+        <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-9 leading-normal min-[1430px]:flex-nowrap">
+          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+            <Image
+              src={Trophy}
+              alt={"no-image"}
+              className="h-[60px] w-[60px] flex-shrink-0"
+            />
+            <div className="flex flex-col items-start gap-y-0.5">
+              <div className="text-[25px] self-center font-semibold leading-normal text-neutral-800">
+                High Quality
+              </div>
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                crafted from top materials
               </div>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
-              <Image
-                src={Guarantee}
-                alt={"no-image"}
-                className="h-[60px] w-[60px] flex-shrink-0"
-              />
-              <div className="flex flex-col items-start gap-y-0.5">
-                <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                  Warranty Protection
-                </div>
-                <div className="text-xl font-medium leading-normal text-[gray]">
-                  Over 2 years
-                </div>
+          </div>
+          <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+            <Image
+              src={Guarantee}
+              alt={"no-image"}
+              className="h-[60px] w-[60px] flex-shrink-0"
+            />
+            <div className="flex flex-col items-start gap-y-0.5">
+              <div className="text-[25px] font-semibold leading-normal text-neutral-800">
+                Warranty Protection
+              </div>
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                Over 2 years
               </div>
             </div>
-            <div className="flex items-center justify-center gap-x-2.5">
-              <Image
-                src={Sheeping}
-                alt={"no-image"}
-                className="h-[60px] w-[60px] flex-shrink-0"
-              />
-              <div className="flex flex-col items-start gap-y-0.5">
-                <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                  Free Shipping
-                </div>
-                <div className="text-xl font-medium leading-normal text-[gray]">
-                  Order over 150 $
-                </div>
+          </div>
+          <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+            <Image
+              src={Sheeping}
+              alt={"no-image"}
+              className="h-[60px] w-[60px] flex-shrink-0"
+            />
+            <div className="flex flex-col items-start gap-y-0.5">
+              <div className="text-[25px] font-semibold leading-normal text-neutral-800">
+                Free Shipping Safe
+              </div>
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                Order over 150 $
               </div>
             </div>
-            <div className="flex items-center justify-center gap-x-2.5">
-              <Image
-                src={Customer}
-                alt={"no-image"}
-                className="h-[60px] w-[60px] flex-shrink-0"
-              />
-              <div className="flex flex-col items-start gap-y-0.5">
-                <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                  24 / 7 Support
-                </div>
-                <div className="text-xl font-medium leading-normal text-[gray]">
-                  Dedicated support
-                </div>
+          </div>
+          <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+            <Image
+              src={Customer}
+              alt={"no-image"}
+              className="h-[60px] w-[60px] flex-shrink-0"
+            />
+            <div className="flex flex-col items-start gap-y-0.5">
+              <div className="text-[25px] font-semibold leading-normal text-neutral-800 text-center">
+                24 / 7 Support Customer
+              </div>
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
+                Dedicated support
               </div>
             </div>
           </div>

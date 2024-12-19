@@ -1,13 +1,20 @@
+"use client";
+
+import LabelCyan from "../../../public/images/label1.png";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { MdCompareArrows } from "react-icons/md";
+import { CiHeart } from "react-icons/ci";
+import React, { useState } from "react";
+import AsgardSofa1 from "../../../public/images/Asgaard sofa.png";
+import Multi from "../../../public/images/multi.png";
+import sofa4 from "../../../public/images/sofa4.png";
 import Image from "next/image";
-import React from "react";
 import Hero1 from "../../../public/images/Hero1.png";
 import RightArrow from "../../../public/images/downarrow.png";
 import Uicons from "../../../public/images/uicons.png";
 import Cigrid from "../../../public/images/ci-grid.png";
 import ViewList from "../../../public/images/view-list.png";
-import Line5 from "../../../public/images/Line5.png";
 import Label from "../../../public/images/label.png";
-import Label2 from "../../../public/images/label1.png";
 import Trophy from "../../../public/images/trophy.png";
 import Guarantee from "../../../public/images/guarantee.png";
 import Sheeping from "../../../public/images/shipping.png";
@@ -16,568 +23,836 @@ import Logo from "../../../public/images/logo.png";
 import Link from "next/link";
 
 export default function Shop() {
+  const [isCartOpen, setCartOpen] = useState(false);
+
+  const toggleCart = () => {
+    setCartOpen(!isCartOpen); // Toggle cart visibility
+  };
+  const products = [
+    {
+      id: 1,
+      name: "Syltherine",
+      description: "Stylish cafe chair",
+      price: "Rp 2.500.000",
+      oldPrice: "Rp 3.500.000",
+      imageClass: "bg-ImageRoom",
+    },
+    {
+      id: 2,
+      name: "Leviosa",
+      description: "Stylish cafe chair",
+      price: "Rp 2.500.000",
+      oldPrice: null,
+      imageClass: "bg-FeaturedProduct",
+    },
+    {
+      id: 3,
+      name: "Lolito",
+      description: "Luxury big sofa",
+      price: "Rp 7.000.000",
+      oldPrice: "Rp 14.000.000",
+      imageClass: "bg-Sofa",
+      label: "30%",
+    },
+    {
+      id: 4,
+      name: "Respira",
+      description: "Outdoor bar table and stool",
+      price: "Rp 500.000",
+      oldPrice: null,
+      imageClass: "bg-Room",
+      label1: "New",
+    },
+  ];
   return (
-    <div className="font-poppins relative z-0 flex w-full flex-col items-center leading-[normal] tracking-[0px]">
-      <div className="relative z-0 flex flex-col items-center text-center font-medium">
+    <div className="font-poppins relative z-0 flex w-full flex-col items-center leading-[normal] tracking-[0px] overflow-hidden">
+      <div className="relative z-0 flex flex-col items-center text-center font-medium overflow-hidden w-full">
+        {/* Hero Section */}
         <Image
           src={Hero1}
-          alt={"no-image"}
+          alt="no-image"
           loading="lazy"
-          className="z-[1] h-80 w-[1536px] flex-shrink-0 object-cover object-center"
+          className="z-[1] w-full h-80 object-cover object-center"
         />
-        <div className="absolute inset-x-[658px] bottom-32 top-[128px] z-[2] flex flex-col items-center justify-center">
-          <div className="flex h-0 flex-shrink-0 flex-col items-center justify-end">
+        <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center px-4 sm:inset-x-20 sm:top-0 sm:bottom-0">
+          <div className="flex flex-col items-center justify-center gap-y-2">
+            {/* Logo */}
             <Image
               src={Logo}
-              alt={"no-image"}
+              alt="no-image"
               loading="lazy"
-              className="h-10 w-16 flex-shrink-0 object-cover object-center"
+              className="h-10 w-16 object-cover"
             />
-            <div className="text-center text-black text-5xl leading-[normal] font-semibold ">
+            <h1 className="text-3xl sm:text-5xl font-semibold leading-tight text-black">
               Shop
-            </div>
+            </h1>
           </div>
-          <div className="absolute left-[calc(50%_+_-12px_+_-48px)] top-[calc(50%_+_-12px_+_49px)] flex h-6 w-12 flex-shrink-0 flex-col items-center justify-center gap-20">
-            <div className="text-center leading-[normal] mb-12 font-medium">
+          <div className="mt-4 sm:mt-8 flex items-center justify-center">
+            <div className="py-2 text-sm font-medium text-black bg-transparent rounded-md hover:bg-gray-800 hover:text-white">
               Home
             </div>
-          </div>
-        </div>
-        <div className="flex h-0 flex-shrink-0 items-end justify-center">
-          <div className="flex h-6 items-center justify-end pl-14">
-            <div className="flex items-center justify-center gap-x-2 mb-[245px]">
-              <Image
-                src={RightArrow}
-                alt={"no-image"}
-                className="h-5 w-5 flex-shrink-0"
-              />
-              <div className="font-light leading-[normal]">Shop</div>
+            <div className="flex items-center gap-2 ml-4">
+              <Image src={RightArrow} alt="no-image" className="h-5 w-5" />
+              <span className="text-sm font-light text-black">Shop</span>
             </div>
           </div>
         </div>
+        <div className="flex items-center justify-center mt-4 sm:mt-10"></div>
       </div>
-      <div className="flex w-full flex-col">
-        <div className="font-poppins flex flex-grow flex-wrap items-center justify-between gap-x-3 gap-y-3 bg-[linen] px-24 py-[22px] leading-[normal] tracking-[0px] min-[1430px]:flex-nowrap">
-          <div className="flex flex-wrap items-center justify-center gap-x-[30px] gap-y-3 min-[1430px]:flex-nowrap">
-            <div className="flex h-[30px] items-center justify-center gap-x-3">
-              <div className="flex h-[26px] w-6 flex-shrink-0 flex-col items-center pb-px">
-                <Image
-                  src={Uicons}
-                  alt={"no-image"}
-                  className="h-6 w-6 flex-shrink-0"
-                />
-              </div>
-              <div className="text-xl leading-[normal]">Filter</div>
-              <div className="flex items-center justify-end pl-[11px]">
-                <Image
-                  src={Cigrid}
-                  alt={"no-image"}
-                  className="h-7 w-7 flex-shrink-0"
-                />
-              </div>
-              <div className="flex items-center justify-end self-stretch pl-3">
-                <Image
-                  src={ViewList}
-                  alt={"no-image"}
-                  className="h-6 w-6 flex-shrink-0"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col items-center pb-px">
-              <Image
-                src={Line5}
-                alt={"no-image"}
-                className="h-9 w-0.5 flex-shrink-0"
-              />
-            </div>
-            <div className="flex flex-col items-center pl-0.5">
-              <div className="leading-[normal]">Showing 1–16 of 32 results</div>
-            </div>
+
+      {/* Filter Section */}
+      <div className="flex w-full flex-col bg-[linen] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-12 sm:py-6">
+        <div className="flex flex-wrap items-center gap-4">
+          {/* Filter Buttons */}
+          <div className="flex items-center gap-3">
+            <Image src={Uicons} alt="no-image" className="h-6 w-6" />
+            <span className="text-sm sm:text-lg">Filter</span>
+            <Image src={Cigrid} alt="no-image" className="h-6 w-6" />
+            <Image src={ViewList} alt="no-image" className="h-6 w-6" />
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-x-[17px] gap-y-4 text-xl leading-[normal] min-[1430px]:flex-nowrap">
-            <div className="flex flex-col items-center pb-0.5">
-              <div>Show</div>
-            </div>
-            <div className="flex h-14 w-14 flex-shrink-0 flex-col items-center pb-px">
-              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center bg-white pb-[13px] pl-[10px] pr-3 pt-3 text-center text-neutral-400">
-                16
-              </div>
-            </div>
-            <div className="pb-0.5 pl-3">Short by</div>
-            <div className="flex flex-col items-center pb-px">
-              <div className="bg-white pb-[13px] pl-[30px] pr-[86px] pt-3 text-center text-neutral-400">
-                Default
-              </div>
-            </div>
+          {/* Separator */}
+          <div className="hidden sm:flex h-6 w-px bg-gray-300"></div>
+          {/* Results */}
+          <div className="text-xs sm:text-base text-gray-600">
+            Showing 1–16 of 32 results
+          </div>
+        </div>
+        {/* Sorting Options */}
+        <div className="mt-4 flex flex-wrap items-center gap-4 sm:mt-0">
+          <span className="text-sm sm:text-lg">Show</span>
+          <div className="flex h-10 w-10 items-center justify-center bg-white text-gray-500 rounded-md shadow-md">
+            16
+          </div>
+          <span className="text-sm sm:text-lg">Sort by</span>
+          <div className="px-4 py-2 bg-white text-gray-500 rounded-md shadow-md">
+            Default
           </div>
         </div>
       </div>
 
-      {/* Our Product */}
+      {/* Our Product1 */}
 
-      <Link href="/singleproduct">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap mt-20">
-          <div>
-            <div className="bg-ImageRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3">
-                <div className="relative z-0 flex items-center justify-center pl-1">
-                  <Image
-                    src={Label}
-                    alt="no-image"
-                    className="absolute -inset-x-px -inset-y-3 z-0"
-                  />
-                  <div className="z-[2] text-right font-medium leading-normal text-white">
-                    -30%
+      <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+        {/* Cart */}
+        {isCartOpen && (
+          <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50 ">
+            <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+              {/* Header */}
+              <div className="flex items-center justify-between -mt-16">
+                <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+                <button
+                  onClick={toggleCart}
+                  className="text-lg font-bold hover:text-red-500"
+                >
+                  X
+                </button>
+              </div>
+              <hr className="my-4" />
+
+              {/* Product List */}
+              <div className="flex flex-col gap-6">
+                {/* Product 1 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                    <Image
+                      src={AsgardSofa1}
+                      alt="Remove"
+                      className="h-30 w-30"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Asgaard Sofa</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 250,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Product 2 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[102px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0">
+                    <Image src={sofa4} alt="Remove" className="h-30 w-30" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Casaliving Wood</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 270,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Subtotal */}
+              <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+                <span>Subtotal</span>
+                <span className="text-[#b88e2f]">Rs. 520,000.00</span>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-10 flex-wrap">
+                <Link href={"/cart"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Cart
+                  </button>
+                </Link>
+                <Link href={"/checkout"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Checkout
+                  </button>
+                </Link>
+                <Link href={"/comparison"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Comparison
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-center pl-[5px]">
+          <div className="text-center text-[40px] font-bold leading-[1.2] text-neutral-700 mt-10">
+            Our Products
+          </div>
+        </div>
+
+        {/* Product Cards */}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group relative w-72 cursor-pointer"
+            >
+              {/* Image Section */}
+              <div
+                className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
+              >
+                {product.label && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={Label}
+                        alt="Discount Label"
+                        className="absolute -inset-0 z-0 h-10 w-20"
+                      />
+                      <div className="z-10 text-center mt-2 font-semibold text-white">
+                        -50%
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {product.label1 && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={LabelCyan}
+                        alt="Discount Label"
+                        className="absolute -inset-0 h-10 w-12"
+                      />
+                      <div className="z-10 text-center mt-2 font-medium text-white">
+                        New
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Hover Div */}
+                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                  <button
+                    onClick={toggleCart} // Toggle cart visibility on click
+                    className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                  >
+                    Add to Cart
+                  </button>
+                  <div className="flex items-center gap-x-4 text-white">
+                    <div className="flex items-center gap-x-1">
+                      <IoShareSocialOutline />
+                      <div>Share</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <MdCompareArrows />
+                      <div>Compare</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <CiHeart />
+                      <div>Like</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Syltherine
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
+
+              {/* Product Details */}
+              <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+                <div className="text-2xl font-semibold text-neutral-700">
+                  {product.name}
                 </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 3.500.000
+                <div className="text-gray-500">{product.description}</div>
+                <div className="flex items-center gap-x-4">
+                  <div className="text-xl font-semibold text-neutral-700">
+                    {product.price}
+                  </div>
+                  {product.oldPrice && (
+                    <div className="text-gray-400 line-through">
+                      {product.oldPrice}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="bg-FeaturedProduct flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3"></div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Leviosa
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
-                </div>
-                {/* <div className="leading-normal text-[darkgray] line-through">
-            Rp 3.500.000
-          </div> */}
-              </div>
-            </div>
-          </div>
-          {/* <div className="flex flex-col items-center justify-center gap-y-6 bg-neutral-700/70 py-44 pl-4 pr-[17px] font-semibold leading-normal">
-      <div className="bg-white py-3 pl-[59px] pr-[52px] text-center text-[darkgoldenrod]">
-        Add to cart
+          ))}
+        </div>
       </div>
-      <div className="flex items-center justify-center gap-x-0.5 text-white">
-        <div className="flex items-center justify-center gap-x-5">
-          <div className="flex items-center justify-center gap-x-0.5">
-            <object
-              data="/assets/GridiconsShare.svg"
-              className="h-4 w-4 flex-shrink-0"
-            />
-            <div>Share</div>
+
+      {/* Our Product2 */}
+
+      <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+        {/* Cart */}
+        {isCartOpen && (
+          <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50 ">
+            <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+              {/* Header */}
+              <div className="flex items-center justify-between -mt-16">
+                <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+                <button
+                  onClick={toggleCart}
+                  className="text-lg font-bold hover:text-red-500"
+                >
+                  X
+                </button>
+              </div>
+              <hr className="my-4" />
+
+              {/* Product List */}
+              <div className="flex flex-col gap-6">
+                {/* Product 1 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                    <Image
+                      src={AsgardSofa1}
+                      alt="Remove"
+                      className="h-30 w-30"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Asgaard Sofa</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 250,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Product 2 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[102px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0">
+                    <Image src={sofa4} alt="Remove" className="h-30 w-30" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Casaliving Wood</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 270,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Subtotal */}
+              <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+                <span>Subtotal</span>
+                <span className="text-[#b88e2f]">Rs. 520,000.00</span>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-10 flex-wrap">
+                <Link href={"/cart"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Cart
+                  </button>
+                </Link>
+                <Link href={"/checkout"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Checkout
+                  </button>
+                </Link>
+                <Link href={"/comparison"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Comparison
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-center gap-x-0.5">
-            <object
-              data="/assets/CompareSvgrepoCom.svg"
-              className="h-4 w-4 flex-shrink-0"
-            />
-            <div>Compare</div>
-          </div>
-          <object data="/assets/Heart.svg" className="h-4 w-4 flex-shrink-0" />
+        )}
+
+        {/* Product Cards */}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group relative w-72 cursor-pointer"
+            >
+              {/* Image Section */}
+              <div
+                className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
+              >
+                {product.label && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={Label}
+                        alt="Discount Label"
+                        className="absolute -inset-0 z-0 h-10 w-20"
+                      />
+                      <div className="z-10 text-center mt-2 font-semibold text-white">
+                        -50%
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {product.label1 && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={LabelCyan}
+                        alt="Discount Label"
+                        className="absolute -inset-0 h-10 w-12"
+                      />
+                      <div className="z-10 text-center mt-2 font-medium text-white">
+                        New
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Hover Div */}
+                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                  <button
+                    onClick={toggleCart} // Toggle cart visibility on click
+                    className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                  >
+                    Add to Cart
+                  </button>
+                  <div className="flex items-center gap-x-4 text-white">
+                    <div className="flex items-center gap-x-1">
+                      <IoShareSocialOutline />
+                      <div>Share</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <MdCompareArrows />
+                      <div>Compare</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <CiHeart />
+                      <div>Like</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Details */}
+              <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+                <div className="text-2xl font-semibold text-neutral-700">
+                  {product.name}
+                </div>
+                <div className="text-gray-500">{product.description}</div>
+                <div className="flex items-center gap-x-4">
+                  <div className="text-xl font-semibold text-neutral-700">
+                    {product.price}
+                  </div>
+                  {product.oldPrice && (
+                    <div className="text-gray-400 line-through">
+                      {product.oldPrice}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div>Like</div>
       </div>
-    </div> */}
 
-          <div>
-            <div className="bg-Sofa flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center bg-cover bg-center py-3 pl-[5px]">
-                <div className="z-[2] text-right font-medium leading-normal text-white">
-                  -50%
+      {/* Our Product3 */}
+
+      <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+        {/* Cart */}
+        {isCartOpen && (
+          <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50 ">
+            <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+              {/* Header */}
+              <div className="flex items-center justify-between -mt-16">
+                <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+                <button
+                  onClick={toggleCart}
+                  className="text-lg font-bold hover:text-red-500"
+                >
+                  X
+                </button>
+              </div>
+              <hr className="my-4" />
+
+              {/* Product List */}
+              <div className="flex flex-col gap-6">
+                {/* Product 1 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                    <Image
+                      src={AsgardSofa1}
+                      alt="Remove"
+                      className="h-30 w-30"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Asgaard Sofa</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 250,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Product 2 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[102px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0">
+                    <Image src={sofa4} alt="Remove" className="h-30 w-30" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Casaliving Wood</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 270,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Lolito
+
+              {/* Subtotal */}
+              <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+                <span>Subtotal</span>
+                <span className="text-[#b88e2f]">Rs. 520,000.00</span>
               </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Luxury big sofa
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 7.000.000
-                </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 14.000.000
-                </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-10 flex-wrap">
+                <Link href={"/cart"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Cart
+                  </button>
+                </Link>
+                <Link href={"/checkout"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Checkout
+                  </button>
+                </Link>
+                <Link href={"/comparison"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Comparison
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
-          <div>
-            <div className="bg-Room flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-                <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
-                  <Image
-                    src={Label2}
-                    alt="no-image"
-                    className="absolute  z-0"
-                  />
-                  <div className="z-[2] font-medium leading-normal text-white">
-                    New
+        )}
+
+        {/* Product Cards */}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group relative w-72 cursor-pointer"
+            >
+              {/* Image Section */}
+              <div
+                className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
+              >
+                {product.label && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={Label}
+                        alt="Discount Label"
+                        className="absolute -inset-0 z-0 h-10 w-20"
+                      />
+                      <div className="z-10 text-center mt-2 font-semibold text-white">
+                        -50%
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {product.label1 && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={LabelCyan}
+                        alt="Discount Label"
+                        className="absolute -inset-0 h-10 w-12"
+                      />
+                      <div className="z-10 text-center mt-2 font-medium text-white">
+                        New
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Hover Div */}
+                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                  <button
+                    onClick={toggleCart} // Toggle cart visibility on click
+                    className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                  >
+                    Add to Cart
+                  </button>
+                  <div className="flex items-center gap-x-4 text-white">
+                    <div className="flex items-center gap-x-1">
+                      <IoShareSocialOutline />
+                      <div>Share</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <MdCompareArrows />
+                      <div>Compare</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <CiHeart />
+                      <div>Like</div>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Product Details */}
+              <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+                <div className="text-2xl font-semibold text-neutral-700">
+                  {product.name}
+                </div>
+                <div className="text-gray-500">{product.description}</div>
+                <div className="flex items-center gap-x-4">
+                  <div className="text-xl font-semibold text-neutral-700">
+                    {product.price}
+                  </div>
+                  {product.oldPrice && (
+                    <div className="text-gray-400 line-through">
+                      {product.oldPrice}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-11 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Respira
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Outdoor bar table and stool
-              </div>
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 500.000
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
-      </Link>
-      {/* Item 2 */}
+      </div>
 
-      <Link href="/singleproduct">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap mt-20">
-          <div>
-            <div className="bg-ImageRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3">
-                <div className="relative z-0 flex items-center justify-center pl-1">
-                  <Image
-                    src={Label}
-                    alt="no-image"
-                    className="absolute -inset-x-px -inset-y-3 z-0"
-                  />
-                  <div className="z-[2] text-right font-medium leading-normal text-white">
-                    -30%
+      {/* Our Product4 */}
+
+      <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+        {/* Cart */}
+        {isCartOpen && (
+          <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50 ">
+            <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+              {/* Header */}
+              <div className="flex items-center justify-between -mt-16">
+                <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+                <button
+                  onClick={toggleCart}
+                  className="text-lg font-bold hover:text-red-500"
+                >
+                  X
+                </button>
+              </div>
+              <hr className="my-4" />
+
+              {/* Product List */}
+              <div className="flex flex-col gap-6">
+                {/* Product 1 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                    <Image
+                      src={AsgardSofa1}
+                      alt="Remove"
+                      className="h-30 w-30"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Asgaard Sofa</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 250,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+
+                {/* Product 2 */}
+                <div className="flex items-center gap-4">
+                  <div className="h-[102px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0">
+                    <Image src={sofa4} alt="Remove" className="h-30 w-30" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">Casaliving Wood</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span>1 x</span>
+                      <span className="text-[#b88e2f] font-medium">
+                        Rs. 270,000.00
+                      </span>
+                    </div>
+                  </div>
+                  <button>
+                    <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Subtotal */}
+              <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+                <span>Subtotal</span>
+                <span className="text-[#b88e2f]">Rs. 520,000.00</span>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-4 mt-10 flex-wrap">
+                <Link href={"/cart"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Cart
+                  </button>
+                </Link>
+                <Link href={"/checkout"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Checkout
+                  </button>
+                </Link>
+                <Link href={"/comparison"}>
+                  <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                    Comparison
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Product Cards */}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group relative w-72 cursor-pointer"
+            >
+              {/* Image Section */}
+              <div
+                className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
+              >
+                {product.label && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={Label}
+                        alt="Discount Label"
+                        className="absolute -inset-0 z-0 h-10 w-20"
+                      />
+                      <div className="z-10 text-center mt-2 font-semibold text-white">
+                        -50%
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {product.label1 && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={LabelCyan}
+                        alt="Discount Label"
+                        className="absolute -inset-0 h-10 w-12"
+                      />
+                      <div className="z-10 text-center mt-2 font-medium text-white">
+                        New
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Hover Div */}
+                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                  <button
+                    onClick={toggleCart} // Toggle cart visibility on click
+                    className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                  >
+                    Add to Cart
+                  </button>
+                  <div className="flex items-center gap-x-4 text-white">
+                    <div className="flex items-center gap-x-1">
+                      <IoShareSocialOutline />
+                      <div>Share</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <MdCompareArrows />
+                      <div>Compare</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <CiHeart />
+                      <div>Like</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Syltherine
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
+
+              {/* Product Details */}
+              <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+                <div className="text-2xl font-semibold text-neutral-700">
+                  {product.name}
                 </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 3.500.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-FeaturedProduct flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3"></div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Leviosa
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-Sofa flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center bg-cover bg-center py-3 pl-[5px]">
-                <div className="z-[2] text-right font-medium leading-normal text-white">
-                  -50%
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Lolito
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Luxury big sofa
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 7.000.000
-                </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 14.000.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-Room flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-                <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
-                  <Image
-                    src={Label2}
-                    alt="no-image"
-                    className="absolute  z-0"
-                  />
-                  <div className="z-[2] font-medium leading-normal text-white">
-                    New
+                <div className="text-gray-500">{product.description}</div>
+                <div className="flex items-center gap-x-4">
+                  <div className="text-xl font-semibold text-neutral-700">
+                    {product.price}
                   </div>
+                  {product.oldPrice && (
+                    <div className="text-gray-400 line-through">
+                      {product.oldPrice}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-11 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Respira
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Outdoor bar table and stool
-              </div>
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 500.000
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
-      </Link>
+      </div>
 
-      {/* Item 3 */}
-
-      <Link href="/singleproduct">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap mt-20">
-          <div>
-            <div className="bg-ImageRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3">
-                <div className="relative z-0 flex items-center justify-center pl-1">
-                  <Image
-                    src={Label}
-                    alt="no-image"
-                    className="absolute -inset-x-px -inset-y-3 z-0"
-                  />
-                  <div className="z-[2] text-right font-medium leading-normal text-white">
-                    -30%
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Syltherine
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
-                </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 3.500.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-FeaturedProduct flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3"></div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Leviosa
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-Sofa flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center bg-cover bg-center py-3 pl-[5px]">
-                <div className="z-[2] text-right font-medium leading-normal text-white">
-                  -50%
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Lolito
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Luxury big sofa
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 7.000.000
-                </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 14.000.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-Room flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-                <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
-                  <Image
-                    src={Label2}
-                    alt="no-image"
-                    className="absolute  z-0"
-                  />
-                  <div className="z-[2] font-medium leading-normal text-white">
-                    New
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-11 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Respira
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Outdoor bar table and stool
-              </div>
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 500.000
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-
-      {/* Item 4 */}
-
-      <Link href="/singleproduct">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap mt-20">
-          <div>
-            <div className="bg-ImageRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3">
-                <div className="relative z-0 flex items-center justify-center pl-1">
-                  <Image
-                    src={Label}
-                    alt="no-image"
-                    className="absolute -inset-x-px -inset-y-3 z-0"
-                  />
-                  <div className="z-[2] text-right font-medium leading-normal text-white">
-                    -30%
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Syltherine
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
-                </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 3.500.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-FeaturedProduct flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3"></div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Leviosa
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Stylish cafe chair
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 2.500.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-Sofa flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center bg-cover bg-center py-3 pl-[5px]">
-                <div className="z-[2] text-right font-medium leading-normal text-white">
-                  -50%
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Lolito
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Luxury big sofa
-              </div>
-              <div className="flex items-center justify-center gap-x-4">
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 7.000.000
-                </div>
-                <div className="leading-normal text-[darkgray] line-through">
-                  Rp 14.000.000
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-Room flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-              <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-                <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
-                  <Image
-                    src={Label2}
-                    alt="no-image"
-                    className="absolute  z-0"
-                  />
-                  <div className="z-[2] font-medium leading-normal text-white">
-                    New
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-11 pt-4">
-              <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                Respira
-              </div>
-              <div className="font-medium leading-normal text-[gray]">
-                Outdoor bar table and stool
-              </div>
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 500.000
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-
-      <div className="flex items-end justify-center pr-1.5 pt-[70px]">
+      <div className="flex items-end justify-center pr-1.5 pt-[20px]">
         <div className="flex flex-wrap items-center justify-center gap-x-[38px] gap-y-[30px] text-center text-xl leading-[normal] min-[1430px]:flex-nowrap">
           <div className="flex h-[60px] w-[60px] flex-shrink-0 items-center justify-center rounded-[10px] bg-[darkgoldenrod] py-[15px] pl-7 pr-[26px] text-white">
             1
@@ -603,15 +878,15 @@ export default function Shop() {
               className="h-[60px] w-[60px] flex-shrink-0"
             />
             <div className="flex flex-col items-start gap-y-0.5">
-              <div className="text-[25px] font-semibold leading-normal text-neutral-800">
+              <div className="text-[25px] self-center font-semibold leading-normal text-neutral-800">
                 High Quality
               </div>
-              <div className="text-xl font-medium leading-normal text-[gray]">
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
                 crafted from top materials
               </div>
             </div>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
+          <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
             <Image
               src={Guarantee}
               alt={"no-image"}
@@ -621,12 +896,12 @@ export default function Shop() {
               <div className="text-[25px] font-semibold leading-normal text-neutral-800">
                 Warranty Protection
               </div>
-              <div className="text-xl font-medium leading-normal text-[gray]">
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
                 Over 2 years
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-x-2.5">
+          <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
             <Image
               src={Sheeping}
               alt={"no-image"}
@@ -634,24 +909,24 @@ export default function Shop() {
             />
             <div className="flex flex-col items-start gap-y-0.5">
               <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                Free Shipping
+                Free Shipping Safe
               </div>
-              <div className="text-xl font-medium leading-normal text-[gray]">
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
                 Order over 150 $
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-x-2.5">
+          <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
             <Image
               src={Customer}
               alt={"no-image"}
               className="h-[60px] w-[60px] flex-shrink-0"
             />
             <div className="flex flex-col items-start gap-y-0.5">
-              <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-                24 / 7 Support
+              <div className="text-[25px] font-semibold leading-normal text-neutral-800 text-center">
+                24 / 7 Support Customer
               </div>
-              <div className="text-xl font-medium leading-normal text-[gray]">
+              <div className="text-xl self-center font-medium leading-normal text-[gray]">
                 Dedicated support
               </div>
             </div>

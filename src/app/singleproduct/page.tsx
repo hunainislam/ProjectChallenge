@@ -1,437 +1,492 @@
-import React from "react";
-import Arrow from "../../../public/images/Arrow.png";
-import Line5 from "../../../public/images/Line5.png";
-import OutDoorSofa from "../../../public/images/Outdoor-sofa .png";
-import OutDoorSofa2 from "../../../public/images/Outdoorsofa2.png";
-import StuartSofa from "../../../public/images/Stuartsofa3.png";
-import MayaSofa from "../../../public/images/Mayasofa4.png";
-import Star1 from "../../../public/images/Star1.png";
-import Facebook from "../../../public/images/Vector(1).png";
-import Linkedin from "../../../public/images/Vector(2).png";
-import Twitter from "../../../public/images/Vector(3).png";
-import CloudSofa from "../../../public/images/cloudSofa.png";
-import CloudSofa2 from "../../../public/images/CloudSofa2.png";
-import Chair from "../../../public/images/chair.png";
+"use client";
+
 import Label from "../../../public/images/label.png";
 import LabelCyan from "../../../public/images/label1.png";
+import React, { useState } from "react";
 import Image from "next/image";
+import { ChevronRight, MinusIcon, PlusIcon } from "lucide-react";
+import ReactStars from "react-stars";
+import { Facebook, Linkedin, Twitter } from "lucide-react";
+import Asgard from "../../../public/images/Asgaard sofa.png";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { MdCompareArrows } from "react-icons/md";
+import { CiHeart } from "react-icons/ci";
+import AsgardSofa1 from "../../../public/images/Asgaard sofa.png";
+import Multi from "../../../public/images/multi.png";
+import sofa4 from "../../../public/images/sofa4.png";
+import Link from "next/link";
 
-export default function SingleProduct() {
+type Product = {
+  id: number | string;
+  name: string;
+  image: string;
+  price: number;
+  originalPrice?: number;
+  discount?: number;
+  isSale?: boolean;
+  type?: string;
+  tag?: string;
+  quantity: number;
+};
+
+interface ProductDetailPageProps {
+  addToCart: (product: Product) => void;
+}
+
+export default function ProductDetailPage({
+  addToCart,
+}: ProductDetailPageProps) {
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState("/images/product-sofa.png");
+
+  const MAX_QUANTITY = 5;
+  const productId = "SS001";
+  const productTitle = "Asgaard Sofa";
+  const productPrice = 250000;
+
+  const product = {
+    id: productId,
+    name: productTitle,
+    price: productPrice,
+    quantity: quantity,
+    image: activeImage,
+  };
+
+  const thumbnails = [
+    "/images/Outdoor-sofa .png",
+    "/images/Outdoorsofa2.png",
+    "/images/Stuartsofa3.png",
+    "/images/Mayasofa4.png",
+  ];
+
+  const handleQuantityDecrement = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
+
+  const handleQuantityIncrement = () => {
+    if (quantity < MAX_QUANTITY) setQuantity(quantity + 1);
+  };
+
+  const [isCartOpen, setCartOpen] = useState(false); // State to manage cart visibility
+
+  const toggleCart = () => {
+    setCartOpen(!isCartOpen); // Toggle cart visibility
+  };
+  const products = [
+    {
+      id: 1,
+      name: "Syltherine",
+      description: "Stylish cafe chair",
+      price: "Rp 2.500.000",
+      oldPrice: "Rp 3.500.000",
+      imageClass: "bg-ImageRoom",
+    },
+    {
+      id: 2,
+      name: "Leviosa",
+      description: "Stylish cafe chair",
+      price: "Rp 2.500.000",
+      oldPrice: null,
+      imageClass: "bg-FeaturedProduct",
+    },
+    {
+      id: 3,
+      name: "Lolito",
+      description: "Luxury big sofa",
+      price: "Rp 7.000.000",
+      oldPrice: "Rp 14.000.000",
+      imageClass: "bg-Sofa",
+      label: "30%",
+    },
+    {
+      id: 4,
+      name: "Respira",
+      description: "Outdoor bar table and stool",
+      price: "Rp 500.000",
+      oldPrice: null,
+      imageClass: "bg-Room",
+      label1: "New",
+    },
+  ];
   return (
-    <div className="flex w-full flex-col bg-white pb-12">
-      <div className="font-poppins flex flex-grow flex-col gap-y-[11px] leading-[normal] tracking-[0px]">
-        <div className="flex flex-col gap-y-3.5">
-          <div className="flex flex-col">
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-[13px] bg-[linen] px-24 py-8 leading-[normal] min-[1430px]:flex-nowrap">
-              <div className="flex items-center justify-center gap-x-3.5 text-neutral-400">
-                <div>Home</div>
-                <div className="flex items-center justify-center gap-x-5">
-                  <Image
-                    src={Arrow}
-                    alt={"no-image"}
-                    className="h-5 w-5 flex-shrink-0"
-                  />
-                  <div className="flex flex-col items-center pl-[3px]">
-                    <div>Shop</div>
-                  </div>
-                  <Image
-                    src={Arrow}
-                    alt={"no-image"}
-                    className="h-5 w-5 flex-shrink-0"
-                  />
-                  <div className="flex items-center justify-end pb-px pl-1">
-                    <Image
-                      src={Line5}
-                      alt={"no-image"}
-                      className="h-9 w-0.5 flex-shrink-0"
-                    />
-                  </div>
-                </div>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12 overflow-hidden">
+      <section className="bg-[#F9F1E7] py-4 px-4 rounded-lg flex items-center space-x-2 overflow-x-auto">
+        <div className="flex items-center space-x-2 whitespace-nowrap">
+          <span className="text-[#9F9F9F]">Home</span>
+          <ChevronRight className="w-4 h-4 text-[#9F9F9F]" />
+          <span className="text-[#9F9F9F]">Shop</span>
+          <ChevronRight className="w-4 h-4 text-[#9F9F9F]" />
+          <span className="font-semibold">Asgaard sofa</span>
+        </div>
+      </section>
+
+      {/* Product Section */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        {/* Left Section: Images */}
+        <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-8">
+          <div className="flex md:flex-col overflow-x-auto md:overflow-visible space-x-4 md:space-x-0 md:space-y-4 scrollbar-hide">
+            {thumbnails.map((thumb, index) => (
+              <div
+                key={index}
+                onClick={() => setActiveImage(thumb)}
+                className={`flex-shrink-0 bg-primary-light h-16 w-16 md:h-20 md:w-20 rounded-[8px] cursor-pointer 
+                  ${activeImage === thumb ? "border-2 border-black" : ""}`}
+              >
+                <Image
+                  src={thumb}
+                  alt={`Product Thumbnail ${index + 1}`}
+                  width={80}
+                  height={80}
+                  className="object-contain w-full h-full"
+                />
               </div>
-              <div className="flex flex-col items-center pb-0.5">
-                <div>Asgaard sofa</div>
-              </div>
+            ))}
+          </div>
+
+          {/* Main Image */}
+          <div className="flex-grow bg-primary-light rounded-[8px] flex items-center justify-center">
+            <Image
+              src={Asgard}
+              alt="Main Product Image"
+              width={500}
+              height={500}
+              priority
+              className="object-contain max-h-[500px] max-w-full rounded-[10px]"
+            />
+          </div>
+        </div>
+
+        {/* Right Section: Product Details */}
+        <div className="space-y-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-normal">
+            {productTitle}
+          </h1>
+          <p className="text-xl md:text-2xl text- font-medium">
+            Rs. {productPrice.toLocaleString()}.00
+          </p>
+
+          {/* Reviews */}
+          <div className="flex items-center space-x-2">
+            <ReactStars count={5} size={24} color2={"#FFC700"} />
+            <p className="text-[#9F9F9F] text-base">5 Customer Reviews</p>
+          </div>
+
+          {/* Size */}
+          <div className="space-y-2">
+            <p className="text-base text-[#9F9F9F] font-semibold">Size</p>
+            <div className="flex space-x-2">
+              {["L", "XL", "XS"].map((size) => (
+                <button
+                  key={size}
+                  className="border border-black rounded-full w-10 h-10 text-center hover:bg-black hover:text-white transition-colors"
+                >
+                  {size}
+                </button>
+              ))}
             </div>
-            <div className="flex flex-grow justify-center bg-white px-24 py-9">
-              <div className="relative z-0 flex flex-grow flex-col items-center justify-center pb-5">
-                <div className="font-poppins z-[1] flex flex-grow flex-col gap-y-[53px] self-stretch pr-6 leading-[normal] tracking-[0px]">
-                  <div className="flex flex-wrap items-center justify-center gap-x-[105px] gap-y-[105px] min-[1430px]:flex-nowrap">
-                    <div className="flex flex-wrap items-start justify-center gap-x-8 gap-y-8 min-[1430px]:flex-nowrap">
-                      <div className="flex flex-col items-start gap-y-8">
-                        <div className="flex flex-col items-center rounded-[10px] bg-[linen]">
-                          <Image
-                            src={OutDoorSofa}
-                            alt={"no-image"}
-                            className="h-20 w-[76px] flex-shrink-0"
-                          />
-                        </div>
-                        <div className="flex flex-col items-center rounded-[10px] bg-[linen]">
-                          <Image
-                            src={OutDoorSofa2}
-                            alt={"no-image"}
-                            className="h-20 w-[76px] flex-shrink-0"
-                          />
-                        </div>
-                        <div className="flex flex-col items-center rounded-[10px] bg-[linen]">
-                          <Image
-                            src={StuartSofa}
-                            alt={"no-image"}
-                            className="h-20 w-[76px] flex-shrink-0"
-                          />
-                        </div>
-                        <div className="flex flex-col items-center rounded-[10px] bg-[linen]">
-                          <Image
-                            src={MayaSofa}
-                            alt={"no-image"}
-                            className="h-20 w-[76px] flex-shrink-0"
-                          />
-                        </div>
-                      </div>
-                      <div className="bg-Asgaard bg-no-repeat bg-center h-[500px] w-[423px] flex-shrink-0 rounded-[10px] bg-[linen]" />
-                    </div>
-                    <div className="text-[13px] leading-[normal]">
-                      <div className="text-[42px] leading-[normal]">
-                        Asgaard sofa
-                      </div>
-                      <div className="text-2xl font-medium leading-[normal] text-neutral-400 mt-4">
-                        Rs. 250,000.00
-                      </div>
-                      <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 pt-2.5 min-[1430px]:flex-nowrap">
-                        <div className="flex h-[30px] items-center justify-center gap-x-[18px]">
-                          <div className="flex items-center justify-center gap-x-1.5">
-                            <Image
-                              src={Star1}
-                              alt={"no-image"}
-                              className="h-5 w-5 flex-shrink-0"
-                            />
-                            <Image
-                              src={Star1}
-                              alt={"no-image"}
-                              className="h-5 w-5 flex-shrink-0"
-                            />
-                            <Image
-                              src={Star1}
-                              alt={"no-image"}
-                              className="h-5 w-5 flex-shrink-0"
-                            />
-                            <Image
-                              src={Star1}
-                              alt={"no-image"}
-                              className="h-5 w-5 flex-shrink-0"
-                            />
-                            <Image
-                              src={Star1}
-                              alt={"no-image"}
-                              className="h-5 w-5 flex-shrink-0"
-                            />
-                          </div>
-                          <Image
-                            src={Line5}
-                            alt={"no-image"}
-                            className="h-[30px] w-px flex-shrink-0"
-                          />
-                        </div>
-                        <div className="text-neutral-400">
-                          5 Customer Review
-                        </div>
-                      </div>
-                      <div className="flex items-end self-stretch pr-40 pt-[13px] [max-width:582px]">
-                        <div className="flex flex-grow items-end">
-                          <p>
-                            Setting the bar as one of the loudest speakers in
-                            its class, the Kilburn is a compact, stout-hearted
-                            hero with a well-balanced audio which boasts a clear
-                            midrange and extended highs for a sound.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pt-[22px] text-sm leading-[normal] text-neutral-400">
-                        Size
-                      </div>
-                      <div className="flex items-end px-px pt-3">
-                        <div className="flex items-center justify-center gap-x-4 text-center">
-                          <div className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-[5px] bg-[darkgoldenrod] px-3 py-[5px] text-white">
-                            L
-                          </div>
-                          <div className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-[5px] bg-[linen] px-2 py-[5px]">
-                            XL
-                          </div>
-                          <div className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-[5px] bg-[linen] px-[7px] py-[5px]">
-                            XS
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pt-[18px] text-sm leading-[normal] text-neutral-400">
-                        Color
-                      </div>
-                      <div className="flex items-end px-px pt-3">
-                        <div className="flex items-center justify-center gap-x-4">
-                          <div className="h-[30px] w-[30px] flex-shrink-0 rounded-full bg-[mediumslateblue]" />
-                          <div className="h-[30px] w-[30px] flex-shrink-0 rounded-full bg-black" />
-                          <div className="h-[30px] w-[30px] flex-shrink-0 rounded-full bg-[darkgoldenrod]" />
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-center justify-end pl-px pt-8">
-                        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 text-xl leading-[normal] min-[1430px]:flex-nowrap">
-                          <div className="flex flex-col items-center justify-center rounded-[10px] border border-solid border-neutral-400 bg-white px-[11px] py-[19px]">
-                            <div className="flex flex-col items-center pl-[3px]">
-                              <div className="flex items-center justify-center gap-x-9 leading-[normal]">
-                                <div>-</div>
-                                <div className="font-medium">1</div>
-                                <div>+</div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-end pl-2">
-                            <div className="flex items-center justify-center rounded-[15px] border border-solid border-x-black border-y-black px-12 py-4">
-                              <div className="text-center">Add To Cart</div>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-center gap-x-2.5 rounded-[15px] border border-solid border-x-black border-y-black pb-[13px] pl-12 pr-11 pt-3.5">
-                            <div className="text-[23px] leading-[normal]">
-                              +
-                            </div>
-                            <div>Compare</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex w-[1217px] items-center pl-[635px]">
-                    <div className="mr-[-24.01px] flex flex-col items-start gap-y-3 leading-[normal] text-neutral-400">
-                      <div className="self-stretch pl-px [max-width:606px]">
-                        <object
-                          data="/assets/Line1.svg"
-                          className="h-px flex-shrink-0"
-                        />
-                      </div>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-3 pt-7 min-[1430px]:flex-nowrap">
-                        <div className="flex flex-col items-start gap-y-3">
-                          <div>SKU</div>
-                          <div>Category</div>
-                          <div>Tags</div>
-                        </div>
-                        <div className="flex flex-col items-start gap-y-3 pl-1 text-center font-medium">
-                          <div>:</div>
-                          <div>:</div>
-                          <div>:</div>
-                        </div>
-                        <div className="flex flex-col items-start gap-y-3">
-                          <div>SS001</div>
-                          <div>Sofas</div>
-                          <div>Sofa, Chair, Home, Shop</div>
-                        </div>
-                      </div>
-                      <div className="flex h-7 flex-shrink-0 flex-wrap items-center gap-x-11 gap-y-3 min-[1430px]:flex-nowrap">
-                        <div>Share</div>
-                        <div className="mt-[0.5px] flex h-7 items-start justify-center gap-x-3">
-                          <div className="flex flex-col items-center">
-                            <div className="font-medium">:</div>
-                          </div>
-                          <div className="flex items-center justify-center gap-x-6">
-                            <Image
-                              src={Facebook}
-                              alt={"no-image"}
-                              className="h-5 w-5 flex-shrink-0"
-                            />
-                            <div className="flex flex-col items-center self-stretch pl-0.5 mt-1">
-                              <Image
-                                src={Linkedin}
-                                alt={"no-image"}
-                                className="h-5 w-5 flex-shrink-0"
-                              />
-                            </div>
-                            <div className="flex h-[26px] w-6 flex-shrink-0 flex-col items-center pt-px">
-                              <Image
-                                src={Twitter}
-                                alt={"no-image"}
-                                className="h-6 w-6 flex-shrink-0"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-t-asgaard-sofa absolute left-[72px] top-20 z-[2] h-96 w-[481px] flex-shrink-0 bg-cover bg-center pl-[481px] pt-96" />
+          </div>
+
+          {/* Colors */}
+          <div className="flex items-end px-px pt-3">
+            <div className="flex items-center justify-center gap-x-4">
+              <div className="h-[30px] w-[30px] flex-shrink-0 rounded-full bg-[mediumslateblue]" />
+              <div className="h-[30px] w-[30px] flex-shrink-0 rounded-full bg-black" />
+              <div className="h-[30px] w-[30px] flex-shrink-0 rounded-full bg-[darkgoldenrod]" />
+            </div>
+          </div>
+
+          {/* Quantity and Buttons */}
+          <div className="flex flex-wrap gap-4 items-center">
+            <div className="inline-flex h-16 px-4 space-x-8 items-center border border-[#9F9F9F] rounded-[10px]">
+              <MinusIcon
+                className="cursor-pointer hover:text-gray-500"
+                onClick={handleQuantityDecrement}
+              />
+              <p className="font-semibold select-none">{quantity}</p>
+              <PlusIcon
+                className="cursor-pointer hover:text-gray-500"
+                onClick={handleQuantityIncrement}
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex space-x-4">
+              <button
+                onClick={() => addToCart(product)}
+                className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
+              >
+                Add to Cart
+              </button>
+              <button className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors">
+                + Compare
+              </button>
+            </div>
+          </div>
+
+          <div className="text-[#9F9F9F] text-sm space-y-2">
+            <p>
+              <strong>SKU:</strong> {productId}
+            </p>
+            <p>
+              <strong>Category:</strong> Sofas
+            </p>
+            <p>
+              <strong>Tags:</strong> Sofa, Chair, Home, Shop
+            </p>
+            <div className="flex items-center space-x-2">
+              <strong>Share:</strong>
+              <div className="flex space-x-2">
+                {[Facebook, Linkedin, Twitter].map((Icon, index) => (
+                  <a
+                    key={index}
+                    href="#"
+                    className="text-black hover:text-gray-600 transition-colors"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
         </div>
-        <div className="leading-[normal]">
-          <div className="flex flex-col items-center gap-y-[30px] bg-white pb-16 text-justify text-neutral-400">
-            <div className="flex items-end justify-center self-stretch pl-px pt-[18px]">
-              <div className="flex flex-wrap items-center justify-center gap-x-[52px] gap-y-[18px] text-2xl leading-[normal] min-[1430px]:flex-nowrap">
-                <div className="font-semibold text-black">Description</div>
-                <div>Additional Information</div>
-                <div>Reviews [5]</div>
-              </div>
-            </div>
-            <div className="flex items-end self-stretch px-52 pt-[7px]">
-              <p className="text-justify">
-                Embodying the raw, wayward spirit of rock ‘n’ roll, the Kilburn
-                portable active stereo speaker takes the unmistakable look and
-                sound of Marshall, unplugs the chords, and takes the show on the
-                road.
+      </section>
+
+      {/* Extra Info Section */}
+      <section className="mt-12 pb-10 border-b">
+        <div className="flex justify-center space-x-8 overflow-x-auto">
+          {["Description", "Additional Information", "Reviews [5]"].map(
+            (tab, index) => (
+              <p
+                key={index}
+                className={`text-lg md:text-2xl pb-2 whitespace-nowrap 
+                ${index === 0 ? "text-black font-semibold" : "text-[#9F9F9F]"}`}
+              >
+                {tab}
               </p>
-            </div>
-            <div className="flex w-[1026px] items-center">
-              <p className="text-justify">
-                Weighing in under 7 pounds, the Kilburn is a lightweight piece
-                of vintage styled engineering. Setting the bar as one of the
-                loudest speakers in its class, the Kilburn is a compact,
-                stout-hearted hero with a well-balanced audio which boasts a
-                clear midrange and extended highs for a sound that is both
-                articulate and pronounced. The analogue knobs allow you to fine
-                tune the controls to your personal preferences while the
-                guitar-influenced leather strap enables easy and stylish travel.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-7 self-stretch px-24 pt-1.5 min-[1430px]:flex-nowrap">
-              <div className="flex flex-col items-center rounded-[10px] bg-[linen] text-justify">
-                <Image
-                  src={CloudSofa}
-                  alt={"no-image"}
-                  className="h-[348px] w-[605px] flex-shrink-0"
-                />
+            )
+          )}
+        </div>
+
+        <div className="max-w-4xl mx-auto mt-8 space-y-4">
+          <p className="text-[#9F9F9F] text-center text-base leading-relaxed">
+            Embodying the raw, wayward spirit of rock 'n' roll, the Kilburn
+            portable active stereo speaker takes the unmistakable look and sound
+            of Marshall, unplugs the chords, and takes the show on the road.
+          </p>
+          <p className="text-[#9F9F9F] text-center text-base leading-relaxed">
+            Weighing in under 7 pounds, the Kilburn is a lightweight piece of
+            vintage-styled engineering. Setting the bar as one of the loudest
+            speakers in its class, the Kilburn is a compact, stout-hearted hero
+            with a well-balanced audio which boasts a clear midrange and
+            extended highs for a sound that is both articulate and pronounced.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+          {["cloudSofa.png", "CloudSofa2.png"].map((img, index) => (
+            <Image
+              key={index}
+              src={`/images/${img}`}
+              alt={`Description Image ${index + 1}`}
+              width={600}
+              height={400}
+              className="rounded-[8px] object-cover w-full"
+            />
+          ))}
+        </div>
+
+        <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+          {/* Cart */}
+          {isCartOpen && (
+            <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50 ">
+              <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+                {/* Header */}
+                <div className="flex items-center justify-between -mt-16">
+                  <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+                  <button
+                    onClick={toggleCart}
+                    className="text-lg font-bold hover:text-red-500"
+                  >
+                    X
+                  </button>
+                </div>
+                <hr className="my-4" />
+
+                {/* Product List */}
+                <div className="flex flex-col gap-6">
+                  {/* Product 1 */}
+                  <div className="flex items-center gap-4">
+                    <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                      <Image
+                        src={AsgardSofa1}
+                        alt="Remove"
+                        className="h-30 w-30"
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="text-lg font-medium">Asgaard Sofa</div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span>1 x</span>
+                        <span className="text-[#b88e2f] font-medium">
+                          Rs. 250,000.00
+                        </span>
+                      </div>
+                    </div>
+                    <button>
+                      <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  {/* Product 2 */}
+                  <div className="flex items-center gap-4">
+                    <div className="h-[102px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0">
+                      <Image src={sofa4} alt="Remove" className="h-30 w-30" />
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="text-lg font-medium">Casaliving Wood</div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span>1 x</span>
+                        <span className="text-[#b88e2f] font-medium">
+                          Rs. 270,000.00
+                        </span>
+                      </div>
+                    </div>
+                    <button>
+                      <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Subtotal */}
+                <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+                  <span>Subtotal</span>
+                  <span className="text-[#b88e2f]">Rs. 520,000.00</span>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-4 mt-10 flex-wrap">
+                  <Link href={"/cart"}>
+                    <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                      Cart
+                    </button>
+                  </Link>
+                  <Link href={"/checkout"}>
+                    <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                      Checkout
+                    </button>
+                  </Link>
+                  <Link href={"/comparison"}>
+                    <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                      Comparison
+                    </button>
+                  </Link>
+                </div>
               </div>
-              <div className="flex flex-col items-center rounded-[10px] bg-[linen] text-justify">
-                <Image
-                  src={CloudSofa2}
-                  alt={"no-image"}
-                  className="h-[348px] w-[605px] flex-shrink-0"
-                />
-              </div>
+            </div>
+          )}
+
+          <div className="flex items-center justify-center pl-[5px]">
+            <div className="text-center text-[40px] font-bold leading-[1.2] text-neutral-700 mt-10">
+              Related Products
             </div>
           </div>
-          <div>
-            <div className="flex flex-col gap-y-[26px] bg-white pb-[104px] pl-24 pr-[104px] pt-14">
-              <div className="flex items-center justify-center pl-px">
-                <div className="text-center text-4xl font-semibold leading-[normal]">
-                  Related Products
-                </div>
-              </div>
-              <div className="flex flex-wrap items-start justify-center gap-x-8 gap-y-8 leading-normal min-[1430px]:flex-nowrap">
-                <div>
-                  <div className="bg-ImageRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-                    <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3">
-                      <div className="relative z-0 flex items-center justify-center pl-[5px]">
+
+          {/* Product Cards */}
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="group relative w-72 cursor-pointer"
+              >
+                {/* Image Section */}
+                <div
+                  className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
+                >
+                  {product.label && (
+                    <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                      <div className="relative flex items-center justify-center">
                         <Image
                           src={Label}
-                          alt={"no-image"}
-                          className="absolute -inset-x-px -inset-y-3 z-0"
+                          alt="Discount Label"
+                          className="absolute -inset-0 z-0 h-10 w-20"
                         />
-                        <div className="z-[2] text-right font-medium text-white">
-                          -30%
+                        <div className="z-10 text-center mt-2 font-semibold text-white">
+                          -50%
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-                    <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                      Syltherine
-                    </div>
-                    <div className="font-medium text-[gray]">
-                      Stylish cafe chair
-                    </div>
-                    <div className="flex items-center justify-center gap-x-4">
-                      <div className="text-xl font-semibold leading-normal text-neutral-700">
-                        Rp 2.500.000
-                      </div>
-                      <div className="text-[darkgray] line-through">
-                        Rp 3.500.000
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-y-11">
-                  <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1430px]:flex-nowrap">
-                    <div>
-                      <Image
-                        src={Chair}
-                        alt={"no-image"}
-                        loading="lazy"
-                        className="h-72 w-72 flex-shrink-0 object-cover object-center"
-                      />
-                      <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-32 pt-4">
-                        <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                          Leviosa
-                        </div>
-                        <div className="font-medium text-[gray]">
-                          Stylish cafe chair
-                        </div>
-                        <div className="text-xl font-semibold leading-normal text-neutral-700">
-                          Rp 2.500.000
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="bg-Sofa flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-                        <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-end justify-center bg-cover bg-center py-3 pl-[5px]">
-                          <div className="z-[2] text-right font-medium text-white">
-                            -50%
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-                        <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                          Lolito
-                        </div>
-                        <div className="font-medium text-[gray]">
-                          Luxury big sofa
-                        </div>
-                        <div className="flex items-center justify-center gap-x-4">
-                          <div className="text-xl font-semibold leading-normal text-neutral-700">
-                            Rp 7.000.000
-                          </div>
-                          <div className="text-[darkgray] line-through">
-                            Rp 14.000.000
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center pl-[5px]">
-                    <div className="flex items-center justify-center border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-white px-[73px] py-[11px] mt-8 -mb-20">
-                      <div className="pl-2 text-center font-semibold text-[darkgoldenrod]">
-                        Show More
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="bg-Room flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-                    <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-                      <div className="relative z-0 flex flex-col items-center justify-center pl-[8px]">
+                  )}
+
+                  {product.label1 && (
+                    <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                      <div className="relative flex items-center justify-center">
                         <Image
                           src={LabelCyan}
-                          alt={"no-image"}
-                          className="absolute  z-0"
+                          alt="Discount Label"
+                          className="absolute -inset-0 h-10 w-12"
                         />
-                        <div className="z-[2] text-right font-medium text-white">
+                        <div className="z-10 text-center mt-2 font-medium text-white">
                           New
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-11 pt-4">
-                    <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                      Respira
-                    </div>
-                    <div className="font-medium text-[gray]">
-                      Outdoor bar table and stool
-                    </div>
-                    <div className="text-xl font-semibold leading-normal text-neutral-700">
-                      Rp 500.000
+                  )}
+                  {/* Hover Div */}
+                  <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                    <button
+                      onClick={toggleCart} // Toggle cart visibility on click
+                      className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                    >
+                      Add to Cart
+                    </button>
+                    <div className="flex items-center gap-x-4 text-white">
+                      <div className="flex items-center gap-x-1">
+                        <IoShareSocialOutline />
+                        <div>Share</div>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <MdCompareArrows />
+                        <div>Compare</div>
+                      </div>
+                      <div className="flex items-center gap-x-1">
+                        <CiHeart />
+                        <div>Like</div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Product Details */}
+                <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+                  <div className="text-2xl font-semibold text-neutral-700">
+                    {product.name}
+                  </div>
+                  <div className="text-gray-500">{product.description}</div>
+                  <div className="flex items-center gap-x-4">
+                    <div className="text-xl font-semibold text-neutral-700">
+                      {product.price}
+                    </div>
+                    {product.oldPrice && (
+                      <div className="text-gray-400 line-through">
+                        {product.oldPrice}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Show More Button */}
+          <div className="flex items-center justify-center pl-px">
+            <div className="flex items-center justify-center border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-white px-[73px] py-[11px]">
+              <div className="pl-2 text-center font-semibold leading-normal text-[darkgoldenrod]">
+                Show More
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

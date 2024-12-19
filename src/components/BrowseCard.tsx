@@ -6,38 +6,36 @@ import BedRoom from "../../public/images/door.png";
 
 export default function BrowseCard() {
   return (
-    <div className="font-poppins relative flex w-full flex-col items-center pt-36 text-center leading-[normal] tracking-[0px]">
-      <div className="flex flex-grow flex-wrap justify-center gap-x-5 gap-y-5 self-stretch text-2xl font-semibold leading-[normal] text-neutral-800 min-[1173px]:flex-nowrap mt-6">
-        <div className="flex flex-col items-center gap-y-[30px] text-center">
-          <Image
-            src={Table}
-            alt={"no-image"}
-            className="h-[480px] w-96 flex-shrink-0"
-          />
-          <div>Dining</div>
-        </div>
-        <div className="flex flex-col items-center gap-y-[30px] text-center">
-          <Image
-            src={LivingRoom}
-            alt={"no-image"}
-            className="h-[480px] w-96 flex-shrink-0"
-          />
-          <div>Living</div>
-        </div>
-        <div className="flex flex-col items-center gap-y-[30px] text-center">
-          <Image
-            src={BedRoom}
-            alt={"no-image"}
-            className="h-[480px] w-96 flex-shrink-0"
-          />
-          <div>Bedroom</div>
-        </div>
+    <div className="font-poppins relative flex w-full flex-col items-center pt-36 text-center leading-[normal] tracking-[0px] overflow-hidden">
+      {/* Section Header */}
+      <div className="absolute top-0 flex flex-col items-center mt-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-neutral-800">
+          Browse The Range
+        </h2>
+        <p className="mt-2 text-sm md:text-base text-dimgray">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </p>
       </div>
-      <div className="absolute left-[calc(50%_+_-24px_+_-155.5px)] top-0 flex h-12 w-96 flex-shrink-0 items-center text-left text-[32px] font-bold leading-[normal] text-neutral-800 mt-10">
-        Browse The Range
-      </div>
-      <div className="absolute inset-x-80 top-12 flex h-7 flex-shrink-0 items-center justify-center text-xl leading-[normal] text-[dimgray] mt-10">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+      {/* Grid Section */}
+      <div className="mt-16 grid gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full px-5">
+        {/* Dining Card */}
+        <div className="flex flex-col items-center">
+          <Image src={Table} alt="Dining" />
+          <div className="mt-3 text-lg font-semibold">Dining</div>
+        </div>
+
+        {/* Living Card */}
+        <div className="flex flex-col items-center">
+          <Image src={LivingRoom} alt="Living" />
+          <div className="mt-3 text-lg font-semibold">Living</div>
+        </div>
+
+        {/* Bedroom Card */}
+        <div className="flex flex-col items-center">
+          <Image src={BedRoom} alt="Bedroom" />
+          <div className="mt-3 text-lg font-semibold">Bedroom</div>
+        </div>
       </div>
     </div>
   );

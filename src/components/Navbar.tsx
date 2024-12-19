@@ -1,70 +1,118 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Men from "../../public/images/men.png";
 import Search from "../../public/images/search.png";
 import Heart from "../../public/images/heart.png";
 import Cart from "../../public/images/cart.png";
 import Link from "next/link";
+import { IoMenu } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <div>
-      <div className="flex w-full flex-col overflow-hidden">
-        <div className="flex flex-wrap items-center gap-x-40 gap-y-3 bg-white py-7 pl-14 pr-24 leading-[normal] tracking-[0px] min-[1430px]:flex-nowrap">
-          <div className="flex items-center justify-center gap-x-[8px]">
-            <div className="flex flex-col items-center pb-2">
-              <div className="bg-Logo h-8 max-h-full w-12 max-w-full flex-shrink-0 bg-no-repeat" />
+    <div className="w-full overflow-hidden">
+      {/* Navbar Container */}
+      <nav className="bg-white shadow-md fixed top-0 w-full z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            {/* Logo */}
+            <div className="flex items-center">
+              <div className="bg-Logo h-8 w-12 bg-no-repeat mr-2" />
+              <Link href={"/"} className="text-3xl mt-1 font-bold text-black">
+                Funiro
+              </Link>
             </div>
-            <div className="flex flex-col items-center pb-px">
-              <div className="font-montserrat text-[34px] font-bold leading-[normal]">
-                <Link href={"/"}>Furniro</Link>
+
+            {/* Hamburger Menu Button (Mobile Only) */}
+            <div className="lg:hidden">
+              <button
+                className="text-gray-800 focus:outline-none"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <RxCross2  className="text-2xl"/> : <IoMenu  className="text-2xl"/>}
+              </button>
+            </div>
+
+            {/* Desktop Links */}
+            <div className="hidden lg:flex items-center space-x-10">
+              <Link href={"/"} className="hover:text-gray-600">
+                Home
+              </Link>
+              <Link href={"/shop"} className="hover:text-gray-600">
+                Shop
+              </Link>
+              <Link href={"/singleproduct"} className="hover:text-gray-600">
+                Product
+              </Link>
+              <Link href={"/contact"} className="hover:text-gray-600">
+                Contact
+              </Link>
+              <Link href={"/blog"} className="hover:text-gray-600">
+                Blog
+              </Link>
+            </div>
+
+            {/* Desktop Icons */}
+            <div className="hidden lg:flex items-center space-x-8">
+              <Image src={Men} alt="User Icon" className="h-6 w-6" />
+              <Image src={Search} alt="Search Icon" className="h-6 w-6" />
+              <Image src={Heart} alt="Wishlist Icon" className="h-6 w-6" />
+              <Link href={"/cart"}>
+                <Image src={Cart} alt="Cart Icon" className="h-6 w-6" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="lg:hidden flex flex-col items-center space-y-4 bg-white border-t border-gray-200 pt-4 pb-4">
+              <Link href={"/"} className="text-gray-800 hover:text-gray-600">
+                Home
+              </Link>
+              <Link
+                href={"/shop"}
+                className="text-gray-800 hover:text-gray-600"
+              >
+                Shop
+              </Link>
+              <Link
+                href={"/about"}
+                className="text-gray-800 hover:text-gray-600"
+              >
+                About
+              </Link>
+              <Link
+                href={"/contact"}
+                className="text-gray-800 hover:text-gray-600"
+              >
+                Contact
+              </Link>
+              <Link
+                href={"/blog"}
+                className="text-gray-800 hover:text-gray-600"
+              >
+                Blog
+              </Link>
+
+              {/* Mobile Icons */}
+              <div className="flex items-center space-x-6">
+                <Image src={Men} alt="User Icon" className="h-6 w-6" />
+                <Image src={Search} alt="Search Icon" className="h-6 w-6" />
+                <Image src={Heart} alt="Wishlist Icon" className="h-6 w-6" />
+                <Link href={"/cart"}>
+                  <Image src={Cart} alt="Cart Icon" className="h-6 w-6" />
+                </Link>
               </div>
             </div>
-          </div>
-          <div className="font-poppins font-semibold flex flex-wrap items-center justify-end gap-x-[75px] gap-y-3 pl-28 leading-[normal] min-[1430px]:flex-nowrap">
-            <div>
-              <Link href={"/"}>Home</Link>
-            </div>
-            <div>
-              <Link href={"/shop"}>Shop</Link>
-            </div>
-            <div>
-              <Link href={"/about"}>About</Link>
-            </div>
-            <div>
-              <Link href={"/contact"}>Contact</Link>
-            </div>
-            <div>
-              <Link href={"/blog"}>Blog</Link>
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-x-11">
-            <Image
-              src={Men}
-              alt={"no-image"}
-              className="h-6 w-6 flex-shrink-0"
-            />
-
-            <Image
-              src={Search}
-              alt={"no-image"}
-              className="h-6 w-6 flex-shrink-0"
-            />
-            <Image
-              src={Heart}
-              alt={"no-image"}
-              className="h-6 w-6 flex-shrink-0"
-            />
-            <Link href={"/cart"}>
-              <Image
-                src={Cart}
-                alt={"no-image"}
-                className="h-6 w-6 flex-shrink-0"
-              />
-            </Link>
-          </div>
+          )}
         </div>
-      </div>
+      </nav>
+      {/* Adding extra padding to prevent content overlap */}
+      <div className="h-16"></div>
     </div>
   );
 }

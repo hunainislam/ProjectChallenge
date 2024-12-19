@@ -13,7 +13,7 @@ import Link from "next/link";
 
 export default function Cart() {
   return (
-    <div className="font-poppins w-full bg-white pb-12 tracking-[0px]">
+    <div className="font-poppins w-full bg-white pb-12 tracking-[0px] overflow-hidden">
       <div className="relative z-0 flex flex-col items-center text-center font-medium">
         <Image
           src={Hero1}

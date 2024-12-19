@@ -1,226 +1,275 @@
-import React from "react";
+"use client";
+
+import Image from "next/image";
 import Label from "../../public/images/label.png";
 import LabelCyan from "../../public/images/label1.png";
-import Image from "next/image";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { MdCompareArrows } from "react-icons/md";
+import { CiHeart } from "react-icons/ci";
+import React, { useState } from "react";
+import AsgardSofa1 from "../../public/images/Asgaard sofa.png";
+import Multi from "../../public/images/multi.png";
+import sofa4 from "../../public/images/sofa4.png";
+import Link from "next/link";
 
 export default function OurProduct() {
+  const [isCartOpen, setCartOpen] = useState(false);
+  const toggleCart = () => {
+    setCartOpen(!isCartOpen); // Toggle cart visibility
+  };
+  const products = [
+    {
+      id: 1,
+      name: "Syltherine",
+      description: "Stylish cafe chair",
+      price: "Rp 2.500.000",
+      oldPrice: "Rp 3.500.000",
+      imageClass: "bg-ImageRoom",
+    },
+    {
+      id: 2,
+      name: "Leviosa",
+      description: "Stylish cafe chair",
+      price: "Rp 2.500.000",
+      oldPrice: null,
+      imageClass: "bg-FeaturedProduct",
+    },
+    {
+      id: 3,
+      name: "Lolito",
+      description: "Luxury big sofa",
+      price: "Rp 7.000.000",
+      oldPrice: "Rp 14.000.000",
+      imageClass: "bg-Sofa",
+      label: "30%",
+    },
+    {
+      id: 4,
+      name: "Respira",
+      description: "Outdoor bar table and stool",
+      price: "Rp 500.000",
+      oldPrice: null,
+      imageClass: "bg-Room",
+      label1: "New",
+    },
+    {
+      id: 5,
+      name: "Grifo",
+      description: "Night lamp",
+      price: "Rp 1.500.000",
+      oldPrice: null,
+      imageClass: "bg-Light",
+    },
+    {
+      id: 6,
+      name: "Muggo",
+      description: "Small mug",
+      price: "Rp 150.000",
+      oldPrice: null,
+      imageClass: "bg-BadRoom",
+      label1: "New",
+    },
+    {
+      id: 7,
+      name: "Pingky",
+      description: "Cute bed set",
+      price: "Rp 7.000.000",
+      oldPrice: "Rp 14.000.000",
+      imageClass: "bg-WallRoom",
+      label: "30%",
+    },
+    {
+      id: 8,
+      name: "Potty",
+      description: "Minimalist flower pot",
+      price: "Rp 500.000",
+      oldPrice: null,
+      imageClass: "bg-RedSofa",
+      label1: "New",
+    },
+  ];
+
   return (
-    <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px]">
+    <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+      {/* Cart */}
+      {isCartOpen && (
+        <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50 ">
+          <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+            {/* Header */}
+            <div className="flex items-center justify-between -mt-16">
+              <h2 className="text-2xl font-semibold">Shopping Cart</h2>
+              <button
+                onClick={toggleCart}
+                className="text-lg font-bold hover:text-red-500"
+              >
+                X
+              </button>
+            </div>
+            <hr className="my-4" />
+
+            {/* Product List */}
+            <div className="flex flex-col gap-6">
+              {/* Product 1 */}
+              <div className="flex items-center gap-4">
+                <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                  <Image src={AsgardSofa1} alt="Remove" className="h-30 w-30" />
+                </div>
+                <div className="flex flex-col">
+                  <div className="text-lg font-medium">Asgaard Sofa</div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span>1 x</span>
+                    <span className="text-[#b88e2f] font-medium">
+                      Rs. 250,000.00
+                    </span>
+                  </div>
+                </div>
+                <button>
+                  <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Product 2 */}
+              <div className="flex items-center gap-4">
+                <div className="h-[102px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0">
+                  <Image src={sofa4} alt="Remove" className="h-30 w-30" />
+                </div>
+                <div className="flex flex-col">
+                  <div className="text-lg font-medium">Casaliving Wood</div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span>1 x</span>
+                    <span className="text-[#b88e2f] font-medium">
+                      Rs. 270,000.00
+                    </span>
+                  </div>
+                </div>
+                <button>
+                  <Image src={Multi} alt="Remove" className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Subtotal */}
+            <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+              <span>Subtotal</span>
+              <span className="text-[#b88e2f]">Rs. 520,000.00</span>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-4 mt-10 flex-wrap">
+              <Link href={"/cart"}>
+                <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                  Cart
+                </button>
+              </Link>
+              <Link href={"/checkout"}>
+                <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                  Checkout
+                </button>
+              </Link>
+              <Link href={"/comparison"}>
+                <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100">
+                  Comparison
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-center pl-[5px]">
         <div className="text-center text-[40px] font-bold leading-[1.2] text-neutral-700 mt-10">
           Our Products
         </div>
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap">
-        <div>
-          <div className="bg-ImageRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-            <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3">
-              <div className="relative z-0 flex items-center justify-center pl-1">
-                <Image
-                  src={Label}
-                  alt="no-image"
-                  className="absolute -inset-x-px -inset-y-3 z-0"
-                />
-                <div className="z-[2] text-right font-medium leading-normal text-white">
-                  -30%
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-            <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-              Syltherine
-            </div>
-            <div className="font-medium leading-normal text-[gray]">
-              Stylish cafe chair
-            </div>
-            <div className="flex items-center justify-center gap-x-4">
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 2.500.000
-              </div>
-              <div className="leading-normal text-[darkgray] line-through">
-                Rp 3.500.000
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className="bg-FeaturedProduct flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-            <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-px py-3"></div>
-          </div>
-          <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-5 pt-4">
-            <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-              Leviosa
-            </div>
-            <div className="font-medium leading-normal text-[gray]">
-              Stylish cafe chair
-            </div>
-            <div className="flex items-center justify-center gap-x-4">
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 2.500.000
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div>
-          <div className="bg-Sofa flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-            <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center bg-cover bg-center py-3 pl-[5px]">
-              <div className="z-[2] text-right font-medium leading-normal text-white">
-                -50%
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-            <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-              Lolito
-            </div>
-            <div className="font-medium leading-normal text-[gray]">
-              Luxury big sofa
-            </div>
-            <div className="flex items-center justify-center gap-x-4">
-              <div className="text-xl font-semibold leading-normal text-neutral-700">
-                Rp 7.000.000
-              </div>
-              <div className="leading-normal text-[darkgray] line-through">
-                Rp 14.000.000
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className="bg-Room flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-            <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-              <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
-                <Image
-                  src={LabelCyan}
-                  alt="no-image"
-                  className="absolute  z-0"
-                />
-                <div className="z-[2] font-medium leading-normal text-white">
-                  New
+      {/* Product Cards */}
+      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
+        {products.map((product) => (
+          <div key={product.id} className="group relative w-72 cursor-pointer">
+            {/* Image Section */}
+            <div
+              className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
+            >
+              {product.label && (
+                <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                  <div className="relative flex items-center justify-center">
+                    <Image
+                      src={Label}
+                      alt="Discount Label"
+                      className="absolute -inset-0 z-0 h-10 w-20"
+                    />
+                    <div className="z-10 text-center mt-2 font-semibold text-white">
+                      -50%
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-11 pt-4">
-            <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-              Respira
-            </div>
-            <div className="font-medium leading-normal text-[gray]">
-              Outdoor bar table and stool
-            </div>
-            <div className="text-xl font-semibold leading-normal text-neutral-700">
-              Rp 500.000
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-wrap items-start justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap">
-        <div>
-          <div className="bg-Light flex flex-col items-center bg-cover bg-center">
-            <div className="h-72 w-72 flex-shrink-0" />
-          </div>
-          <div className="flex flex-col items-start gap-y-2 self-stretch bg-gray-100 pb-[30px] pl-4 pr-36 pt-4">
-            <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-              Grifo
-            </div>
-            <div className="font-medium leading-normal text-[gray]">
-              Night lamp
-            </div>
-            <div className="text-xl font-semibold leading-normal text-neutral-700">
-              Rp 1.500.000
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-y-8">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8 min-[1226px]:flex-nowrap">
-            <div>
-              <div className="bg-BadRoom flex flex-col items-end bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-                <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-                  <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
+              )}
+
+              {product.label1 && (
+                <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                  <div className="relative flex items-center justify-center">
                     <Image
                       src={LabelCyan}
-                      alt="no-image"
-                      className="absolute z-0"
+                      alt="Discount Label"
+                      className="absolute -inset-0 h-10 w-12"
                     />
-                    <div className="z-[2] text-right font-medium leading-normal text-white">
+                    <div className="z-10 text-center mt-2 font-medium text-white">
                       New
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-40 pt-4">
-                <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                  Muggo
-                </div>
-                <div className="font-medium leading-normal text-[gray]">
-                  Small mug
-                </div>
-                <div className="text-xl font-semibold leading-normal text-neutral-700">
-                  Rp 150.000
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-WallRoom flex flex-col items-end self-stretch bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-                <div className="bg-Label z-0 flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center bg-cover bg-center py-3 pl-[5px]">
-                  <div className="z-[2] text-right font-medium leading-normal text-white">
-                    -50%
+              )}
+              {/* Hover Div */}
+              <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                <button
+                  onClick={toggleCart} // Toggle cart visibility on click
+                  className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                >
+                  Add to Cart
+                </button>
+                <div className="flex items-center gap-x-4 text-white">
+                  <div className="flex items-center gap-x-1">
+                    <IoShareSocialOutline />
+                    <div>Share</div>
                   </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-[15px] pt-4">
-                <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-                  Pingky
-                </div>
-                <div className="font-medium leading-normal text-[gray]">
-                  Cute bed set
-                </div>
-                <div className="flex items-center justify-center gap-x-4">
-                  <div className="text-xl font-semibold leading-normal text-neutral-700">
-                    Rp 7.000.000
+                  <div className="flex items-center gap-x-1">
+                    <MdCompareArrows />
+                    <div>Compare</div>
                   </div>
-                  <div className="leading-normal text-[darkgray] line-through">
-                    Rp 14.000.000
+                  <div className="flex items-center gap-x-1">
+                    <CiHeart />
+                    <div>Like</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center pl-px">
-            <div className="flex items-center justify-center border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-white px-[73px] py-[11px] mb-8">
-              <div className="pl-2 text-center font-semibold leading-normal text-[darkgoldenrod]">
-                Show More
+
+            {/* Product Details */}
+            <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+              <div className="text-2xl font-semibold text-neutral-700">
+                {product.name}
               </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className="bg-RedSofa flex flex-col items-end bg-cover bg-center pb-56 pl-52 pr-6 pt-6">
-            <div className="flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center px-[5px] py-3">
-              <div className="relative z-0 flex flex-col items-center justify-center pl-[5px]">
-                <Image
-                  src={LabelCyan}
-                  alt="no-image"
-                  className="absolute  z-0"
-                />
-                <div className="z-[2] text-right font-medium leading-normal text-white">
-                  New
+              <div className="text-gray-500">{product.description}</div>
+              <div className="flex items-center gap-x-4">
+                <div className="text-xl font-semibold text-neutral-700">
+                  {product.price}
                 </div>
+                {product.oldPrice && (
+                  <div className="text-gray-400 line-through">
+                    {product.oldPrice}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-start gap-y-2 bg-gray-100 pb-[30px] pl-4 pr-24 pt-4">
-            <div className="text-2xl font-semibold leading-[1.2] text-neutral-700">
-              Potty
-            </div>
-            <div className="font-medium leading-normal text-[gray]">
-              Minimalist flower pot
-            </div>
-            <div className="text-xl font-semibold leading-normal text-neutral-700">
-              Rp 500.000
-            </div>
+        ))}
+      </div>
+
+      {/* Show More Button */}
+      <div className="flex items-center justify-center pl-px">
+        <div className="flex items-center justify-center border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-white px-[73px] py-[11px] mb-8">
+          <div className="pl-2 text-center font-semibold leading-normal text-[darkgoldenrod]">
+            Show More
           </div>
         </div>
       </div>

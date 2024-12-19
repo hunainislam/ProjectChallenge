@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <div className="flex w-full flex-col overflow-hidden">
-      <div className="relative flex h-screen w-full items-center justify-end bg-white">
+      <div className="relative flex h-screen w-full items-center justify-center bg-white sm:justify-end">
         {/* <!-- Background Image --> */}
         <div className="absolute top-0 left-0 w-full h-full">
           <Image
@@ -16,32 +16,28 @@ export default function Hero() {
         </div>
 
         {/* <!-- Content Box --> */}
-        <div className="relative z-10 font-poppins flex flex-col justify-end gap-y-1 rounded-[10px] bg-[oldlace] pb-9 pl-[30px] pr-11 pt-16 tracking-[0px] text-neutral-800 max-w-[42rem] mr-16 shadow-lg">
-          <div className="flex items-center px-[3px]">
-            <div className="font-semibold leading-[normal] tracking-[3px]">
+        <div className="relative z-10 flex flex-col gap-y-4 rounded-lg bg-[oldlace] p-6 text-neutral-800 shadow-lg sm:max-w-xl sm:mr-8 sm:pl-8 sm:pr-10 sm:pt-12 sm:pb-8 md:max-w-2xl lg:max-w-[35rem] lg:mr-[180px]">
+          <div className="flex items-center">
+            <div className="text-sm font-semibold uppercase tracking-widest sm:text-base">
               New Arrival
             </div>
           </div>
-          <div className="pl-[3px]">
-            <div className="text-[52px] font-bold leading-[65px] text-[darkgoldenrod]">
-              <span>
-                <p>Discover Our</p>
-                <p>New Collection</p>
-              </span>
+          <div>
+            <div className="text-3xl font-bold leading-tight text-[darkgoldenrod] sm:text-4xl md:text-5xl lg:text-[52px] ">
+              <p>Discover Our</p>
+              <p>New Collection</p>
             </div>
           </div>
-          <div className="pl-[3px] pr-[13px] pt-[13px]">
-            <div className="flex items-center text-lg font-medium leading-6">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
-                tellus, luctus nec ullamcorper mattis.
-              </p>
-            </div>
+          <div>
+            <p className="text-sm font-medium leading-5 sm:text-base md:text-lg">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+              tellus, luctus nec ullamcorper mattis.
+            </p>
           </div>
-          <div className="flex items-end pt-10">
-            <div className="bg-[darkgoldenrod] px-[73px] py-[26px] text-center font-bold uppercase leading-[normal] text-white cursor-pointer hover:bg-yellow-600">
-              BUY Now
-            </div>
+          <div className="flex">
+            <button className="bg-[darkgoldenrod] px-8 py-3 text-center text-sm font-bold uppercase leading-none text-white shadow-md hover:bg-yellow-600 sm:px-12 sm:py-4 sm:text-base md:px-16 md:py-5">
+              Buy Now
+            </button>
           </div>
         </div>
       </div>
