@@ -370,7 +370,7 @@ export default function ProductDetailPage() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group relative w-72 cursor-pointer"
+                className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
               >
                 {/* Image Section */}
                 <div
@@ -409,7 +409,7 @@ export default function ProductDetailPage() {
                   <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
                     <button
                       onClick={toggleCart} // Toggle cart visibility on click
-                      className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                      className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                     >
                       Add to Cart
                     </button>
@@ -452,9 +452,9 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Show More Button */}
-          <div className="flex items-center justify-center pl-px">
+          <div className="flex items-center justify-center pl-px ">
             <div className="flex items-center justify-center border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-white px-[73px] py-[11px]">
-              <div className="pl-2 text-center font-semibold leading-normal text-[darkgoldenrod]">
+              <div className="pl-2 text-center font-semibold leading-normal text-[darkgoldenrod] ">
                 Show More
               </div>
             </div>

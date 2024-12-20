@@ -185,7 +185,7 @@ export default function OurProduct() {
       {/* Product Cards */}
       <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
         {products.map((product) => (
-          <div key={product.id} className="group relative w-72 cursor-pointer">
+          <div key={product.id} className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]">
             {/* Image Section */}
             <div
               className={`${product.imageClass} relative flex flex-col bg-cover bg-center h-72`}
@@ -223,7 +223,7 @@ export default function OurProduct() {
               <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
                 <button
                   onClick={toggleCart} // Toggle cart visibility on click
-                  className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold"
+                  className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                 >
                   Add to Cart
                 </button>

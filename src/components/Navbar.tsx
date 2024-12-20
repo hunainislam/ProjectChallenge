@@ -80,7 +80,7 @@ export default function Navbar() {
                 Shop
               </Link>
               <Link
-                href={"/about"}
+                href={"/singleproduct"}
                 className="text-gray-800 hover:text-gray-600"
               >
                 Product

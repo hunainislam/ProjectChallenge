@@ -122,41 +122,40 @@ export default function Contact() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col w-full md:w-[635px] items-start justify-end gap-y-4 bg-white px-4 md:px-[52px] pb-8 md:pb-16 pt-10 md:pt-[119px]">
+          <form className="flex flex-col w-full md:w-[635px] items-start justify-end gap-y-4 bg-white px-4 md:px-[52px] pb-8 md:pb-16 pt-10 md:pt-[119px]">
             <div className="w-full">
-              <div className="font-medium">Your name</div>
+              <label className="font-medium">Your name</label>
               <div className="mt-2 rounded-[10px] border border-neutral-400 bg-white py-4 px-3">
-                <div className="text-neutral-400">Abc</div>
+                <input className="text-neutral-400 w-full" placeholder="Abc"/>
               </div>
             </div>
             <div className="w-full">
-              <div className="font-medium">Email address</div>
+              <label className="font-medium">Email address</label>
               <div className="mt-2 rounded-[10px] border border-neutral-400 bg-white py-4 px-3">
-                <div className="text-neutral-400">Abc@def.com</div>
+                <input className="text-neutral-400 w-full" placeholder="Abc@def.com"/>
               </div>
             </div>
             <div className="w-full">
-              <div className="font-medium">Subject</div>
+              <label className="font-medium">Subject</label>
               <div className="mt-2 rounded-[10px] border border-neutral-400 bg-white py-4 px-3">
-                <div className="text-neutral-400">This is an optional</div>
+                <input className="text-neutral-400 w-full" placeholder="This is an optional"/>
               </div>
             </div>
             <div className="w-full">
-              <div className="font-medium">Message</div>
+              <label className="font-medium">Message</label>
               <div className="mt-2 rounded-[10px] border border-neutral-400 bg-white py-8 px-3">
-                <div className="text-neutral-400">
-                  Hi! i’d like to ask about
-                </div>
+                <input className="text-neutral-400 w-full" placeholder="Hi! i’d like to ask about" />
+                
               </div>
             </div>
             <div className="flex justify-center mt-4">
               <div className="flex items-end px-[7px] pt-7">
                 <div className="flex items-center justify-center rounded-[5px] border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-[darkgoldenrod] px-[88px] py-[13px]">
-                  <div className="text-center text-white">Submit</div>
+                  <button className="text-center text-white" type="submit">Submit</button>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
