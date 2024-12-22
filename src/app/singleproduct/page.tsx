@@ -184,15 +184,13 @@ export default function ProductDetailPage() {
 
             {/* Buttons */}
             <div className="flex space-x-4">
-              <button
-                className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
-              >
+              <button className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors">
                 Add to Cart
               </button>
               <Link href={"/comparison"}>
-              <button className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors">
-                + Compare
-              </button>
+                <button className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors">
+                  + Compare
+                </button>
               </Link>
             </div>
           </div>
@@ -371,6 +369,7 @@ export default function ProductDetailPage() {
               <div
                 key={product.id}
                 className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+                onClick={() => (window.location.href = `/singleproduct`)} // Navigate to single product page
               >
                 {/* Image Section */}
                 <div
@@ -406,9 +405,15 @@ export default function ProductDetailPage() {
                     </div>
                   )}
                   {/* Hover Div */}
-                  <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                  <div
+                    className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click event
+                  >
                     <button
-                      onClick={toggleCart} // Toggle cart visibility on click
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click event
+                        toggleCart(); // Toggle cart visibility
+                      }}
                       className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                     >
                       Add to Cart

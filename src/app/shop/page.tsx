@@ -234,6 +234,7 @@ export default function Shop() {
             <div
               key={product.id}
               className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+              onClick={() => (window.location.href = `/singleproduct`)} // Navigate to single product page
             >
               {/* Image Section */}
               <div
@@ -269,9 +270,15 @@ export default function Shop() {
                   </div>
                 )}
                 {/* Hover Div */}
-                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                <div
+                  className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click event
+                >
                   <button
-                    onClick={toggleCart} // Toggle cart visibility on click
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
+                      toggleCart(); // Toggle cart visibility
+                    }}
                     className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                   >
                     Add to Cart
@@ -413,6 +420,7 @@ export default function Shop() {
             <div
               key={product.id}
               className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+              onClick={() => (window.location.href = `/singleproduct`)} // Navigate to single product page
             >
               {/* Image Section */}
               <div
@@ -448,9 +456,15 @@ export default function Shop() {
                   </div>
                 )}
                 {/* Hover Div */}
-                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                <div
+                  className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click event
+                >
                   <button
-                    onClick={toggleCart} // Toggle cart visibility on click
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
+                      toggleCart(); // Toggle cart visibility
+                    }}
                     className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                   >
                     Add to Cart
@@ -592,6 +606,7 @@ export default function Shop() {
             <div
               key={product.id}
               className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+              onClick={() => (window.location.href = `/singleproduct`)} // Navigate to single product page
             >
               {/* Image Section */}
               <div
@@ -627,9 +642,15 @@ export default function Shop() {
                   </div>
                 )}
                 {/* Hover Div */}
-                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                <div
+                  className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click event
+                >
                   <button
-                    onClick={toggleCart} // Toggle cart visibility on click
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
+                      toggleCart(); // Toggle cart visibility
+                    }}
                     className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                   >
                     Add to Cart
@@ -771,6 +792,7 @@ export default function Shop() {
             <div
               key={product.id}
               className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+              onClick={() => (window.location.href = `/singleproduct`)} // Navigate to single product page
             >
               {/* Image Section */}
               <div
@@ -806,9 +828,15 @@ export default function Shop() {
                   </div>
                 )}
                 {/* Hover Div */}
-                <div className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex">
+                <div
+                  className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click event
+                >
                   <button
-                    onClick={toggleCart} // Toggle cart visibility on click
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
+                      toggleCart(); // Toggle cart visibility
+                    }}
                     className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                   >
                     Add to Cart
