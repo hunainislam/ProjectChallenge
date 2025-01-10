@@ -64,7 +64,7 @@ export default function Blogs() {
       `;
 
     const data = await client.fetch(blogQuery);
-    const formattedData = data.map((posts: any, index: number) => ({
+    const formattedData = data.map((posts: any) => ({
       title: posts.title,
       blogimage: posts.blogimage ? urlFor(posts.blogimage).url() : "",
       date: posts.date,

@@ -35,7 +35,7 @@ interface Product {
 }
 
 export default function Cart() {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [cart, setCart] = useState<Product[]>([]); // Array to store cart items
   const [cartData, setCartData] = useState<CartData | null>(null);
 
