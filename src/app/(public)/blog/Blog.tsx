@@ -84,7 +84,7 @@ export default function Blogs() {
       recentdate: recentPosts.recentdate,
     }));
     setrecentPosts(RecentPostData);
-    const CategoriesData = data.map((categories: any, index: number) => ({
+    const CategoriesData = data.map((categories: any) => ({
       name: categories.name,
       count: categories.count,
     }));
