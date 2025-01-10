@@ -1,10 +1,10 @@
-import React from 'react'
-import Cart from './Cart'
+import React, { Suspense } from "react";
+import CartContent from "./Cart";
 
-export default function CartPage() {
+export default function Cart() {
   return (
-    <div>
-      <Cart />
-    </div>
-  )
+    <Suspense fallback={<div>Loading cart...</div>}>
+      <CartContent />
+    </Suspense>
+  );
 }

@@ -34,7 +34,7 @@ interface Product {
   quantity: number;
 }
 
-export default function Cart() {
+export default function CartContent() {
   const [quantity] = useState(1);
   const [cart, setCart] = useState<Product[]>([]); // Array to store cart items
   const [cartData, setCartData] = useState<CartData | null>(null);
@@ -263,3 +263,4 @@ export default function Cart() {
     </div>
   );
 }
+

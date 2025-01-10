@@ -9,6 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
+        Logo: "url('/images/logo.png')",
         Image: "url('/images/Image.png')",
         Rectangle: "url('/images/Rectangle.png')",
         Rectangle1: "url('/images/Rectangle1.png')",

@@ -1,10 +1,10 @@
-import React from 'react'
-import ProductDetailPage from './SingleProduct'
+import React, { Suspense } from "react";
+import ProductDetailPage from "../singleproduct/SingleProduct"
 
-export default function SingleProductpage() {
+export default function SingleProduct() {
   return (
-    <div>
+    <Suspense fallback={<div>Loading cart...</div>}>
       <ProductDetailPage />
-    </div>
-  )
+    </Suspense>
+  );
 }
