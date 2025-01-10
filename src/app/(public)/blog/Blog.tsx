@@ -76,7 +76,7 @@ export default function Blogs() {
       categories: posts.categories,
     }));
     setPosts(formattedData);
-    const RecentPostData = data.map((recentPosts: any, index: number) => ({
+    const RecentPostData = data.map((recentPosts: any) => ({
       title1: recentPosts.title1,
       recentimage: recentPosts.recentimage
         ? urlFor(recentPosts.recentimage).url()
