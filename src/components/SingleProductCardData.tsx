@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 import { ImCross } from "react-icons/im";
-import { urlFor } from "@/sanity/lib/image";
 import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 import { MdCompareArrows } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import { IoShareSocialOutline } from "react-icons/io5";
@@ -50,6 +50,7 @@ export default function OurProduct() {
   const [isCartOpen, setCartOpen] = useState(false);
   const [products, setProducts] = useState<ourProduct[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
+  
   const toggleCart = () => {
     setCartOpen(!isCartOpen); // Toggle cart visibility
   };
@@ -59,31 +60,31 @@ export default function OurProduct() {
   useEffect(() => {
     const fetchProductData = async () => {
       const query = `*[_type == "product"][0..7] {
-          mainheading,
-          relatedproduct,
-          shoppingcart,
-          rs,
-          add,
-          less,
-          subtotal,
-          cart,
-          checkout,
-          comparison,
-          addtocart,
-          share,
-          compare,
-          like,
-          name,
-          description,
-          price,
-          oldPrice,
-          image,
-          label50,
-          labelnew,
-          imagelabelred,
-          imagelabelgreen,
-          button,
-        }`;
+        mainheading,
+        relatedproduct,
+        shoppingcart,
+        rs,
+        add,
+        less,
+        subtotal,
+        cart,
+        checkout,
+        comparison,
+        addtocart,
+        share,
+        compare,
+        like,
+        name,
+        description,
+        price,
+        oldPrice,
+        image,
+        label50,
+        labelnew,
+        imagelabelred,
+        imagelabelgreen,
+        button,
+      }`;
 
       // API Handling For Sanity
 
@@ -182,7 +183,7 @@ export default function OurProduct() {
     setCartOpen(true); // Open cart after adding
   };
 
-  // Handle RemoveCart Funtionality
+  // Handle Remove FromCart Functionality
 
   const handleRemoveFromCart = (product: CartItem) => {
     setCart((prevCart) => {
@@ -260,7 +261,7 @@ export default function OurProduct() {
                       <span>{item.quantity}</span>
                       <button
                         onClick={() => handleRemoveFromCart(item)}
-                        className="bg-neutral-700 text-white px-2 py-1 rounded"
+                        className="bg-neutral-700 text-white px-2 py-1 rounded "
                       >
                         {products.length > 0 && products[0].less}
                       </button>
@@ -307,120 +308,126 @@ export default function OurProduct() {
         </div>
       )}
 
-      <div className="flex items-center justify-center pl-[5px]">
+      {/* Product Title Name */}
+
+      <div className="flex items-center justify-center pl-[5px] mt-20">
         <div className="text-center text-[40px] font-bold leading-[1.2] text-neutral-700 mt-10">
-          {products.length > 0 && products[0].mainheading}
+          {products.length > 0 && products[0].relatedproduct}
         </div>
       </div>
 
       {/* Product Cards */}
 
-      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
-            onClick={() =>
-              (window.location.href = `/singleproduct?id=${product.id}&name=${encodeURIComponent(
-                product.name
-              )}&price=${encodeURIComponent(product.price)}&description=${encodeURIComponent(
-                product.description
-              )}&image=${encodeURIComponent(product.imageClass)}`)
-            }
-          >
-            {/* Image Section */}
-
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8">
+        {products
+          .slice(0, 4) // Slice to get the first 4 products
+          .map((product) => (
             <div
-              className=" relative flex flex-col bg-cover bg-center h-72"
-              style={{ backgroundImage: `url(${product.imageClass})` }}
+              key={product.id}
+              className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+              // Navigate To SingleProduct Page
+
+              onClick={() =>
+                (window.location.href = `/singleproduct?id=${product.id}&name=${encodeURIComponent(
+                  product.name
+                )}&price=${encodeURIComponent(product.price)}&description=${encodeURIComponent(
+                  product.description
+                )}&image=${encodeURIComponent(product.imageClass)}`)
+              }
             >
-              {product.label50 && (
-                <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
-                  <div className="relative flex items-center justify-center">
-                    <Image
-                      src={product.imagelabelred || ""}
-                      alt="Discount Label"
-                      className="absolute -inset-0 z-0 h-10 w-20"
-                      width={500}
-                      height={500}
-                    />
-                    <div className="z-10 text-center mt-2 font-semibold text-white">
-                      -{product.label50}%
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {product.labelnew && (
-                <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
-                  <div className="relative flex items-center justify-center">
-                    <Image
-                      src={product.imagelabelgreen || ""}
-                      alt="Discount Label"
-                      className="absolute -inset-0 z-0 h-10 w-12"
-                      width={100}
-                      height={100}
-                    />
-                    <div className="z-10 text-center mt-1 font-medium text-lg text-white">
-                      {product.labelnew}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Hover Div */}
+              {/* Image Section */}
 
               <div
-                className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
-                onClick={(e) => e.stopPropagation()} // Prevent card click event
+                className=" relative flex flex-col bg-cover bg-center h-72"
+                style={{ backgroundImage: `url(${product.imageClass})` }}
               >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent card click event
-                    toggleCart();
-                    handleAddToCart(product);
-                  }}
-                  className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
-                >
-                  {products.length > 0 && products[0].addtocart}
-                </button>
-                <div className="flex items-center gap-x-4 text-white">
-                  <div className="flex items-center gap-x-1">
-                    <IoShareSocialOutline />
-                    <div>{products.length > 0 && products[0].share}</div>
-                  </div>
-                  <div className="flex items-center gap-x-1">
-                    <MdCompareArrows />
-                    <div>{products.length > 0 && products[0].compare}</div>
-                  </div>
-                  <div className="flex items-center gap-x-1">
-                    <CiHeart />
-                    <div>{products.length > 0 && products[0].like}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Details */}
-
-            <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
-              <div className="text-2xl font-semibold text-neutral-700">
-                {product.name}
-              </div>
-              <div className="text-gray-500">{product.description}</div>
-              <div className="flex items-center gap-x-4">
-                <div className="text-xl font-semibold text-neutral-700">
-                  {product.price}
-                </div>
-                {product.oldPrice && (
-                  <div className="text-gray-400 line-through">
-                    {product.oldPrice}
+                {product.label50 && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={product.imagelabelred || ""}
+                        alt="Discount Label"
+                        className="absolute -inset-0 z-0 h-10 w-20"
+                        width={500}
+                        height={500}
+                      />
+                      <div className="z-10 text-center mt-2 font-semibold text-white">
+                        -{product.label50}%
+                      </div>
+                    </div>
                   </div>
                 )}
+
+                {product.labelnew && (
+                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                    <div className="relative flex items-center justify-center">
+                      <Image
+                        src={product.imagelabelgreen || ""}
+                        alt="Discount Label"
+                        className="absolute -inset-0 z-0 h-10 w-12"
+                        width={100}
+                        height={100}
+                      />
+                      <div className="z-10 text-center mt-1 font-medium text-lg text-white">
+                        {product.labelnew}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Hover Div */}
+
+                <div
+                  className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                  onClick={(e) => e.stopPropagation()} // Prevent card click event
+                >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
+                      toggleCart();
+                      handleAddToCart(product);
+                    }}
+                    className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+                  >
+                    {products.length > 0 && products[0].addtocart}
+                  </button>
+                  <div className="flex items-center gap-x-4 text-white">
+                    <div className="flex items-center gap-x-1">
+                      <IoShareSocialOutline />
+                      <div>{products.length > 0 && products[0].share}</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <MdCompareArrows />
+                      <div>{products.length > 0 && products[0].compare}</div>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <CiHeart />
+                      <div>{products.length > 0 && products[0].like}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Details */}
+
+              <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+                <div className="text-2xl font-semibold text-neutral-700">
+                  {product.name}
+                </div>
+                <div className="text-gray-500">{product.description}</div>
+                <div className="flex items-center gap-x-4">
+                  <div className="text-xl font-semibold text-neutral-700">
+                    {product.price}
+                  </div>
+                  {product.oldPrice && (
+                    <div className="text-gray-400 line-through">
+                      {product.oldPrice}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* Show More Button */}

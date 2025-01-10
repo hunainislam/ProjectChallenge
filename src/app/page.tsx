@@ -1,9 +1,9 @@
 import React from "react";
-import Hero from "@/components/Hero";
-import BrowseCard from "@/components/BrowseCard";
-import OurProduct from "@/components/OurProduct";
-import Inspiration from "@/components/Inspiration";
 import Share from "@/components/Share";
+import OurProduct from "@/components/OurProduct";
+import BrowseCard from "@/components/BrowseCard";
+import Inspiration from "@/components/Inspiration";
+import Hero from "@/components/HeroSectionComponent/Hero";
 
 export default function Home() {
   return (
