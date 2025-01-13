@@ -319,7 +319,7 @@ export default function OurProduct() {
         {products.map((product) => (
           <div
             key={product.id}
-            className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
+            className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f] shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out overflow-hidden"
             onClick={() =>
               (window.location.href = `/singleproduct?id=${product.id}&name=${encodeURIComponent(
                 product.name

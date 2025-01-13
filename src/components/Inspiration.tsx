@@ -32,7 +32,7 @@ export default function Inspiration() {
   useEffect(() => {
     const fetchData = async () => {
       const textSectionQuery = `*[_type == "inspiration"] [0] {
-            title,
+              title,
               subtitle,
               paragraph1,
               buttontext,

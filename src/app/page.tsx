@@ -1,5 +1,5 @@
-import Share from "@/components/Share";
 import React from "react";
+import Share from "@/components/Share";
 import OurProduct from "@/components/OurProduct";
 import BrowseCard from "@/components/BrowseCard";
 import Inspiration from "@/components/Inspiration";
