@@ -209,12 +209,12 @@ export default function OurProduct() {
             {/* Product List */}
 
             <div
-              className="flex flex-col gap-6 overflow-y-auto custom-scrollbar"
-              style={{ maxHeight: "600px" }} // Adjust the height as needed
+              className="flex flex-col gap-16 overflow-y-auto custom-scrollbar"
+              style={{ maxHeight: "400px" }} // Adjust the height as needed
             >
               {cart.map((item) => (
                 <div key={item._id} className="flex items-center gap-4">
-                  <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
+                  <div className="h-[105px] w-[105px] rounded-lg flex-shrink-0 text-center">
                     <Image
                       src={item.productImage}
                       alt={item.title}
@@ -253,7 +253,7 @@ export default function OurProduct() {
 
             {/* Subtotal */}
 
-            <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
+            <div className="flex justify-between items-center mt-4 lg:mt-20 text-lg font-semibold">
               <span>{ourProduct.subtotal}</span>
               <span className="text-[#b88e2f]">
                 {ourProduct.rs}
@@ -267,19 +267,19 @@ export default function OurProduct() {
 
             {/* Buttons */}
 
-            <div className="flex gap-4 mt-10 flex-wrap">
+            <div className="flex lg:gap-4 gap-2 mt-2 lg:mt-10 lg:flex-wrap">
               <Link href={"/cart"}>
-                <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f]">
+                <button className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4">
                   {ourProduct.cart}
                 </button>
               </Link>
               <Link href={"/checkout"}>
-                <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f]">
+                <button className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4">
                   {ourProduct.checkout}
                 </button>
               </Link>
               <Link href={"/comparison"}>
-                <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f]">
+                <button className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4">
                   {ourProduct.comparison}
                 </button>
               </Link>
