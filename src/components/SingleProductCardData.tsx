@@ -5,10 +5,11 @@ import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 import { ImCross } from "react-icons/im";
 import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
 import { MdCompareArrows } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import { IoShareSocialOutline } from "react-icons/io5";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import { fourProduct } from "@/sanity/lib/queries";
 
 // Type OurProduct
 
@@ -27,12 +28,6 @@ type ourProduct = {
   share: string;
   compare: string;
   like: string;
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  oldPrice: string | null;
-  imageClass: string;
   label50?: number | null;
   labelnew?: string | null;
   imagelabelred?: string | null;
@@ -42,99 +37,84 @@ type ourProduct = {
 
 // Type CartItem
 
-type CartItem = ourProduct & {
+type CartItem = Products & {
   quantity: number;
 };
 
+// Api Migration Interface
+
+interface Products {
+  _id: string; // Unique identifier for the product
+  title: string; // Title of the product
+  description: string; // Description of the product
+  productImage: string; // URL of the product's image
+  price: string; // Price of the product
+  tags: string[]; // Array of tags associated with the product
+  discountPercentage: number; // Discount percentage on the product
+  isNew: boolean; // Whether the product is new
+  imagelabelred?: string | null;
+  imagelabelgreen?: string | null;
+}
+
 export default function OurProduct() {
   const [isCartOpen, setCartOpen] = useState(false);
-  const [products, setProducts] = useState<ourProduct[]>([]);
+  const [ourProduct, setOurProductData] = useState<ourProduct | null>(null);
+  const [apiProducts, setAPIProducts] = useState<Products[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
-  
   const toggleCart = () => {
     setCartOpen(!isCartOpen); // Toggle cart visibility
   };
 
-  // Fetch Product Data For Sanity
+  // Fetch OurProductData For Sanity
 
   useEffect(() => {
-    const fetchProductData = async () => {
-      const query = `*[_type == "product"][0..7] {
-        mainheading,
-        relatedproduct,
-        shoppingcart,
-        rs,
-        add,
-        less,
-        subtotal,
-        cart,
-        checkout,
-        comparison,
-        addtocart,
-        share,
-        compare,
-        like,
-        name,
-        description,
-        price,
-        oldPrice,
-        image,
-        label50,
-        labelnew,
-        imagelabelred,
-        imagelabelgreen,
-        button,
-      }`;
+    const fetchData = async () => {
+      const ourProductquery = `*[_type == "products"] [0]{
+          mainheading,
+          relatedproduct,
+          shoppingcart,
+          rs,
+          add,
+          less,
+          subtotal,
+          cart,
+          checkout,
+          comparison,
+          addtocart,
+          share,
+          compare,
+          like,
+          imagelabelred,
+          imagelabelgreen,
+          button,
+        }`;
 
-      // API Handling For Sanity
-
-      const data = await client.fetch(query);
-      const formattedData = data.map((item: any, index: number) => ({
-        mainheading: item.mainheading,
-        relatedproduct: item.relatedproduct,
-        shoppingcart: item.shoppingcart,
-        rs: item.rs,
-        add: item.add,
-        less: item.less,
-        subtotal: item.subtotal,
-        cart: item.cart,
-        checkout: item.checkout,
-        comparison: item.comparison,
-        addtocart: item.addtocart,
-        share: item.share,
-        compare: item.compare,
-        like: item.like,
-        id: index + 1, // Generate unique IDs
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        oldPrice: item.oldPrice || null,
-        imageClass: item.image ? urlFor(item.image).url() : "",
-        label50: item.label50 || null,
-        labelnew: item.labelnew || null,
-        imagelabelred: item.imagelabelred
-          ? urlFor(item.imagelabelred).url()
-          : null,
-        imagelabelgreen: item.imagelabelgreen
-          ? urlFor(item.imagelabelgreen).url()
-          : null,
-        button: item.button,
-      }));
-      setProducts(formattedData);
+      const data = await client.fetch(ourProductquery);
+      setOurProductData(data);
     };
 
-    fetchProductData();
+    fetchData();
+  }, []);
+
+  // Fetch Api Migartion For Sanity
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const products: Products[] = await sanityFetch({ query: fourProduct });
+      setAPIProducts(products);
+    };
+    fetchProducts();
   }, []);
 
   // Page Loading Condition
 
-  if (!products) {
+  if (!ourProduct) {
     return <div></div>;
   }
 
   // Handle AddToCart Functionality
 
-  const handleAddToCart = (product: ourProduct) => {
+  const handleAddToCart = (product: Products) => {
     // Define logic for adjusting the price dynamically
     const dynamicPrice = (originalPrice: string | number) => {
       // Ensure price is a valid number
@@ -156,11 +136,11 @@ export default function OurProduct() {
     };
 
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
+      const existingProduct = prevCart.find((item) => item._id === product._id);
 
       if (existingProduct) {
         return prevCart.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? {
                 ...item,
                 quantity: item.quantity + 1,
@@ -183,15 +163,15 @@ export default function OurProduct() {
     setCartOpen(true); // Open cart after adding
   };
 
-  // Handle Remove FromCart Functionality
+  // Handle RemoveCart Funtionality
 
   const handleRemoveFromCart = (product: CartItem) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
+      const existingProduct = prevCart.find((item) => item._id === product._id);
 
       if (existingProduct && existingProduct.quantity > 1) {
         return prevCart.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? {
                 ...item,
                 quantity: item.quantity - 1,
@@ -199,7 +179,7 @@ export default function OurProduct() {
             : item
         );
       } else {
-        return prevCart.filter((item) => item.id !== product.id);
+        return prevCart.filter((item) => item._id !== product._id);
       }
     });
   };
@@ -215,7 +195,7 @@ export default function OurProduct() {
 
             <div className="flex items-center justify-between -mt-16">
               <h2 className="text-2xl font-semibold">
-                {products.length > 0 && products[0].shoppingcart}
+                {ourProduct.shoppingcart}
               </h2>
               <button
                 onClick={toggleCart}
@@ -233,21 +213,21 @@ export default function OurProduct() {
               style={{ maxHeight: "300px" }} // Adjust the height as needed
             >
               {cart.map((item) => (
-                <div key={item.id} className="flex items-center gap-4">
+                <div key={item._id} className="flex items-center gap-4">
                   <div className="h-[105px] w-[105px] bg-[#b88e2f33] rounded-lg flex-shrink-0 text-center">
                     <Image
-                      src={item.imageClass}
-                      alt={item.name}
+                      src={item.productImage}
+                      alt={item.title}
                       width={105}
                       height={105}
                       className="h-30 w-30"
                     />
                   </div>
                   <div className="flex flex-col">
-                    <div className="text-lg font-medium">{item.name}</div>
+                    <div className="text-lg font-medium">{item.title}</div>
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-[#b88e2f] font-medium">
-                        {products.length > 0 && products[0].rs}{" "}
+                        {ourProduct.rs}
                         {(parseFloat(item.price) * item.quantity).toFixed(2)}
                       </span>
                     </div>
@@ -256,14 +236,14 @@ export default function OurProduct() {
                         onClick={() => handleAddToCart(item)}
                         className="bg-neutral-700 text-white px-2 py-1 rounded"
                       >
-                        {products.length > 0 && products[0].add}
+                        {ourProduct.add}
                       </button>
                       <span>{item.quantity}</span>
                       <button
                         onClick={() => handleRemoveFromCart(item)}
-                        className="bg-neutral-700 text-white px-2 py-1 rounded "
+                        className="bg-neutral-700 text-white px-2 py-1 rounded"
                       >
-                        {products.length > 0 && products[0].less}
+                        {ourProduct.less}
                       </button>
                     </div>
                   </div>
@@ -274,9 +254,9 @@ export default function OurProduct() {
             {/* Subtotal */}
 
             <div className="flex justify-between items-center mt-20 text-lg font-semibold sm:mt-40">
-              <span>{products.length > 0 && products[0].subtotal}</span>
+              <span>{ourProduct.subtotal}</span>
               <span className="text-[#b88e2f]">
-                {products.length > 0 && products[0].rs}{" "}
+                {ourProduct.rs}
                 {cart.reduce(
                   (total, item) =>
                     total + parseFloat(item.price) * item.quantity,
@@ -290,17 +270,17 @@ export default function OurProduct() {
             <div className="flex gap-4 mt-10 flex-wrap">
               <Link href={"/cart"}>
                 <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f]">
-                  {products.length > 0 && products[0].cart}
+                  {ourProduct.cart}
                 </button>
               </Link>
               <Link href={"/checkout"}>
                 <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f]">
-                  {products.length > 0 && products[0].checkout}
+                  {ourProduct.checkout}
                 </button>
               </Link>
               <Link href={"/comparison"}>
                 <button className="border border-black px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f]">
-                  {products.length > 0 && products[0].comparison}
+                  {ourProduct.comparison}
                 </button>
               </Link>
             </div>
@@ -308,126 +288,122 @@ export default function OurProduct() {
         </div>
       )}
 
-      {/* Product Title Name */}
-
-      <div className="flex items-center justify-center pl-[5px] mt-20">
-        <div className="text-center text-[40px] font-bold leading-[1.2] text-neutral-700 mt-10">
-          {products.length > 0 && products[0].relatedproduct}
+      <div className="flex items-center justify-center pl-[5px]">
+        <div className="text-center text-[40px] font-bold leading-[1.2] text-neutral-700 mt-20">
+          {ourProduct.relatedproduct}
         </div>
       </div>
 
       {/* Product Cards */}
 
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8">
-        {products
-          .slice(0, 4) // Slice to get the first 4 products
-          .map((product) => (
-            <div
-              key={product.id}
-              className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
-              // Navigate To SingleProduct Page
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-8 mt-8">
+        {apiProducts.map((product) => (
+          <div
+            key={product._id}
+            className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f] shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out overflow-hidden"
+            onClick={() =>
+              (window.location.href = `/singleproduct?id=${product._id}&name=${encodeURIComponent(
+                product.title
+              )}&price=${encodeURIComponent(product.price)}&description=${encodeURIComponent(
+                product.description
+              )}&image=${encodeURIComponent(product.productImage)}`)
+            }
+          >
+            {/* Image Section */}
 
-              onClick={() =>
-                (window.location.href = `/singleproduct?id=${product.id}&name=${encodeURIComponent(
-                  product.name
-                )}&price=${encodeURIComponent(product.price)}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(product.imageClass)}`)
-              }
+            <div
+              className=" relative flex flex-col bg-cover bg-center h-72"
+              style={{ backgroundImage: `url(${product.productImage})` }}
             >
-              {/* Image Section */}
+              {product.discountPercentage && (
+                <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                  <div className="relative flex items-center justify-center">
+                    <Image
+                      src={ourProduct.imagelabelred || ""}
+                      alt="Discount Label"
+                      className="absolute -inset-0 z-0 h-10 w-20"
+                      width={500}
+                      height={500}
+                    />
+                    <div className="z-10 text-center mt-2 font-semibold text-white">
+                      -{product.discountPercentage}%
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {product.isNew && (
+                <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
+                  <div className="relative flex items-center justify-center">
+                    <Image
+                      src={ourProduct.imagelabelgreen || ""}
+                      alt="Discount Label"
+                      className="absolute -inset-0 z-0 h-10 w-12"
+                      width={100}
+                      height={100}
+                    />
+                    <div className="z-10 text-center mt-1 font-medium text-lg text-white">
+                      {product.isNew}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Hover Div */}
 
               <div
-                className=" relative flex flex-col bg-cover bg-center h-72"
-                style={{ backgroundImage: `url(${product.imageClass})` }}
+                className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
+                onClick={(e) => e.stopPropagation()} // Prevent card click event
               >
-                {product.label50 && (
-                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
-                    <div className="relative flex items-center justify-center">
-                      <Image
-                        src={product.imagelabelred || ""}
-                        alt="Discount Label"
-                        className="absolute -inset-0 z-0 h-10 w-20"
-                        width={500}
-                        height={500}
-                      />
-                      <div className="z-10 text-center mt-2 font-semibold text-white">
-                        -{product.label50}%
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {product.labelnew && (
-                  <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
-                    <div className="relative flex items-center justify-center">
-                      <Image
-                        src={product.imagelabelgreen || ""}
-                        alt="Discount Label"
-                        className="absolute -inset-0 z-0 h-10 w-12"
-                        width={100}
-                        height={100}
-                      />
-                      <div className="z-10 text-center mt-1 font-medium text-lg text-white">
-                        {product.labelnew}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Hover Div */}
-
-                <div
-                  className="absolute inset-0 flex-col items-center justify-center hidden gap-y-6 bg-neutral-700/70 group-hover:flex"
-                  onClick={(e) => e.stopPropagation()} // Prevent card click event
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click event
+                    toggleCart();
+                    handleAddToCart(product);
+                  }}
+                  className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
                 >
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent card click event
-                      toggleCart();
-                      handleAddToCart(product);
-                    }}
-                    className="bg-white py-3 px-6 text-center text-[darkgoldenrod] font-semibold hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f]"
-                  >
-                    {products.length > 0 && products[0].addtocart}
-                  </button>
-                  <div className="flex items-center gap-x-4 text-white">
-                    <div className="flex items-center gap-x-1">
-                      <IoShareSocialOutline />
-                      <div>{products.length > 0 && products[0].share}</div>
-                    </div>
-                    <div className="flex items-center gap-x-1">
-                      <MdCompareArrows />
-                      <div>{products.length > 0 && products[0].compare}</div>
-                    </div>
-                    <div className="flex items-center gap-x-1">
-                      <CiHeart />
-                      <div>{products.length > 0 && products[0].like}</div>
-                    </div>
+                  {ourProduct.addtocart}
+                </button>
+                <div className="flex items-center gap-x-4 text-white">
+                  <div className="flex items-center gap-x-1">
+                    <IoShareSocialOutline />
+                    <div>{ourProduct.share}</div>
                   </div>
-                </div>
-              </div>
-
-              {/* Product Details */}
-
-              <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
-                <div className="text-2xl font-semibold text-neutral-700">
-                  {product.name}
-                </div>
-                <div className="text-gray-500">{product.description}</div>
-                <div className="flex items-center gap-x-4">
-                  <div className="text-xl font-semibold text-neutral-700">
-                    {product.price}
+                  <div className="flex items-center gap-x-1">
+                    <MdCompareArrows />
+                    <div>{ourProduct.compare}</div>
                   </div>
-                  {product.oldPrice && (
-                    <div className="text-gray-400 line-through">
-                      {product.oldPrice}
-                    </div>
-                  )}
+                  <div className="flex items-center gap-x-1">
+                    <CiHeart />
+                    <div>{ourProduct.like}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
+
+            {/* Product Details */}
+
+            <div className="flex flex-col items-start gap-y-2 bg-gray-100 p-4">
+              <div className="text-2xl font-semibold text-neutral-700">
+                {product.title}
+              </div>
+              <div className="text-gray-500 line-clamp-2">
+                {product.description}
+              </div>
+              <div className="flex items-center gap-x-4">
+                <div className="text-xl font-semibold text-neutral-700">
+                  {product.price}
+                </div>
+                {product.discountPercentage && (
+                  <div className="text-gray-400 line-through">
+                    {product.discountPercentage}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Show More Button */}
@@ -435,7 +411,7 @@ export default function OurProduct() {
       <div className="flex items-center justify-center pl-px">
         <div className="flex items-center justify-center border border-solid border-x-[darkgoldenrod] border-y-[darkgoldenrod] bg-white px-[73px] py-[11px] mb-8">
           <div className="pl-2 text-center font-semibold leading-normal text-[darkgoldenrod]">
-            {products.length > 0 && products[0].button}
+            {ourProduct.button}
           </div>
         </div>
       </div>

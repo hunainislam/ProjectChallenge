@@ -1,4 +1,3 @@
-// schemas/hero.js
 export default {
     name: 'hero',
     title: 'Hero Section',

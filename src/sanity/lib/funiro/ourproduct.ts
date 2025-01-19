@@ -1,6 +1,6 @@
 export default {
-    name: "product",
-    title: "Product",
+    name: "products",
+    title: "Products",
     type: "document",
     fields: [
       {
@@ -78,34 +78,6 @@ export default {
         name: "like",
         title: "Like",
         type: "string"
-      },
-      {
-        name: "name",
-        title: "Product Name",
-        type: "string",
-      },
-      {
-        name: "description",
-        title: "Description",
-        type: "text",
-      },
-      {
-        name: "price",
-        title: "Price",
-        type: "string",
-      },
-      {
-        name: "oldPrice",
-        title: "Old Price",
-        type: "string",
-      },
-      {
-        name: "image",
-        title: "Image",
-        type: "image",
-        options: {
-          hotspot: true,
-        },
       },
       {
         name: "button",

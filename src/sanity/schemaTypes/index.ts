@@ -18,9 +18,10 @@ import checkouthero from "../lib/funiro/SanityHeroFiles/checkouthero";
 import checkout from "../lib/funiro/checkout";
 import bloghero from "../lib/funiro/SanityHeroFiles/bloghero";
 import blog from "../lib/funiro/blog";
-import comparisonhero from "../lib/funiro/SanityHeroFiles/comparionhero"
+import comparisonhero from "../lib/funiro/SanityHeroFiles/comparionhero";
 import section from "../lib/funiro/section";
 import comparison from "../lib/funiro/comparison";
+import { product } from "./product";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -46,5 +47,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     comparisonhero,
     section,
     comparison,
+    product,
   ],
 };

@@ -1,4 +1,3 @@
-
 export default {
     name: 'browseCard',
     title: 'Browse Card Section',

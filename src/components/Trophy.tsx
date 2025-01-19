@@ -25,7 +25,6 @@ interface TrophyData {
 export default function TrophyComponent() {
   const [trophyData, setTrophyData] = useState<TrophyData | null>(null);
 
-
   // Fetch Query Data For Sanity
 
   useEffect(() => {
@@ -52,7 +51,6 @@ export default function TrophyComponent() {
     fetchData();
   }, []);
 
-
   // Page Loading Condition
 
   if (!trophyData) {
@@ -61,7 +59,6 @@ export default function TrophyComponent() {
   return (
     <div className="z-[2] flex flex-col justify-center bg-orange-50 py-24 pl-12 w-full mt-20">
       <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-9 leading-normal min-[1430px]:flex-nowrap">
-
         {/* Trophy Image And Data */}
 
         <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
@@ -82,7 +79,7 @@ export default function TrophyComponent() {
           </div>
         </div>
 
-        {/* Guarantee Image And Data */}     
+        {/* Guarantee Image And Data */}
 
         <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
           <Image

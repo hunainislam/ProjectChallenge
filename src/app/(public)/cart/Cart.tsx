@@ -5,7 +5,6 @@ import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import { client } from "@/sanity/lib/client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import TrophyComponent from "@/components/Trophy";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import CartHero from "@/components/HeroSectionComponent/CartHero";
@@ -35,51 +34,18 @@ interface Product {
 }
 
 export default function CartContent() {
-  const [quantity] = useState(1);
   const [cart, setCart] = useState<Product[]>([]); // Array to store cart items
   const [cartData, setCartData] = useState<CartData | null>(null);
+  const [cartItems, setCartItems] = useState<any[]>([]);
 
-  // Use SearchParams For Next Navigation
-
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
-  const price = searchParams.get("price");
-  const image = searchParams.get("image");
-
-  // Condition No Repeat Cart
+  // Load cart data from localStorage
 
   useEffect(() => {
-    if (id && name && price && image) {
-      setCart((prevCart) => {
-        const existingProduct = prevCart.find((item) => item.id === id);
-
-        if (existingProduct) {
-          return prevCart.map((item) =>
-            item.id === id
-              ? {
-                  ...item,
-                  quantity: item.quantity,
-                }
-              : item
-          );
-        } else {
-          return [
-            ...prevCart,
-            {
-              id,
-              name,
-              price,
-              image,
-              quantity,
-            },
-          ];
-        }
-      });
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
     }
-  }, [id, name, price, image, quantity]);
-
-  // Fetch Cart Data For Sanity
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,16 +69,13 @@ export default function CartContent() {
   }, []);
 
   // Page Loading Condition
-
   if (!cartData) {
     return <div></div>;
   }
 
-
   // Handle Quantity Change Functionality
-
   const handleQuantityChange = (id: string, increment: boolean) => {
-    setCart((prevCart) =>
+    setCartItems((prevCart) =>
       prevCart.map((product) =>
         product.id === id
           ? {
@@ -124,12 +87,30 @@ export default function CartContent() {
           : product
       )
     );
+    updateLocalStorage();
   };
 
   // Handle Remove Functionality
-
   const handleRemove = (id: string) => {
-    setCart((prevCart) => prevCart.filter((product) => product.id !== id));
+    setCartItems((prevCart) => {
+      const updatedCart = prevCart.filter((product) => product.id !== id);
+      updateLocalStorage(updatedCart);
+      return updatedCart;
+    });
+  };
+
+  // Add Product to Cart
+  const addProductToCart = (product: Product) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, product];
+      updateLocalStorage(updatedCart);
+      return updatedCart;
+    });
+  };
+
+  // Update LocalStorage
+  const updateLocalStorage = (updatedCart: Product[] = cart) => {
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   return (
@@ -137,7 +118,6 @@ export default function CartContent() {
       <CartHero />
 
       {/* Cart Title */}
-
       <div className="flex items-center justify-center bg-white px-6 sm:px-12 md:px-24 pb-16 pt-[42px]">
         <div className="flex flex-col lg:flex-row flex-grow flex-wrap items-start justify-center gap-x-[30px] gap-y-[30px] leading-[normal] min-[1430px]:flex-nowrap">
           <div className="flex flex-col items-start gap-y-14 leading-[normal] w-full lg:w-auto">
@@ -149,7 +129,7 @@ export default function CartContent() {
                 <div>{cartData.subtotal}</div>
               </div>
             </div>
-            {cart.map((product) => (
+            {cartItems.map((product) => (
               <div
                 key={product.id}
                 className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 pl-2 pr-4 sm:gap-x-[69px] sm:pl-[3px] sm:pr-6 min-[1430px]:flex-nowrap"
@@ -164,9 +144,13 @@ export default function CartContent() {
                       height={500}
                     />
                   </div>
-                  <div className="text-neutral-400 text-sm sm:text-base">{product.name}</div>
+                  <div className="text-neutral-400 text-sm sm:text-base">
+                    {product.name}
+                  </div>
                 </div>
-                <div className="text-neutral-400 ml-4 sm:ml-8 text-sm sm:text-base">{product.price}</div>
+                <div className="text-neutral-400 ml-4 sm:ml-8 text-sm sm:text-base">
+                  {product.price}
+                </div>
                 <div className="flex items-center justify-end gap-x-4 sm:gap-x-12 pl-2 sm:pl-[15px] sm:ml-32">
                   <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[5px] border border-solid border-neutral-400 px-2 py-1 sm:px-3 sm:py-[3px] ml-4 sm:ml-12">
                     <div className="text-center">
@@ -222,7 +206,7 @@ export default function CartContent() {
               <div className="flex items-center justify-center gap-x-6 sm:gap-x-16 leading-[normal]">
                 <div className="font-medium">{cartData.subtotaltext}</div>
                 <div className="text-neutral-400">
-                  {cart
+                  {cartItems
                     .reduce(
                       (total, product) =>
                         total +
@@ -236,7 +220,7 @@ export default function CartContent() {
               <div className="flex items-start justify-center gap-x-6 sm:gap-x-14 font-medium">
                 <div className="leading-[normal]">{cartData.total}</div>
                 <div className="text-xl leading-[normal] text-[darkgoldenrod]">
-                  {cart
+                  {cartItems
                     .reduce(
                       (total, product) =>
                         total +
@@ -263,4 +247,3 @@ export default function CartContent() {
     </div>
   );
 }
-

@@ -33,9 +33,9 @@ interface SingleProduct {
 
 export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
-  const [activeImage, setActiveImage] = useState("/images/product-sofa.png");
-  const [singleProductData, setSingleProductData] =
-    useState<SingleProduct | null>(null);
+  const [activeImage, setActiveImage] = useState("");
+  const [singleProductData, setSingleProductData] =useState<SingleProduct | null>(null);
+  const [cart, setCart] = useState<any[]>([]); // Cart state
 
   // Use Serach Params For Next Navigation
 
@@ -108,6 +108,25 @@ export default function ProductDetailPage() {
     if (quantity < MAX_QUANTITY) setQuantity(quantity + 1);
   };
 
+  const handleAddToCart = () => {
+    const newCartItem = {
+      id,
+      name,
+      price,
+      description,
+      image,
+      quantity,
+    };
+
+    // Update cart state
+    setCart((prevCart) => [...prevCart, newCartItem]);
+
+    // Optional: Save to localStorage
+    localStorage.setItem("cart", JSON.stringify([...cart, newCartItem]));
+
+    alert(`Added ${quantity} ${name} to cart`);
+  };
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12 overflow-hidden">
       {/* Single Product Label */}
@@ -132,7 +151,7 @@ export default function ProductDetailPage() {
               <div
                 key={index}
                 onClick={() => setActiveImage(thumb)}
-                className={`flex-shrink-0 mt-4 bg-primary-light h-16 w-16 md:h-20 md:w-20 rounded-[8px] cursor-pointer ${
+                className={`flex-shrink-0 mt-12 bg-primary-light h-16 w-16 md:h-20 md:w-20 rounded-[8px] cursor-pointer ${
                   activeImage === thumb ? "border-2 border-black" : ""
                 }`}
               >
@@ -149,7 +168,7 @@ export default function ProductDetailPage() {
 
           {/* Main Image */}
 
-          <div className="flex-grow bg-primary-light rounded-[8px] flex items-center justify-center">
+          <div className="flex-grow bg-primary-light rounded-[8px] flex items-center justify-center ">
             <Image
               src={image as string}
               alt={name as string}
@@ -177,9 +196,15 @@ export default function ProductDetailPage() {
           {/* Reviews */}
 
           <div className="flex items-center space-x-2">
-            <ReactStars count={5} size={24} color2={"#FFC700"} />
-            <p className="text-[#9F9F9F] text-base">{description}</p>
+            <ReactStars
+              count={5}
+              size={24}
+              color2={"#FFC700"}
+              className="flex"
+            />
           </div>
+
+          <p className="text-[#9F9F9F] text-base line-clamp-1">{description}</p>
 
           {/* Size */}
 
@@ -226,26 +251,12 @@ export default function ProductDetailPage() {
 
             {/* All Product Navigate To Cart */}
             <div className="flex space-x-4">
-              <Link
-                href={{
-                  pathname: "/cart",
-                  query: {
-                    id,
-                    name,
-                    price,
-                    image,
-                    description,
-                    quantity,
-                  },
-                }}
+              <button
+                className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
+                onClick={handleAddToCart}
               >
-                <button
-                  className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
-                  onClick={() => alert(`Added ${quantity} ${name} to cart`)}
-                >
-                  {singleProductData.addtocart}
-                </button>
-              </Link>
+                {singleProductData.addtocart}
+              </button>
               <Link href={"/comparison"}>
                 <button className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors">
                   {singleProductData.compare}
@@ -259,7 +270,8 @@ export default function ProductDetailPage() {
               <strong>{singleProductData.sku}</strong> {name}
             </p>
             <p>
-              <strong>{singleProductData.category}</strong> {description}
+              <strong>{singleProductData.category}</strong>{" "}
+              <span className="line-clamp-1">{description}</span>
             </p>
             <p>
               <strong>{singleProductData.tags}</strong> {id}
