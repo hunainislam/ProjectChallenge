@@ -195,7 +195,7 @@ export default function Shop() {
 
       {isCartOpen && (
         <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50">
-          <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[300px] sm:w-[420px] shadow-lg mt-16">
+          <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[350px] sm:w-[420px] shadow-lg mt-16">
             {/* Header */}
 
             <div className="flex items-center justify-between -mt-16">
@@ -215,7 +215,7 @@ export default function Shop() {
 
             <div
               className="flex flex-col gap-6 overflow-y-auto custom-scrollbar"
-              style={{ maxHeight: "300px" }} // Adjust the height as needed
+              style={{ maxHeight: "600px" }} // Adjust the height as needed
             >
               {cart.map((item) => (
                 <div key={item._id} className="flex items-center gap-4">
