@@ -23,21 +23,27 @@ export default function BrowseCard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const browseCardQuery = `*[_type == "browseCard"] [0] {
-           sectionTitle,
-           sectionSubtitle,
-           cards[] {
-             title,
-             image,
-           }
-         }`;
-
-      const data = await client.fetch(browseCardQuery);
-      setbrowseCardData(data);
+      try {
+        const browseCardQuery = `*[_type == "browseCard"] [0] {
+          sectionTitle,
+          sectionSubtitle,
+          cards[] {
+            title,
+            image
+          }
+        }`;
+  
+        const data = await client.fetch(browseCardQuery);
+        setbrowseCardData(data);
+      } catch (error) {
+        console.error("Error fetching browse card data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 

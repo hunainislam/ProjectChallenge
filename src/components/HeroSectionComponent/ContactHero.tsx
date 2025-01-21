@@ -23,26 +23,34 @@ export default function ContactHero() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ContactHeroQuery = `*[_type == "contactherosection"] [0] {
-    hero1image,
-    logo,
-    contact,
-    home,
-    imagerightarrow,
-    contactone,
-    }`;
-
-      const data = await client.fetch(ContactHeroQuery);
-      setContactHeroData(data);
+      try {
+        const ContactHeroQuery = `*[_type == "contactherosection"] [0] {
+          hero1image,
+          logo,
+          contact,
+          home,
+          imagerightarrow,
+          contactone
+        }`;
+  
+        const data = await client.fetch(ContactHeroQuery);
+        setContactHeroData(data);
+      } catch (error) {
+        console.error("Error fetching contact hero data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 
   if (!ContactHeroData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   return (

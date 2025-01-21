@@ -23,24 +23,33 @@ export default function CartHero() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const CartHeroQuery = `*[_type == "cartherosection"] [0] {
-    hero1image,
-    logo,
-    cart,
-    home,
-    imagerightarrow,
-    cartone,
-    }`;
-
-      const data = await client.fetch(CartHeroQuery);
-      setCartHeroData(data);
+      try {
+        const CartHeroQuery = `*[_type == "cartherosection"] [0] {
+          hero1image,
+          logo,
+          cart,
+          home,
+          imagerightarrow,
+          cartone
+        }`;
+  
+        const data = await client.fetch(CartHeroQuery);
+        setCartHeroData(data);
+      } catch (error) {
+        console.error("Error fetching cart hero data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
 
+  // Page Loading Condition
+
   if (!CartHeroData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   return (

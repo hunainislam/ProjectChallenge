@@ -69,7 +69,8 @@ export default function OurProduct() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ourProductquery = `*[_type == "products"] [0]{
+      try {
+        const ourProductquery = `*[_type == "products"] [0]{
           mainheading,
           relatedproduct,
           shoppingcart,
@@ -88,23 +89,34 @@ export default function OurProduct() {
           imagelabelgreen,
           button,
         }`;
-
-      const data = await client.fetch(ourProductquery);
-      setOurProductData(data);
+  
+        const data = await client.fetch(ourProductquery);
+        setOurProductData(data);
+      } catch (error) {
+        console.error("Error fetching our product data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Fetch Api Migartion For Sanity
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const products: Products[] = await sanityFetch({ query: fourProduct });
-      setAPIProducts(products);
+      try {
+        const products: Products[] = await sanityFetch({ query: fourProduct });
+        setAPIProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
     fetchProducts();
   }, []);
+  
 
   // Page Loading Condition
 
@@ -306,7 +318,9 @@ export default function OurProduct() {
                 product.title
               )}&price=${encodeURIComponent(product.price)}&description=${encodeURIComponent(
                 product.description
-              )}&image=${encodeURIComponent(product.productImage)}`)
+              )}&image=${encodeURIComponent(product.productImage)}&tags=${encodeURIComponent(
+                product.tags.join(",") // Convert array to comma-separated string
+              )}`)
             }
           >
             {/* Image Section */}

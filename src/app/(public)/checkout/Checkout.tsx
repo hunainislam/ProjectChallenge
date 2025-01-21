@@ -50,7 +50,8 @@ export default function Checkout() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const CheckOutQuery = `*[_type == "checkout"] [0] {
+      try {
+        const CheckOutQuery = `*[_type == "checkout"] [0] {
           billingdetails,
           firstname,
           lastname,
@@ -81,12 +82,15 @@ export default function Checkout() {
           cashondelivery,
           paragraph2,
           privacypolicy,
-          placeorder,
-        }
-        `;
+          placeorder
+        }`;
 
-      const data = await client.fetch(CheckOutQuery);
-      setCheckOutData(data);
+        const data = await client.fetch(CheckOutQuery);
+        setCheckOutData(data);
+      } catch (error) {
+        console.error("Error fetching checkout data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
 
     fetchData();
@@ -95,8 +99,12 @@ export default function Checkout() {
   // Page Loading Condition
 
   if (!CheckoutData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
+
+  
   return (
     <div className="font-poppins w-full bg-white pb-12 leading-[normal] tracking-[0px]">
       <CheckoutHero />

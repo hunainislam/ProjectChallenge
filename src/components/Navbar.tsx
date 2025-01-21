@@ -32,25 +32,31 @@ export default function Navbar() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const navbarQuery = `*[_type == "navbar"] [0] {
-            title,
-            home,
-            shop,
-            about,
-            contact,
-            blog,
-            user,
-            search,
-            wishlist,
-            cart
-          }`;
-
-      const data = await client.fetch(navbarQuery);
-      setNavbarData(data);
+      try {
+        const navbarQuery = `*[_type == "navbar"] [0] {
+          title,
+          home,
+          shop,
+          about,
+          contact,
+          blog,
+          user,
+          search,
+          wishlist,
+          cart
+        }`;
+  
+        const data = await client.fetch(navbarQuery);
+        setNavbarData(data);
+      } catch (error) {
+        console.error("Error fetching navbar data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 

@@ -24,26 +24,34 @@ export default function CartHero() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ComparisonHeroQuery = `*[_type == "comparisonherosection"] [0] {
-    hero1image,
-    logo,
-    comparison,
-    home,
-    imagerightarrow,
-    comparisonOne,
-    }`;
-
-      const data = await client.fetch(ComparisonHeroQuery);
-      setComparisonHeroData(data);
+      try {
+        const ComparisonHeroQuery = `*[_type == "comparisonherosection"] [0] {
+          hero1image,
+          logo,
+          comparison,
+          home,
+          imagerightarrow,
+          comparisonOne
+        }`;
+  
+        const data = await client.fetch(ComparisonHeroQuery);
+        setComparisonHeroData(data);
+      } catch (error) {
+        console.error("Error fetching comparison hero data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 
   if (!ComparisonHeroData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   return (

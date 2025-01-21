@@ -5,7 +5,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { client } from "@/sanity/lib/client";
 import { Star, ChevronDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import ComparisonHero from "@/components/HeroSectionComponent/ComparisonHero"
+import ComparisonHero from "@/components/HeroSectionComponent/ComparisonHero";
 
 // Interface ProductComparison
 
@@ -47,39 +47,44 @@ export default function Comparison() {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [openSection, setOpenSection] = useState<number | null>(null);
 
-  const [ProductComparisonData, setProductComparisonData] = useState<ProductComparison | null>(null);
+  const [ProductComparisonData, setProductComparisonData] =
+    useState<ProductComparison | null>(null);
 
   // Fetch ProductComparison For Sanity
 
   useEffect(() => {
     const fetchData = async () => {
-      const ProductComparisonQuery = `*[_type == "productcomparison"] [0] {
-           gotoproduct,
-           pageformore,
-           products,
-           viewmore,
-           sofaoneimage,
-           asgaardsofa,
-           rsOne,
-           reviewsOne,
-           sofatwoimage,
-           outdoorsofaset,
-           rsTwo,
-           reviewsTwo,
-           addProduct,
-           chooseProduct,
-           specification,
-           addAsgaardSofaToCart,
-           addOutdoorSofaToCart,
-           sectionsReference[]->{
-                title,
-                rows
-           }
-         }
-           `;
+      try {
+        const ProductComparisonQuery = `*[_type == "productcomparison"] [0] {
+          gotoproduct,
+          pageformore,
+          products,
+          viewmore,
+          sofaoneimage,
+          asgaardsofa,
+          rsOne,
+          reviewsOne,
+          sofatwoimage,
+          outdoorsofaset,
+          rsTwo,
+          reviewsTwo,
+          addProduct,
+          chooseProduct,
+          specification,
+          addAsgaardSofaToCart,
+          addOutdoorSofaToCart,
+          sectionsReference[]->{
+            title,
+            rows
+          }
+        }`;
 
-      const data = await client.fetch(ProductComparisonQuery);
-      setProductComparisonData(data);
+        const data = await client.fetch(ProductComparisonQuery);
+        setProductComparisonData(data);
+      } catch (error) {
+        console.error("Error fetching product comparison data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
 
     fetchData();
@@ -88,7 +93,9 @@ export default function Comparison() {
   // Page Loading Condition
 
   if (!ProductComparisonData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   return (
@@ -98,7 +105,6 @@ export default function Comparison() {
       {/* Top Section - Responsive Grid */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-
         {/* Go to Product Page */}
 
         <div className="flex flex-col p-6 bg-white  rounded-lg">
@@ -232,7 +238,7 @@ export default function Comparison() {
             </div>
 
             {/* Mobile Accordion View */}
-            
+
             <div className="md:hidden">
               <div
                 className="flex justify-between items-center cursor-pointer"

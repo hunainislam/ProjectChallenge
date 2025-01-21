@@ -24,26 +24,34 @@ export default function CartHero() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const CheckoutHeroQuery = `*[_type == "checkoutherosection"] [0] {
-    hero1image,
-    logo,
-    checkout,
-    home,
-    imagerightarrow,
-    checkoutone,
-    }`;
-
-      const data = await client.fetch(CheckoutHeroQuery);
-      setCheckoutHeroData(data);
+      try {
+        const CheckoutHeroQuery = `*[_type == "checkoutherosection"] [0] {
+          hero1image,
+          logo,
+          checkout,
+          home,
+          imagerightarrow,
+          checkoutone
+        }`;
+  
+        const data = await client.fetch(CheckoutHeroQuery);
+        setCheckoutHeroData(data);
+      } catch (error) {
+        console.error("Error fetching checkout hero data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 
   if (!CheckoutHeroData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   return (

@@ -45,50 +45,58 @@ export default function Blogs() {
   // Fetch Blog Data For Sanity
 
   const fetchProductData = async () => {
-    const blogQuery = `*[_type == "blog"] {
-        title,
-        blogimage,
-        date,
-        author,
-        tag,
-        excerpt,
-        title1,
-        recentimage,
-        recentdate,
-        name,
-        count,
-        buttonText,
-        recentposts,
-        categories,
-      }
+    try {
+      const blogQuery = `*[_type == "blog"] {
+          title,
+          blogimage,
+          date,
+          author,
+          tag,
+          excerpt,
+          title1,
+          recentimage,
+          recentdate,
+          name,
+          count,
+          buttonText,
+          recentposts,
+          categories,
+        }
       `;
 
-    const data = await client.fetch(blogQuery);
-    const formattedData = data.map((posts: any) => ({
-      title: posts.title,
-      blogimage: posts.blogimage ? urlFor(posts.blogimage).url() : "",
-      date: posts.date,
-      author: posts.author,
-      tag: posts.tag,
-      excerpt: posts.excerpt,
-      buttonText: posts.buttonText,
-      recentposts: posts.recentposts,
-      categories: posts.categories,
-    }));
-    setPosts(formattedData);
-    const RecentPostData = data.map((recentPosts: any) => ({
-      title1: recentPosts.title1,
-      recentimage: recentPosts.recentimage
-        ? urlFor(recentPosts.recentimage).url()
-        : "",
-      recentdate: recentPosts.recentdate,
-    }));
-    setrecentPosts(RecentPostData);
-    const CategoriesData = data.map((categories: any) => ({
-      name: categories.name,
-      count: categories.count,
-    }));
-    setCategories(CategoriesData);
+      const data = await client.fetch(blogQuery);
+
+      const formattedData = data.map((posts: any) => ({
+        title: posts.title,
+        blogimage: posts.blogimage ? urlFor(posts.blogimage).url() : "",
+        date: posts.date,
+        author: posts.author,
+        tag: posts.tag,
+        excerpt: posts.excerpt,
+        buttonText: posts.buttonText,
+        recentposts: posts.recentposts,
+        categories: posts.categories,
+      }));
+      setPosts(formattedData);
+
+      const RecentPostData = data.map((recentPosts: any) => ({
+        title1: recentPosts.title1,
+        recentimage: recentPosts.recentimage
+          ? urlFor(recentPosts.recentimage).url()
+          : "",
+        recentdate: recentPosts.recentdate,
+      }));
+      setrecentPosts(RecentPostData);
+
+      const CategoriesData = data.map((categories: any) => ({
+        name: categories.name,
+        count: categories.count,
+      }));
+      setCategories(CategoriesData);
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+      // Optionally handle the error, such as setting default values or displaying an error message
+    }
   };
 
   fetchProductData();

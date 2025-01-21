@@ -23,26 +23,34 @@ export default function CartHero() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const BlogHeroQuery = `*[_type == "blogherosection"] [0] {
-    hero1image,
-    logo,
-    blog,
-    home,
-    imagerightarrow,
-    blogone,
-    }`;
-
-      const data = await client.fetch(BlogHeroQuery);
-      setBlogHeroData(data);
+      try {
+        const BlogHeroQuery = `*[_type == "blogherosection"] [0] {
+          hero1image,
+          logo,
+          blog,
+          home,
+          imagerightarrow,
+          blogone
+        }`;
+  
+        const data = await client.fetch(BlogHeroQuery);
+        setBlogHeroData(data);
+      } catch (error) {
+        console.error("Error fetching blog hero data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 
   if (!BlogHeroData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   return (

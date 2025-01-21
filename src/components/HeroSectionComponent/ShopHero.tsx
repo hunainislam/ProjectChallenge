@@ -30,34 +30,49 @@ export default function ShopHero() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ShopHeroQuery = `*[_type == "shopherosection"] [0] {
-    hero1image,
-    logo,
-    shop,
-    home,
-    imagerightarrow,
-    shopone,
-    uicons,
-    filter,
-    cigrid,
-    viewlist,
-    showingresults,
-    show,
-    sixteen,
-    shortby,
-    default
-
-    }`;
-
-      const data = await client.fetch(ShopHeroQuery);
-      setShopHeroData(data);
+      try {
+        const ShopHeroQuery = `*[_type == "shopherosection"] [0] {
+          hero1image,
+          logo,
+          shop,
+          home,
+          imagerightarrow,
+          shopone,
+          uicons,
+          filter,
+          cigrid,
+          viewlist,
+          showingresults,
+          show,
+          sixteen,
+          shortby,
+          default
+        }`;
+  
+        const data = await client.fetch(ShopHeroQuery);
+        setShopHeroData(data);
+      } catch (error) {
+        console.error("Error fetching shop hero data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
+  // Page Loading Condition
 
   if (!ShopHeroData) {
-    return <div></div>;
+    return (
+      <div className="flex justify-center items-center h-screen space-x-4">
+        <div className="border-t-[6px] border-[#b88e2f] border-solid w-16 h-16 rounded-full animate-spin delay-300"></div>
+        <div className="text-2xl font-bold text-gray-700 animate-bounce">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b88e2f] via-black to-[#b88e2f]">
+            Loading...
+          </span>
+        </div>
+      </div>
+    );
   }
 
   return (

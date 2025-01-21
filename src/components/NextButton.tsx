@@ -16,20 +16,27 @@ export default function NextButton() {
 
     // Fetch Data Next Button For Sanity
     
-      useEffect(() => {
-        const fetchData = async () => {
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
           const nextButtonQuery = `*[_type == "nextbutton"] [0] {
-        one,
-        two,
-        three,
-        next}`;
+            one,
+            two,
+            three,
+            next
+          }`;
     
           const data = await client.fetch(nextButtonQuery);
           setNextButtonData(data);
-        };
+        } catch (error) {
+          console.error("Error fetching next button data:", error);
+          // Optionally, handle the error here (e.g., show a message to the user)
+        }
+      };
     
-        fetchData();
-      }, []);
+      fetchData();
+    }, []);
+    
 
       // Page Loading Condition 
     

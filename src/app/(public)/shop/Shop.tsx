@@ -67,11 +67,11 @@ export default function Shop() {
     setCartOpen(!isCartOpen); // Toggle cart visibility
   };
 
-  
   // Fetch OurProductData For Sanity
 
   useEffect(() => {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      try {
         const ourProductquery = `*[_type == "products"] [0]{
           mainheading,
           relatedproduct,
@@ -91,29 +91,41 @@ export default function Shop() {
           imagelabelgreen,
           button,
         }`;
-  
+
         const data = await client.fetch(ourProductquery);
         setOurProductData(data);
-      };
-  
-      fetchData();
-    }, []);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
+    };
 
-    // Fetch Api Migartion For Sanity
+    fetchData();
+  }, []);
 
-    useEffect(() => {
-      const fetchProducts = async () => {
-        const products: Products[] = await sanityFetch({ query: allproduct });
-        setAPIProducts(products);
-      };
-      fetchProducts();
-    }, []);
+  // Fetch Api Migartion For Sanity
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const products: Products[] = await sanityFetch({ query: allproduct });
+      setAPIProducts(products);
+    };
+    fetchProducts();
+  }, []);
 
   // Page Loading Condition
 
   if (!ourProduct) {
-    return <div></div>;
+    return (
+      <div className="flex justify-center items-center h-screen space-x-4">
+        <div className="border-t-[6px] border-[#b88e2f] border-solid w-16 h-16 rounded-full animate-spin delay-300"></div>
+        <div className="text-2xl font-bold text-gray-700 animate-bounce">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b88e2f] via-black to-[#b88e2f]">
+            Loading...
+          </span>
+        </div>
+      </div>
+    );
   }
 
   // Handle AddToCart Functionality
@@ -311,7 +323,9 @@ export default function Shop() {
                 product.title
               )}&price=${encodeURIComponent(product.price)}&description=${encodeURIComponent(
                 product.description
-              )}&image=${encodeURIComponent(product.productImage)}`)
+              )}&image=${encodeURIComponent(product.productImage)}&tags=${encodeURIComponent(
+                product.tags.join(",") // Convert array to comma-separated string
+              )}`)
             }
           >
             {/* Image Section */}
@@ -393,7 +407,9 @@ export default function Shop() {
               <div className="text-2xl font-semibold text-neutral-700">
                 {product.title}
               </div>
-              <div className="text-gray-500 line-clamp-2">{product.description}</div>
+              <div className="text-gray-500 line-clamp-2">
+                {product.description}
+              </div>
               <div className="flex items-center gap-x-4">
                 <div className="text-xl font-semibold text-neutral-700">
                   {product.price}

@@ -36,33 +36,39 @@ export default function Footer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const footerQuery = `*[_type == "footer"] [0] {
+      try {
+        const footerQuery = `*[_type == "footer"] [0] {
           title,
-            subtitle,
-            subtitle1,
-            links,
-            home,
-            shop,
-            about,
-            contact,
-            blog,
-            help,
-            payment,
-            returns,
-            privacy,
-            email,
-            subcribe,
-            line4image,
-            line3image,
-            funiro,
+          subtitle,
+          subtitle1,
+          links,
+          home,
+          shop,
+          about,
+          contact,
+          blog,
+          help,
+          payment,
+          returns,
+          privacy,
+          email,
+          subcribe,
+          line4image,
+          line3image,
+          funiro
         }`;
-
-      const data = await client.fetch(footerQuery);
-      setFooterData(data);
+  
+        const data = await client.fetch(footerQuery);
+        setFooterData(data);
+      } catch (error) {
+        console.error("Error fetching footer data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 

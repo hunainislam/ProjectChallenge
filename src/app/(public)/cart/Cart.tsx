@@ -41,36 +41,55 @@ export default function CartContent() {
   // Load cart data from localStorage
 
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
+    const fetchData = async () => {
+      try {
+        const storedCart = localStorage.getItem("cart");
+        if (storedCart) {
+          setCartItems(JSON.parse(storedCart));
+        }
+      } catch (error) {
+        console.error("Error retrieving cart from localStorage:", error);
+        // Optionally, handle the error here (e.g., reset cart or show an alert)
+      }
+    };
+
+    fetchData();
   }, []);
+
+  // Fetch CartData For Sanity
 
   useEffect(() => {
     const fetchData = async () => {
-      const cartQuery = `*[_type == "cart"] [0] {
-        product,
-        price,
-        quantity,
-        subtotal,
-        deleteimage,
-        carttotal,
-        subtotaltext,
-        total,
-        checkout,
-    }`;
+      try {
+        const cartQuery = `*[_type == "cart"] [0] {
+          product,
+          price,
+          quantity,
+          subtotal,
+          deleteimage,
+          carttotal,
+          subtotaltext,
+          total,
+          checkout,
+        }`;
 
-      const data = await client.fetch(cartQuery);
-      setCartData(data);
+        const data = await client.fetch(cartQuery);
+        setCartData(data);
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+        // Optionally, handle the error here (e.g., set default values or show an alert)
+      }
     };
 
     fetchData();
   }, []);
 
   // Page Loading Condition
+  
   if (!cartData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
 
   // Handle Quantity Change Functionality

@@ -37,29 +37,34 @@ export default function Contact() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const contactQuery = `*[_type == "contact"] [0] {
-        title,
-        content,
-        mapimage,
-        address,
-        unitedstates,
-        phoneimage,
-        phone,
-        mobile,
-        hotline,
-        timeimage,
-        workingtime,
-        mondayfriday,
-        saturdaysunday,
-        yourname,
-        emailaddress,
-        subject,
-        message,
-        sumbit,
-    }`;
+      try {
+        const contactQuery = `*[_type == "contact"] [0] {
+          title,
+          content,
+          mapimage,
+          address,
+          unitedstates,
+          phoneimage,
+          phone,
+          mobile,
+          hotline,
+          timeimage,
+          workingtime,
+          mondayfriday,
+          saturdaysunday,
+          yourname,
+          emailaddress,
+          subject,
+          message,
+          sumbit,
+        }`;
 
-      const data = await client.fetch(contactQuery);
-      setContactData(data);
+        const data = await client.fetch(contactQuery);
+        setContactData(data);
+      } catch (error) {
+        console.error("Error fetching contact data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
 
     fetchData();
@@ -68,8 +73,11 @@ export default function Contact() {
   // Page Loading Condition
 
   if (!contactData) {
-    return <div></div>;
+    return (
+      <div></div>
+    );
   }
+  
   return (
     <div className="font-poppins w-full bg-white leading-[normal] tracking-[0px]">
       <ContactHero />

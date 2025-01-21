@@ -31,27 +31,33 @@ export default function Inspiration() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const textSectionQuery = `*[_type == "inspiration"] [0] {
-              title,
-              subtitle,
-              paragraph1,
-              buttontext,
-              number,
-              lineimage,
-              title1,
-              subtitle1,
-              rightarrowimage,
-              roundarrowimage,
-              dot1,
-              dot2,
-            }`;
-
-      const data = await client.fetch(textSectionQuery);
-      settextSectionData(data);
+      try {
+        const textSectionQuery = `*[_type == "inspiration"] [0] {
+          title,
+          subtitle,
+          paragraph1,
+          buttontext,
+          number,
+          lineimage,
+          title1,
+          subtitle1,
+          rightarrowimage,
+          roundarrowimage,
+          dot1,
+          dot2
+        }`;
+  
+        const data = await client.fetch(textSectionQuery);
+        settextSectionData(data);
+      } catch (error) {
+        console.error("Error fetching text section data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 

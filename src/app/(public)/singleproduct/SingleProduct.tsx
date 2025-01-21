@@ -34,7 +34,8 @@ interface SingleProduct {
 export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState("");
-  const [singleProductData, setSingleProductData] =useState<SingleProduct | null>(null);
+  const [singleProductData, setSingleProductData] =
+    useState<SingleProduct | null>(null);
   const [cart, setCart] = useState<any[]>([]); // Cart state
 
   // Use Serach Params For Next Navigation
@@ -45,33 +46,39 @@ export default function ProductDetailPage() {
   const price = searchParams.get("price");
   const description = searchParams.get("description");
   const image = searchParams.get("image");
+  const tags = searchParams.get("tags");
 
   // Fetch Single Product Data For Sanity
 
   useEffect(() => {
     if (id) {
       const fetchData = async () => {
-        const singleProductQuery = `
-          *[_type == "singleproduct"][0] {
-            home,
-            shop,
-            rs,
-            customstar,
-            size,
-            addtocart,
-            compare,
-            sku,
-            category,
-            tags,
-            paragraph1,
-            paragraph2,
-            cloudsofaimage,
-            relatedproduct,
-            share
-          }
-        `;
-        const data = await client.fetch(singleProductQuery);
-        setSingleProductData(data);
+        try {
+          const singleProductQuery = `
+            *[_type == "singleproduct"][0] {
+              home,
+              shop,
+              rs,
+              customstar,
+              size,
+              addtocart,
+              compare,
+              sku,
+              category,
+              tags,
+              paragraph1,
+              paragraph2,
+              cloudsofaimage,
+              relatedproduct,
+              share
+            }
+          `;
+          const data = await client.fetch(singleProductQuery);
+          setSingleProductData(data);
+        } catch (error) {
+          console.error("Error fetching single product data:", error);
+          // Optionally, handle the error here (e.g., show a message to the user)
+        }
       };
 
       fetchData();
@@ -87,7 +94,16 @@ export default function ProductDetailPage() {
   // Page Loading Condition
 
   if (!singleProductData) {
-    return <div></div>;
+    return (
+      <div className="flex justify-center items-center h-screen space-x-4">
+        <div className="border-t-[6px] border-[#b88e2f] border-solid w-16 h-16 rounded-full animate-spin delay-300"></div>
+        <div className="text-2xl font-bold text-gray-700 animate-bounce">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b88e2f] via-black to-[#b88e2f]">
+            Loading...
+          </span>
+        </div>
+      </div>
+    );
   }
 
   const MAX_QUANTITY = 100;
@@ -267,14 +283,13 @@ export default function ProductDetailPage() {
 
           <div className="text-[#9F9F9F] text-sm space-y-2">
             <p>
-              <strong>{singleProductData.sku}</strong> {name}
+              <strong>{singleProductData.sku}</strong> {id}
             </p>
             <p>
-              <strong>{singleProductData.category}</strong>{" "}
-              <span className="line-clamp-1">{description}</span>
+              <strong>{singleProductData.category}</strong> {name}
             </p>
             <p>
-              <strong>{singleProductData.tags}</strong> {id}
+              <strong>{singleProductData.tags}</strong> {tags}
             </p>
             <div className="flex items-center space-x-2">
               <strong>{singleProductData.share}</strong>

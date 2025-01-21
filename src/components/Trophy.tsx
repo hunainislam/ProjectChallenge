@@ -29,27 +29,33 @@ export default function TrophyComponent() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const trophyQuery = `*[_type == "trophy"] [0] {
-        trophy,
-        highquality,
-        craftedmaterials,
-        guarantee,
-        warrenty,
-        over2year,
-        sheeping,
-        freeshipping,
-        orderover,
-        customer,
-        supportcustomer,
-        dedicated
-      }`;
-
-      const data = await client.fetch(trophyQuery);
-      setTrophyData(data);
+      try {
+        const trophyQuery = `*[_type == "trophy"] [0] {
+          trophy,
+          highquality,
+          craftedmaterials,
+          guarantee,
+          warrenty,
+          over2year,
+          sheeping,
+          freeshipping,
+          orderover,
+          customer,
+          supportcustomer,
+          dedicated
+        }`;
+  
+        const data = await client.fetch(trophyQuery);
+        setTrophyData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Page Loading Condition
 

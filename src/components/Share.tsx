@@ -17,15 +17,22 @@ export default function FuniroFurniture() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const shareQuery = `*[_type == "share"] [0] {
-  shareimage}`;
-
-      const data = await client.fetch(shareQuery);
-      setShareData(data);
+      try {
+        const shareQuery = `*[_type == "share"] [0] {
+          shareimage
+        }`;
+  
+        const data = await client.fetch(shareQuery);
+        setShareData(data);
+      } catch (error) {
+        console.error("Error fetching share data:", error);
+        // Optionally, handle the error here (e.g., show a message to the user)
+      }
     };
-
+  
     fetchData();
   }, []);
+  
 
   if (!shareData) {
     return <div></div>;
