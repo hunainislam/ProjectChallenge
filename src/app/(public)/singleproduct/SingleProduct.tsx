@@ -108,7 +108,7 @@ export default function ProductDetailPage() {
 
   const MAX_QUANTITY = 100;
 
-  const thumbnails = [
+  const leftSideImages = [
     image as string,
     image as string,
     image as string,
@@ -163,16 +163,16 @@ export default function ProductDetailPage() {
 
         <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-8">
           <div className="flex md:flex-col overflow-x-auto md:overflow-visible space-x-4 md:space-x-0 md:space-y-4 scrollbar-hide">
-            {thumbnails.map((thumb, index) => (
+            {leftSideImages.map((image, index) => (
               <div
                 key={index}
-                onClick={() => setActiveImage(thumb)}
+                onClick={() => setActiveImage(image)}
                 className={`flex-shrink-0 mt-12 bg-primary-light h-16 w-16 md:h-20 md:w-20 rounded-[8px] cursor-pointer ${
-                  activeImage === thumb ? "border-2 border-black" : ""
+                  activeImage === image ? "border-2 border-black" : ""
                 }`}
               >
                 <Image
-                  src={thumb}
+                  src={image}
                   alt={name as string}
                   className="object-contain w-full h-full"
                   width={500}
