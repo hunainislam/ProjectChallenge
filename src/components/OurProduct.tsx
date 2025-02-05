@@ -1,15 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { CiHeart } from "react-icons/ci";
 import { ImCross } from "react-icons/im";
+import { CiHeart } from "react-icons/ci";
+import { FaSearch } from "react-icons/fa";
 import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import { MdCompareArrows } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { IoShareSocialOutline } from "react-icons/io5";
-import { sanityFetch } from "@/sanity/lib/fetch";
+import Label from "../../public/images/label1.png";
 import { eightProduct } from "@/sanity/lib/queries";
+import { IoShareSocialOutline } from "react-icons/io5";
 
 // Type OurProduct
 
@@ -58,7 +59,9 @@ export default function OurProduct() {
   const [isCartOpen, setCartOpen] = useState(false);
   const [ourProduct, setOurProductData] = useState<ourProduct | null>(null);
   const [apiProducts, setAPIProducts] = useState<Products[]>([]);
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartItems, setCart] = useState<CartItem[]>([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Search term state
+
   const toggleCart = () => {
     setCartOpen(!isCartOpen); // Toggle cart visibility
   };
@@ -87,7 +90,7 @@ export default function OurProduct() {
           imagelabelgreen,
           button,
         }`;
-  
+
         const data = await client.fetch(ourProductquery);
         setOurProductData(data);
       } catch (error) {
@@ -95,10 +98,9 @@ export default function OurProduct() {
         // Optionally, handle the error here (e.g., show a message to the user)
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   // Fetch Api Migartion For Sanity
 
@@ -114,7 +116,13 @@ export default function OurProduct() {
     };
     fetchProducts();
   }, []);
-  
+
+  // OurProduct.tsx
+
+  // Add this useEffect to save cartItems to localStorage
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   // Page Loading Condition
 
@@ -194,8 +202,53 @@ export default function OurProduct() {
     });
   };
 
+  // Filter products based on search term
+  const filteredProducts = apiProducts.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Handle Checkout
+  const handleCheckout = () => {
+    const checkoutCart = cartItems.map((item) => ({
+      _id: item._id,
+      title: item.title,
+      productImage: item.productImage,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+    localStorage.setItem("checkoutCart", JSON.stringify(checkoutCart));
+    window.location.href = "/checkout";
+  };
+
+  // Handle Comparison
+  const handleComparison = () => {
+    const comparisonCart = cartItems.map((item) => ({
+      _id: item._id,
+      title: item.title,
+      productImage: item.productImage,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+    localStorage.setItem("comparisonCart", JSON.stringify(comparisonCart));
+    window.location.href = "/comparison";
+  };
+
   return (
     <div className="font-poppins flex w-full flex-col gap-y-8 leading-normal tracking-[0px] mb-12 overflow-hidden">
+      {/* Search Bar */}
+      <div className="flex justify-center mt-10">
+        <div className="relative w-1/2">
+          <input
+            type="text"
+            placeholder="Search for a product..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-[#b88e2f] p-2 rounded-md w-full pl-10"
+          />
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-700" />
+        </div>
+      </div>
+
       {/* Cart */}
 
       {isCartOpen && (
@@ -219,12 +272,12 @@ export default function OurProduct() {
             {/* Product List */}
 
             <div
-              className="flex flex-col gap-16 overflow-y-auto custom-scrollbar"
+              className="flex flex-col gap-8 overflow-y-auto custom-scrollbar"
               style={{ maxHeight: "400px" }} // Adjust the height as needed
             >
-              {cart.map((item) => (
+              {cartItems.map((item) => (
                 <div key={item._id} className="flex items-center gap-4">
-                  <div className="h-[105px] w-[105px] rounded-lg flex-shrink-0 text-center">
+                  <div className="h-[105px] w-[105px] rounded-lg flex-shrink-0 text-center overflow-hidden">
                     <Image
                       src={item.productImage}
                       alt={item.title}
@@ -267,7 +320,7 @@ export default function OurProduct() {
               <span>{ourProduct.subtotal}</span>
               <span className="text-[#b88e2f]">
                 {ourProduct.rs}
-                {cart.reduce(
+                {cartItems.reduce(
                   (total, item) =>
                     total + parseFloat(item.price) * item.quantity,
                   0
@@ -278,21 +331,24 @@ export default function OurProduct() {
             {/* Buttons */}
 
             <div className="flex lg:gap-4 gap-2 mt-2 lg:mt-10 lg:flex-wrap">
-              <Link href={"/cart"}>
-                <button className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4">
-                  {ourProduct.cart}
-                </button>
-              </Link>
-              <Link href={"/checkout"}>
-                <button className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4">
-                  {ourProduct.checkout}
-                </button>
-              </Link>
-              <Link href={"/comparison"}>
-                <button className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4">
-                  {ourProduct.comparison}
-                </button>
-              </Link>
+              <button
+                className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4"
+                onClick={() => (window.location.href = "/cart")}
+              >
+                {ourProduct.cart}
+              </button>
+              <button
+                className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4"
+                onClick={handleCheckout}
+              >
+                {ourProduct.checkout}
+              </button>
+              <button
+                className="border border-black lg:px-6 py-2 rounded-full hover:bg-gray-100 hover:text-[#b88e2f] px-4"
+                onClick={handleComparison}
+              >
+                {ourProduct.comparison}
+              </button>
             </div>
           </div>
         </div>
@@ -307,7 +363,7 @@ export default function OurProduct() {
       {/* Product Cards */}
 
       <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-8">
-        {apiProducts.map((product) => (
+        {filteredProducts.map((product) => (
           <div
             key={product._id}
             className="group relative w-72 cursor-pointer hover:shadow-[0_0_2rem] hover:shadow-[#b88e2f] shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out overflow-hidden"
@@ -348,14 +404,14 @@ export default function OurProduct() {
                 <div className="absolute top-2 left-56 flex h-12 w-12 items-center justify-center">
                   <div className="relative flex items-center justify-center">
                     <Image
-                      src={ourProduct.imagelabelgreen || ""}
+                      src={Label || ""}
                       alt="Discount Label"
                       className="absolute -inset-0 z-0 h-10 w-12"
                       width={100}
                       height={100}
                     />
                     <div className="z-10 text-center mt-1 font-medium text-lg text-white">
-                      {product.isNew}
+                      New
                     </div>
                   </div>
                 </div>

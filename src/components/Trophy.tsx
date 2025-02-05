@@ -1,67 +1,13 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
-import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
-import React, { useEffect, useState } from "react";
-
-// Interface Trophy Data
-
-interface TrophyData {
-  trophy: string;
-  highquality: string;
-  craftedmaterials: string;
-  guarantee: string;
-  warrenty: string;
-  over2year: string;
-  sheeping: string;
-  freeshipping: string;
-  orderover: string;
-  customer: string;
-  supportcustomer: string;
-  dedicated: string;
-}
+import Trophy from "../../public/images/trophy.png";
+import Sheeping from "../../public/images/shipping.png";
+import Guarantee from "../../public/images/guarantee.png";
+import Customer from "../../public/images/customer-support.png";
 
 export default function TrophyComponent() {
-  const [trophyData, setTrophyData] = useState<TrophyData | null>(null);
-
-  // Fetch Query Data For Sanity
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const trophyQuery = `*[_type == "trophy"] [0] {
-          trophy,
-          highquality,
-          craftedmaterials,
-          guarantee,
-          warrenty,
-          over2year,
-          sheeping,
-          freeshipping,
-          orderover,
-          customer,
-          supportcustomer,
-          dedicated
-        }`;
-  
-        const data = await client.fetch(trophyQuery);
-        setTrophyData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Optionally, handle the error here (e.g., show a message to the user)
-      }
-    };
-  
-    fetchData();
-  }, []);
-  
-
-  // Page Loading Condition
-
-  if (!trophyData) {
-    return <div></div>;
-  }
   return (
     <div className="z-[2] flex flex-col justify-center bg-orange-50 py-24 pl-12 w-full mt-20">
       <div className="flex flex-wrap items-center justify-center gap-x-14 gap-y-9 leading-normal min-[1430px]:flex-nowrap">
@@ -69,7 +15,7 @@ export default function TrophyComponent() {
 
         <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
           <Image
-            src={urlFor(trophyData.trophy).url()}
+            src={Trophy}
             alt={"no-image"}
             className="h-[60px] w-[60px] flex-shrink-0"
             width={500}
@@ -77,10 +23,10 @@ export default function TrophyComponent() {
           />
           <div className="flex flex-col items-start gap-y-0.5">
             <div className="text-[25px] self-center font-semibold leading-normal text-neutral-800">
-              {trophyData.highquality}
+              High Quality
             </div>
             <div className="text-xl self-center font-medium leading-normal text-[gray]">
-              {trophyData.craftedmaterials}
+              crafted from top materials
             </div>
           </div>
         </div>
@@ -89,7 +35,7 @@ export default function TrophyComponent() {
 
         <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
           <Image
-            src={urlFor(trophyData.guarantee).url()}
+            src={Guarantee}
             alt={"no-image"}
             className="h-[60px] w-[60px] flex-shrink-0"
             width={500}
@@ -97,10 +43,10 @@ export default function TrophyComponent() {
           />
           <div className="flex flex-col items-start gap-y-0.5">
             <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-              {trophyData.warrenty}
+              Warranty Protection
             </div>
             <div className="text-xl self-center font-medium leading-normal text-[gray]">
-              {trophyData.over2year}
+              Over 2 years
             </div>
           </div>
         </div>
@@ -109,7 +55,7 @@ export default function TrophyComponent() {
 
         <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
           <Image
-            src={urlFor(trophyData.sheeping).url()}
+            src={Sheeping}
             alt={"no-image"}
             className="h-[60px] w-[60px] flex-shrink-0"
             width={500}
@@ -117,10 +63,10 @@ export default function TrophyComponent() {
           />
           <div className="flex flex-col items-start gap-y-0.5">
             <div className="text-[25px] font-semibold leading-normal text-neutral-800">
-              {trophyData.freeshipping}
+              Free Shipping Safe
             </div>
             <div className="text-xl self-center font-medium leading-normal text-[gray]">
-              {trophyData.orderover}
+              Order over 150 $
             </div>
           </div>
         </div>
@@ -129,7 +75,7 @@ export default function TrophyComponent() {
 
         <div className="flex flex-wrap self-center items-center justify-center gap-x-2.5 gap-y-2.5 min-[1430px]:flex-nowrap">
           <Image
-            src={urlFor(trophyData.customer).url()}
+            src={Customer}
             alt={"no-image"}
             className="h-[60px] w-[60px] flex-shrink-0"
             width={500}
@@ -137,10 +83,10 @@ export default function TrophyComponent() {
           />
           <div className="flex flex-col items-start gap-y-0.5">
             <div className="text-[25px] font-semibold leading-normal text-neutral-800 text-center">
-              {trophyData.supportcustomer}
+              24 / 7 Support Customer
             </div>
             <div className="text-xl self-center font-medium leading-normal text-[gray]">
-              {trophyData.dedicated}
+              Dedicated support
             </div>
           </div>
         </div>

@@ -1,66 +1,34 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
-import { client } from "@/sanity/lib/client";
-import React, { useEffect, useState } from "react";
+import Door from "../../public/images/door.png";
+import Table from "../../public/images/table.png";
+import LivingRoom from "../../public/images/livingroom.png";
 
 // Interface Browse Card
 
-interface BrowseCard {
-  sectionTitle: string;
-  sectionSubtitle: string;
-  cards: {
-    title: string;
-    image: string;
-  }[];
-}
+const browseCardData = {
+  sectionTitle: "Browse The Range",
+  sectionSubtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  cards: [
+    { title: "Dining", image: Table },
+    { title: "Living", image: LivingRoom },
+    { title: "Bedroom", image: Door },
+  ],
+};
 
 export default function BrowseCard() {
-  const [browseCardData, setbrowseCardData] = useState<BrowseCard | null>(null);
-
-  // Fetch Browse Data From Sanity
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const browseCardQuery = `*[_type == "browseCard"] [0] {
-          sectionTitle,
-          sectionSubtitle,
-          cards[] {
-            title,
-            image
-          }
-        }`;
-  
-        const data = await client.fetch(browseCardQuery);
-        setbrowseCardData(data);
-      } catch (error) {
-        console.error("Error fetching browse card data:", error);
-        // Optionally, handle the error here (e.g., show a message to the user)
-      }
-    };
-  
-    fetchData();
-  }, []);
-  
-
-  // Page Loading Condition
-
-  if (!browseCardData) {
-    return <div></div>;
-  }
-
   return (
     <div className="font-poppins relative flex w-full flex-col items-center pt-36 text-center leading-[normal] tracking-[0px] overflow-hidden">
       {/* Section Header */}
 
       <div className="absolute top-0 flex flex-col items-center mt-12">
         <h2 className="text-2xl md:text-3xl font-bold text-neutral-800">
-          {browseCardData.sectionTitle}
+          Browse The Range
         </h2>
         <p className="mt-2 text-sm md:text-base text-dimgray">
-          {browseCardData.sectionSubtitle}
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
       </div>
 
@@ -72,7 +40,7 @@ export default function BrowseCard() {
             {/* Card Image */}
 
             <Image
-              src={urlFor(card.image).url()}
+              src={card.image}
               alt={card.title}
               width={380} // Specify a width
               height={400} // Specify a height

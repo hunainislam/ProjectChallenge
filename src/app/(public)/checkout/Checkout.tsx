@@ -1,337 +1,441 @@
 "use client";
 
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
-import { client } from "@/sanity/lib/client";
-import TrophyComponent from "@/components/Trophy";
-import React, { useState, useEffect } from "react";
-import CheckoutHero from "@/components/HeroSectionComponent/CheckoutHero";
+import { useRouter } from "next/navigation";
+import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
+import { Input } from "../../../components/ui/input";
+import { toast, ToastContainer } from "react-toastify";
+import { Button } from "../../../components/ui/button";
+import { Textarea } from "../../../components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { CreditCard, Building2, Package, ShieldCheck } from "lucide-react";
+import CheckoutHero from "../../../components/HeroSectionComponent/CheckoutHero";
 
-// Interface Checkout
-
-interface Checkout {
-  billingdetails: string;
-  firstname: string;
-  lastname: string;
-  companyname: string; // Optional
-  countryregion: string;
-  srilanka: string;
-  streetaddress: string;
-  towncity: string;
-  province: string;
-  westernprovince: string;
-  arrowimage: string;
-  Zipcode: string;
-  phone: string;
-  emailaddress: string;
-  additionalinformation: string;
-  product: string;
-  subtotal: string;
-  asgaardsofa: string;
-  X: string;
-  one: number;
-  rs: string;
-  total: string;
-  line10image: string; // URL of the image
-  blackroundimage: string; // URL of the image
-  directbanktransfer: string;
-  paragraph1: string;
-  whiteroundimage: string; // URL of the image
-  cashondelivery: string;
-  paragraph2: string;
-  privacypolicy: string;
-  placeorder: string;
+interface CheckoutFormProps {
+  cartItems: {
+    _id: string;
+    title: string;
+    productImage: string;
+    price: number;
+    quantity: number;
+  }[];
 }
 
-export default function Checkout() {
-  const [CheckoutData, setCheckOutData] = useState<Checkout | null>(null);
+interface CartItem {
+  _id: string;
+  title: string;
+  productImage: string;
+  price: number;
+  quantity: number;
+}
 
-  // Fetch CheckOut Data For Sanity
+const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+  const [showPaymentForm, setShowPaymentForm] = useState<boolean>(false);
+  const router = useRouter();
+  const [cartItem, setCartItem] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const CheckOutQuery = `*[_type == "checkout"] [0] {
-          billingdetails,
-          firstname,
-          lastname,
-          companyname,
-          countryregion,
-          srilanka,
-          streetaddress,
-          towncity,
-          province,
-          westernprovince,
-          arrowimage,
-          Zipcode,
-          phone,
-          emailaddress,
-          additionalinformation,
-          product,
-          subtotal,
-          asgaardsofa,
-          X,
-          one,
-          rs,
-          total,
-          line10image,
-          blackroundimage,
-          directbanktransfer,
-          paragraph1,
-          whiteroundimage,
-          cashondelivery,
-          paragraph2,
-          privacypolicy,
-          placeorder
-        }`;
-
-        const data = await client.fetch(CheckOutQuery);
-        setCheckOutData(data);
-      } catch (error) {
-        console.error("Error fetching checkout data:", error);
-        // Optionally, handle the error here (e.g., show a message to the user)
-      }
-    };
-
-    fetchData();
+    const storedCartItems = localStorage.getItem("checkoutCart");
+    if (storedCartItems) {
+      setCartItem(JSON.parse(storedCartItems));
+    }
   }, []);
 
-  // Page Loading Condition
+  const handlePaymentMethodChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPaymentMethod(e.target.value);
+  };
 
-  if (!CheckoutData) {
-    return (
-      <div></div>
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    province: "",
+    zipCode: "",
+    country: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePlaceOrder = async () => {
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "address",
+      "city",
+      "province",
+      "zipCode",
+      "country",
+    ];
+
+    // Check for empty fields
+    const emptyFields = requiredFields.filter(
+      (field) => !formData[field as keyof typeof formData]
     );
-  }
 
-  
+    // If any required field is empty, show an error
+    if (emptyFields.length > 0) {
+      toast.error("Please fill all required fields!");
+      return;
+    }
+
+    // If no payment method is selected, show an error
+    if (!paymentMethod) {
+      toast.error("Please select a payment method!");
+      return;
+    }
+
+    try {
+      // Save the order details in localStorage
+      const orderDetails = {
+        ...formData,
+        cartItems: cartItem, // Use cartItem state instead of props
+        paymentMethod,
+        orderId: Date.now(),
+      };
+
+      console.log("Saving order to localStorage:", orderDetails);
+
+      // Get cart items from localStorage
+      const storedCartItems = localStorage.getItem("checkoutCart");
+      if (storedCartItems) {
+        setCartItem(JSON.parse(storedCartItems));
+      }
+
+      // Store order in localStorage
+      localStorage.setItem("order", JSON.stringify(orderDetails));
+
+      // Clear the cart from localStorage
+      localStorage.setItem("cart", JSON.stringify([])); // Clear cart
+      localStorage.setItem("cartItems", JSON.stringify([])); // Optional: Clear cartItems if you're using that too
+
+      // Optionally, you can dispatch a custom event to update the cart count in the UI
+      window.dispatchEvent(new Event("cartUpdated"));
+
+      toast.success("Order placed successfully!", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+
+      // Redirect to order confirmation page
+      router.push(`/order-confirmation/${orderDetails.orderId}`);
+
+      // Clear form data after successful submission
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+        city: "",
+        province: "",
+        zipCode: "",
+        country: "",
+      });
+      setPaymentMethod(null);
+    } catch (error) {
+      toast.error("Failed to place the order. Please try again.");
+      console.error("Error placing order:", error);
+    }
+  };
+
   return (
-    <div className="font-poppins w-full bg-white pb-12 leading-[normal] tracking-[0px]">
+    <div>
       <CheckoutHero />
-      <div className="flex flex-col items-center justify-center bg-white px-6 md:px-12 lg:px-24 pb-10 lg:pb-[52px] pt-8 lg:pt-16">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-center gap-x-6 gap-y-6 lg:gap-x-[26px] lg:gap-y-[26px]">
-          <div className="flex flex-col items-start justify-center gap-y-6 bg-white p-6 md:p-10 lg:pb-[71px] lg:pl-[74px] lg:pr-20 lg:pt-9">
-            <div className="text-2xl md:text-3xl lg:text-4xl font-semibold">
-              {CheckoutData.billingdetails}
-            </div>
-            <div className="flex flex-col gap-y-4">
-              <div className="flex flex-col sm:flex-row sm:gap-x-6">
-                <div className="flex flex-col gap-y-2">
-                  <label>{CheckoutData.firstname}</label>
-                  <input
+      <div className="container mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Billing Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-semibold flex items-center gap-2">
+              <Building2 className="h-6 w-6" />
+              Billing Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    First Name
+                    <span className="text-red-600 ml-[2px] font-[0.8em]">
+                      *
+                    </span>
+                  </label>
+                  <Input
                     type="text"
-                    className="h-[50px] sm:h-[75px] w-full sm:w-52 rounded-lg border border-neutral-400 p-2"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="First Name"
+                    className="w-full border border-gray-300 rounded-md p-4 py-5"
                   />
                 </div>
-                <div className="flex flex-col gap-y-2">
-                  <label>{CheckoutData.lastname}</label>
-                  <input
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    Last Name
+                    <span className="text-red-600 ml-[2px] font-[0.8em]">
+                      *
+                    </span>
+                  </label>
+                  <Input
                     type="text"
-                    className="h-[50px] sm:h-[75px] w-full sm:w-52 rounded-lg border border-neutral-400 p-2"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Last Name"
+                    className="w-full border border-gray-300 rounded-md p-4 py-5"
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.companyname}</label>
-                <input
-                  type="text"
-                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.countryregion}</label>
-                <div className="flex items-center justify-between h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-4">
-                  <input
-                    type="text"
-                    placeholder="Pakistan"
-                    className="text-black w-full  border-none outline-none"
-                  />
-                  {CheckoutData.arrowimage && (
-                    <Image
-                      src={urlFor(CheckoutData.arrowimage).url()}
-                      alt={"no-image"}
-                      className="h-5 w-5"
-                      width={500}
-                      height={500}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.streetaddress}</label>
-                <input
-                  type="text"
-                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.towncity}</label>
-                <div className="flex items-center justify-between h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-4">
-                  <input
-                    type="text"
-                    className="text-black w-full border-none outline-none"
-                  />
-                  {CheckoutData.arrowimage && (
-                    <Image
-                      src={urlFor(CheckoutData.arrowimage).url()}
-                      alt={"no-image"}
-                      className="h-5 w-5"
-                      width={500}
-                      height={500}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.province}</label>
-                <input
-                  type="text"
-                  placeholder="Western Province"
-                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.Zipcode}</label>
-                <input
-                  type="text"
-                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.phone}</label>
-                <input
-                  type="text"
-                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <label>{CheckoutData.emailaddress}</label>
-                <input
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Email Address
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
                   type="email"
-                  className="h-[50px] sm:h-[75px] w-full lg:w-[453px] rounded-lg border border-neutral-400 p-2"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email Address"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
                 />
               </div>
-              <div className="flex flex-col gap-y-4">
-                <label>{CheckoutData.additionalinformation}</label>
-                <textarea className="h-[100px] sm:h-[150px] w-full rounded-lg border border-neutral-400 p-3"></textarea>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col items-start justify-center gap-y-[11px] bg-white pb-[86px] pl-[38px] pr-9 pt-[87px]">
-            <div className="flex flex-wrap items-center justify-center gap-x-80 gap-y-[18px] text-2xl font-medium leading-[normal] min-[1430px]:flex-nowrap">
-              <div>{CheckoutData.product}</div>
-              <div>{CheckoutData.subtotal}</div>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-72 gap-y-3 pr-1 pt-[3px] min-[1430px]:flex-nowrap">
-              <div className="flex items-center justify-center gap-x-2.5">
-                <div className="text-neutral-400">
-                  {CheckoutData.asgaardsofa}
-                </div>
-                <div className="text-xs font-medium leading-[normal]">
-                  {CheckoutData.X}
-                </div>
-                <div className="text-xs font-medium leading-[normal]">
-                  {CheckoutData.one}
-                </div>
-              </div>
-              <div className="font-light">{CheckoutData.rs}</div>
-            </div>
-            <div className="flex flex-col items-center justify-end pl-px pt-[11px]">
-              <div className="flex flex-col items-start gap-y-4">
-                <div className="flex flex-wrap items-center justify-center gap-x-[355px] gap-y-3 min-[1430px]:flex-nowrap">
-                  <div>{CheckoutData.subtotal}</div>
-                  <div className="font-light">{CheckoutData.rs}</div>
-                </div>
-                <div className="flex flex-wrap items-center justify-center gap-x-80 gap-y-3 min-[1430px]:flex-nowrap">
-                  <div>{CheckoutData.total}</div>
-                  <div className="text-2xl font-bold leading-[normal] text-[darkgoldenrod]">
-                    {CheckoutData.rs}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-end self-stretch pl-0.5 pr-1 pt-[22px] [max-width:533px]">
-              {CheckoutData.line10image && (
-                <Image
-                  src={urlFor(CheckoutData.line10image).url()}
-                  alt={"no-image"}
-                  className="h-px flex-shrink-0"
-                  width={500}
-                  height={500}
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Phone
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Phone"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
                 />
-              )}
-            </div>
-            <div className="flex items-end px-0.5 pt-3">
-              <div className="flex items-center justify-center gap-x-[15px]">
-                {CheckoutData.blackroundimage && (
-                  <Image
-                    src={urlFor(CheckoutData.blackroundimage).url()}
-                    alt={"no-image"}
-                    className="h-3.5 w-3.5 flex-shrink-0"
-                    width={500}
-                    height={500}
-                  />
-                )}
-                <div>{CheckoutData.directbanktransfer}</div>
               </div>
-            </div>
-            <div className="flex items-center self-stretch pl-px pr-1 [max-width:533px]">
-              <div className="flex flex-grow items-center text-justify font-light text-neutral-400">
-                <p>{CheckoutData.paragraph1}</p>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Street Address
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  placeholder="Street Address"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
+                />
               </div>
-            </div>
-            <div className="flex items-end px-0.5 pt-3.5">
-              <div className="flex flex-col items-start gap-y-[11px] font-medium text-neutral-400">
-                <div className="flex items-center justify-center gap-x-[15px]">
-                  {CheckoutData.whiteroundimage && (
-                    <Image
-                      src={urlFor(CheckoutData.whiteroundimage).url()}
-                      alt={"no-image"}
-                      className="h-3.5 w-3.5 flex-shrink-0"
-                      width={500}
-                      height={500}
-                    />
-                  )}
-                  <div>{CheckoutData.directbanktransfer}</div>
-                </div>
-                <div className="flex items-center gap-x-[15px]">
-                  {CheckoutData.whiteroundimage && (
-                    <Image
-                      src={urlFor(CheckoutData.whiteroundimage).url()}
-                      alt={"no-image"}
-                      className="h-3.5 w-3.5 flex-shrink-0"
-                      width={500}
-                      height={500}
-                    />
-                  )}
-                  <div>{CheckoutData.cashondelivery}</div>
-                </div>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Town/City
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="Town/City"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
+                />
               </div>
-            </div>
-            <div className="self-stretch pr-1 pt-[11px] [max-width:533px]">
-              <div className="flex items-center text-justify font-light">
-                <p>
-                  {CheckoutData.paragraph2}
-                  <span className="text-justify font-semibold">
-                    {CheckoutData.privacypolicy}
-                  </span>
-                </p>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Province
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="province"
+                  value={formData.province}
+                  onChange={handleChange}
+                  placeholder="Province"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
+                />
               </div>
-            </div>
-            <div className="flex items-end justify-center self-stretch pl-[7px] pt-7">
-              <div className="flex items-center justify-center rounded-[15px] border border-solid border-x-black border-y-black px-8 lg:px-24  py-4">
-                <div className="text-center text-xl leading-[normal]">
-                  {CheckoutData.placeorder}
-                </div>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  ZIP Code
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="zipCode"
+                  value={formData.zipCode}
+                  onChange={handleChange}
+                  placeholder="ZIP Code"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
+                />
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Country/Region
+                  <span className="text-red-600 ml-[2px] font-[0.8em]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  placeholder="Country/Region"
+                  className="w-full border border-gray-300 rounded-md p-4 py-5"
+                />
+              </div>
 
-      <div>
-        <TrophyComponent />
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Additional Information
+                </label>
+                <Textarea
+                  placeholder="Additional Information"
+                  className="w-full border border-gray-300 rounded-md p-4 resize-none py-5"
+                />
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+
+        {/* Order Summary */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-semibold flex items-center gap-2">
+              <Package className="h-6 w-6" />
+              Order Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Cart Items with Images */}
+            <div className="bg-white p-8 rounded-lg space-y-6">
+              <div className="space-y-4 border-b pb-4">
+                <div className="flex justify-between">
+                  <span className="text-[24px]  text-black">Product</span>
+                  <span className="text-[24px] text-black">Subtotal</span>
+                </div>
+                <Separator />
+                {cartItem.map((item, index) => (
+                  <div key={index} className="flex justify-between">
+                    <span className="flex-shrink-0">
+                      <Image
+                        src={item.productImage}
+                        alt={item.title}
+                        height={100}
+                        width={100}
+                        className="w-full h-auto sm:w-24 sm:h-24"
+                      />
+                    </span>
+                    <span className="text-[16px] text-[#9F9F9F] sm:mr-56 mt-8">
+                      {item.title} × {item.quantity}
+                    </span>
+                    <span className="text-[16px]">{item.price}</span>
+                  </div>
+                ))}
+                <Separator />
+
+                <div className="flex justify-between">
+                  <span>Subtotal:</span>
+                  <span className="text-[16px]">
+                    Rs.{" "}
+                    {cartItem.reduce(
+                      (total, item) => total + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Total:</span>
+                  <span className="font-bold text-[#B88E2F] text-[20px]">
+                    Rs.{" "}
+                    {cartItem.reduce(
+                      (total, item) => total + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+            {/* Payment Options */}
+            <div className="space-y-4">
+              <h3 className="font-semibold flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                Payment Method
+              </h3>
+              <div className="space-y-2">
+                <div
+                  className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer"
+                  onClick={() => setShowPaymentForm(!showPaymentForm)}
+                >
+                  <input
+                    type="radio"
+                    id="bank-transfer"
+                    name="payment-method"
+                    value="bank-transfer"
+                    checked={paymentMethod === "bank-transfer"}
+                    onChange={handlePaymentMethodChange}
+                    className="h-4 w-4"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => router.push("/payment")}
+                    className="flex-1 text-left"
+                  >
+                    Direct Bank Transfer
+                  </button>
+                </div>
+                <div className="flex items-center space-x-2 p-3 border rounded-lg">
+                  <input
+                    type="radio"
+                    id="cash-on-delivery"
+                    name="payment-method"
+                    value="cash-on-delivery"
+                    checked={paymentMethod === "cash-on-delivery"}
+                    onChange={handlePaymentMethodChange}
+                    className="h-4 w-4"
+                  />
+                  <label htmlFor="cash-on-delivery" className="flex-1">
+                    Cash on Delivery
+                  </label>
+                </div>
+              </div>
+            </div>
+            {/* Place Order Button */}{" "}
+            <Button
+              onClick={handlePlaceOrder}
+              className="w-full bg-[#B88E2F] hover:bg-[#A57B1E] text-white"
+            >
+              {" "}
+              <ShieldCheck className="mr-2 h-5 w-5" /> Place Order Securely{" "}
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Toast Container for Notifications */}
+        <ToastContainer />
       </div>
     </div>
   );
-}
+};
+
+export default CheckoutForm;

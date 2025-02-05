@@ -1,53 +1,15 @@
-"use client";
-
-import { client } from "@/sanity/lib/client";
+import React from "react";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
-import { useEffect, useState } from "react";
+import Share from "../../public/images/Share.png";
 
-// Interface Share Data
-
-interface ShareData {
-  shareimage: string;
-}
 export default function FuniroFurniture() {
-  const [shareData, setShareData] = useState<ShareData | null>(null);
-
-  // Fetch Share Data For Sanity
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const shareQuery = `*[_type == "share"] [0] {
-          shareimage
-        }`;
-  
-        const data = await client.fetch(shareQuery);
-        setShareData(data);
-      } catch (error) {
-        console.error("Error fetching share data:", error);
-        // Optionally, handle the error here (e.g., show a message to the user)
-      }
-    };
-  
-    fetchData();
-  }, []);
-  
-
-  if (!shareData) {
-    return <div></div>;
-  }
   return (
     <div className="w-full pt-[20px] md:pt-[40px] pb-[50px] bg-[#F4F5F7] overflow-hidden">
       <div className="flex justify-center items-center w-full ">
+        
         {/* Share Image */}
 
-        <Image
-          src={urlFor(shareData.shareimage).url()}
-          alt={"no-image"}
-          width={2000}
-          height={100}
-        />
+        <Image src={Share} alt={"no-image"} width={2000} height={100} />
       </div>
     </div>
   );

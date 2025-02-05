@@ -4,65 +4,50 @@ import Link from "next/link";
 import Image from "next/image";
 import { IoMenu } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { urlFor } from "@/sanity/lib/image";
-import { client } from "@/sanity/lib/client";
+import { FaSearch } from "react-icons/fa";
+import Cart from "../../public/images/cart.png";
+import Admin from "../../public/images/men.png";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import { allproduct } from "@/sanity/lib/queries";
 import React, { useState, useEffect } from "react";
+import Search from "../../public/images/search.png";
+import Wishlist from "../../public/images/heart.png";
 
-// Type Navbar Data
-
-type NavbarData = {
-  title: string;
-  home: string;
-  shop: string;
-  about: string;
-  contact: string;
-  blog: string;
-  user: any; // Handle image objects
-  search: string;
-  wishlist: string;
-  cart: string;
-};
+interface Products {
+  _id: string; // Unique identifier for the product
+  title: string; // Title of the product
+  description: string; // Description of the product
+  productImage: string; // URL of the product's image
+  price: string; // Price of the product
+  tags: string[]; // Array of tags associated with the product
+  discountPercentage: number; // Discount percentage on the product
+  isNew: boolean; // Whether the product is new
+}
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [apiProducts, setAPIProducts] = useState<Products[]>([]);
 
-  const [navbarData, setNavbarData] = useState<NavbarData | null>(null);
-
-  // Fetch Navbar Data For Sanity
+  // Fetch Api Migartion For Sanity
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProducts = async () => {
       try {
-        const navbarQuery = `*[_type == "navbar"] [0] {
-          title,
-          home,
-          shop,
-          about,
-          contact,
-          blog,
-          user,
-          search,
-          wishlist,
-          cart
-        }`;
-  
-        const data = await client.fetch(navbarQuery);
-        setNavbarData(data);
+        const products: Products[] = await sanityFetch({ query: allproduct });
+        setAPIProducts(products);
       } catch (error) {
-        console.error("Error fetching navbar data:", error);
+        console.error("Error fetching products:", error);
         // Optionally, handle the error here (e.g., show a message to the user)
       }
     };
-  
-    fetchData();
+    fetchProducts();
   }, []);
-  
 
-  // Page Loading Condition
-
-  if (!navbarData) {
-    return <div></div>;
-  }
+  // Filter products based on search term
+  const filteredProducts = apiProducts.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="w-full overflow-hidden">
@@ -78,7 +63,7 @@ export default function Navbar() {
 
               <div className="bg-Logo h-8 w-12 bg-no-repeat mr-2" />
               <Link href={"/"} className="text-3xl mt-1 font-bold text-black">
-                {navbarData.title}
+                Funiro
               </Link>
             </div>
 
@@ -102,72 +87,87 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center space-x-10">
               <Link href={"/"} className="hover:text-[#b88e2f]">
                 {/* Home */}
-                {navbarData.home}
+                Home
               </Link>
               <Link href={"/shop"} className="hover:text-[#b88e2f]">
                 {/* Shop */}
-                {navbarData.shop}
+                Shop
               </Link>
               <Link href={"/about"} className="hover:text-[#b88e2f]">
                 {/* About */}
-                {navbarData.about}
+                About
               </Link>
               <Link href={"/contact"} className="hover:text-[#b88e2f]">
                 {/* Contact */}
-                {navbarData.contact}
+                Contact
               </Link>
               <Link href={"/blog"} className="hover:text-[#b88e2f]">
                 {/* Blog */}
-                {navbarData.blog}
+                Blog
               </Link>
             </div>
 
             {/* Desktop Icons */}
             <div className="hidden lg:flex items-center space-x-8">
               {/* User Image */}
-              {navbarData.user && (
+              <Link href={"/admin"}>
                 <Image
-                  src={urlFor(navbarData.user).url()}
+                  src={Admin}
                   alt="User Icon"
                   className="h-6 w-6"
                   width={500}
                   height={500}
                 />
-              )}
+              </Link>
               {/* Search Image */}
-              {navbarData.search && (
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 <Image
-                  src={urlFor(navbarData.search).url()}
+                  src={Search}
                   alt="Search Icon"
                   className="h-6 w-6"
                   width={500}
                   height={500}
                 />
-              )}
-              {/* Wishlist Image */}
-              {navbarData.wishlist && (
+              </button>
+
+              <Link href={"/wishlist"}>
+                {/* Wishlist Image */}
                 <Image
-                  src={urlFor(navbarData.wishlist).url()}
+                  src={Wishlist}
                   alt="Wishlist Icon"
                   className="h-6 w-6"
                   width={500}
                   height={500}
                 />
-              )}
+              </Link>
               <Link href={"/cart"}>
                 {/* Cart Image */}
-                {navbarData.cart && (
-                  <Image
-                    src={urlFor(navbarData.cart).url()}
-                    alt="Cart Icon"
-                    className="h-6 w-6"
-                    width={500}
-                    height={500}
-                  />
-                )}
+                <Image
+                  src={Cart}
+                  alt="Cart Icon"
+                  className="h-6 w-6"
+                  width={500}
+                  height={500}
+                />
               </Link>
             </div>
           </div>
+
+          {/* Search Bar */}
+          {isMenuOpen && (
+            <div className="flex justify-center mt-4 mb-4 relative">
+              <div className="relative w-full max-w-md">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="border border-[#b88e2f] rounded-md p-2 w-full pl-10"
+                />
+                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-700" />
+              </div>
+            </div>
+          )}
 
           {/* Mobile Menu */}
 
@@ -175,80 +175,72 @@ export default function Navbar() {
             <div className="lg:hidden flex flex-col items-center space-y-4 bg-white border-t border-gray-200 pt-4 pb-4">
               {/* Home */}
               <Link href={"/"} className="text-gray-800 hover:text-[#b88e2f]">
-                {navbarData.home}
+                Home
               </Link>
               {/* Shop */}
               <Link
                 href={"/shop"}
                 className="text-gray-800 hover:text-[#b88e2f]"
               >
-                {navbarData.shop}
+                Shop
               </Link>
               {/* About */}
               <Link
                 href={"/about"}
                 className="text-gray-800 hover:text-[#b88e2f]"
               >
-                {navbarData.about}
+                About
               </Link>
               {/* Contact */}
               <Link
                 href={"/contact"}
                 className="text-gray-800 hover:text-[#b88e2f]"
               >
-                {navbarData.contact}
+                Contact
               </Link>
               {/* Blog */}
               <Link
                 href={"/blog"}
                 className="text-gray-800 hover:text-[#b88e2f]"
               >
-                {navbarData.blog}
+                Blog
               </Link>
 
               {/* Mobile Icons */}
               <div className="flex items-center space-x-6">
-                {/* User Image */}
-                {navbarData.user && (
-                  <Image
-                    src={urlFor(navbarData.user).url()}
-                    alt="User Icon"
-                    className="h-6 w-6"
-                    width={500}
-                    height={500}
-                  />
-                )}
+                {/* Admin Image */}
+                <Image
+                  src={Admin}
+                  alt="User Icon"
+                  className="h-6 w-6"
+                  width={500}
+                  height={500}
+                />
                 {/* Search Image */}
-                {navbarData.search && (
-                  <Image
-                    src={urlFor(navbarData.search).url()}
-                    alt="Search Icon"
-                    className="h-6 w-6"
-                    width={500}
-                    height={500}
-                  />
-                )}
+                <Image
+                  src={Search}
+                  alt="Search Icon"
+                  className="h-6 w-6"
+                  width={500}
+                  height={500}
+                />
                 {/* Wishlist Image */}
-                {navbarData.wishlist && (
+                <Image
+                  src={Wishlist}
+                  alt="Wishlist Icon"
+                  className="h-6 w-6"
+                  width={500}
+                  height={500}
+                />
+                <Link href={"/cart"}>
+                  {/* Cart Image */}
                   <Image
-                    src={urlFor(navbarData.wishlist).url()}
-                    alt="Wishlist Icon"
+                    src={Cart}
+                    alt="Cart Icon"
                     className="h-6 w-6"
                     width={500}
                     height={500}
                   />
-                )}
-                {/* Cart Image */}
-                <Link href={"/cart"}>
-                  {navbarData.cart && (
-                    <Image
-                      src={urlFor(navbarData.cart).url()}
-                      alt="Cart Icon"
-                      className="h-6 w-6"
-                      width={500}
-                      height={500}
-                    />
-                  )}
                 </Link>
               </div>
             </div>
@@ -257,6 +249,55 @@ export default function Navbar() {
       </nav>
       {/* Adding extra padding to prevent content overlap */}
       <div className="h-16"></div>
+
+      {/* Display filtered products */}
+      {searchTerm && (
+        <div className="fixed inset-0 flex items-start justify-end bg-black/30 z-50">
+          <div className="font-poppins relative flex flex-col bg-white py-20 pl-7 pr-6 w-[350px] sm:w-[420px] shadow-lg mt-16">
+            {/* Header */}
+
+            <div className="flex items-center justify-between -mt-16">
+              <h2 className="text-2xl font-semibold">Search Results</h2>
+              <button
+                onClick={() => setSearchTerm("")}
+                className="text-lg font-bold hover:text-[#b88e2f]"
+              >
+                <RxCross2 />
+              </button>
+            </div>
+            <hr className="my-4" />
+
+            {/* Product List */}
+
+            <div
+              className="flex flex-col gap-16 overflow-y-auto custom-scrollbar"
+              style={{ maxHeight: "400px" }} // Adjust the height as needed
+            >
+              {filteredProducts.map((product) => (
+                <div key={product._id} className="flex items-center gap-4">
+                  <div className="h-[105px] w-[105px] rounded-lg flex-shrink-0 text-center">
+                    <Image
+                      src={product.productImage}
+                      alt={product.title}
+                      width={500}
+                      height={500}
+                      className="h-30 w-30"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-lg font-medium">{product.title}</div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-[#b88e2f] font-medium">
+                        {product.price}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

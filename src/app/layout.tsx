@@ -18,6 +18,14 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Funiro Landing Page",
   description: "This is E-Commerce App",
+  icons: {
+    icon: [
+      {
+        url: "/images/logo.png",
+        href: "/images/logo.png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

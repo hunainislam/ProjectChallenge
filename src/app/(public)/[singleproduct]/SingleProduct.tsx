@@ -1,110 +1,34 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import ReactStars from "react-stars";
-import { urlFor } from "@/sanity/lib/image";
-import { client } from "@/sanity/lib/client";
+import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { Facebook, Linkedin, Twitter } from "lucide-react";
 import { ChevronRight, MinusIcon, PlusIcon } from "lucide-react";
+import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import SingleProductCardData from "@/components/SingleProductCardData";
 
-// Interface SingleProduct
-
-interface SingleProduct {
-  home: string;
-  shop: string;
-  rs: string;
-  customstar: string;
-  size: string;
-  addtocart: string;
-  compare: string;
-  sku: string;
-  category: string;
-  tags: string;
-  paragraph1: string;
-  paragraph2: string;
-  cloudsofaimage: string;
-  relatedproduct: string;
-  share: string;
+interface ProductDetailPageProps {
+  productId: string;
 }
 
-export default function ProductDetailPage() {
+export default function ProductDetailPage({
+  productId,
+}: ProductDetailPageProps) {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState("");
-  const [singleProductData, setSingleProductData] =
-    useState<SingleProduct | null>(null);
   const [cart, setCart] = useState<any[]>([]); // Cart state
+  const [wishlist, setWishlist] = useState<any[]>([]); // Wishlist state
 
   // Use Serach Params For Next Navigation
 
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const id = productId || searchParams.get("id");
   const name = searchParams.get("name");
   const price = searchParams.get("price");
   const description = searchParams.get("description");
-  const image = searchParams.get("image");
+  const image = decodeURIComponent(searchParams.get("image") || "");
   const tags = searchParams.get("tags");
-
-  // Fetch Single Product Data For Sanity
-
-  useEffect(() => {
-    if (id) {
-      const fetchData = async () => {
-        try {
-          const singleProductQuery = `
-            *[_type == "singleproduct"][0] {
-              home,
-              shop,
-              rs,
-              customstar,
-              size,
-              addtocart,
-              compare,
-              sku,
-              category,
-              tags,
-              paragraph1,
-              paragraph2,
-              cloudsofaimage,
-              relatedproduct,
-              share
-            }
-          `;
-          const data = await client.fetch(singleProductQuery);
-          setSingleProductData(data);
-        } catch (error) {
-          console.error("Error fetching single product data:", error);
-          // Optionally, handle the error here (e.g., show a message to the user)
-        }
-      };
-
-      fetchData();
-    }
-  }, [id]);
-
-  // Page Invalid Id
-
-  if (!id) {
-    return <div></div>;
-  }
-
-  // Page Loading Condition
-
-  if (!singleProductData) {
-    return (
-      <div className="flex justify-center items-center h-screen space-x-4">
-        <div className="border-t-[6px] border-[#b88e2f] border-solid w-16 h-16 rounded-full animate-spin delay-300"></div>
-        <div className="text-2xl font-bold text-gray-700 animate-bounce">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b88e2f] via-black to-[#b88e2f]">
-            Loading...
-          </span>
-        </div>
-      </div>
-    );
-  }
 
   const MAX_QUANTITY = 100;
 
@@ -126,21 +50,69 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     const newCartItem = {
-      id,
-      name,
+      _id: id,
+      title: name,
       price,
-      description,
-      image,
+      productImage: image as string,
       quantity,
     };
 
     // Update cart state
     setCart((prevCart) => [...prevCart, newCartItem]);
 
-    // Optional: Save to localStorage
+    // localStorage को update करें
     localStorage.setItem("cart", JSON.stringify([...cart, newCartItem]));
 
     alert(`Added ${quantity} ${name} to cart`);
+    window.location.href = "/cart";
+  };
+
+  const handleAddToWishlist = () => {
+    const newWishlistItem = {
+      id,
+      name,
+      price,
+      description,
+      image,
+    };
+
+    // Update wishlist state
+    setWishlist((prevWishlist) => [...prevWishlist, newWishlistItem]);
+
+    // Optional: Save to localStorage
+    localStorage.setItem(
+      "wishlist",
+      JSON.stringify([...wishlist, newWishlistItem])
+    );
+
+    alert(`Added ${name} to wishlist`);
+  };
+
+  const handleAddToComparison = () => {
+    const comparisonProducts = JSON.parse(
+      localStorage.getItem("comparisonCart") || "[]"
+    );
+
+    // Check if product already exists in comparison
+    const existingProduct = comparisonProducts.find((p: any) => p.id === id);
+
+    if (!existingProduct) {
+      const newComparisonProduct = {
+        id,
+        title: name,
+        price,
+        productImage: image,
+        description,
+        tags,
+        quantity: 1,
+      };
+
+      const updatedComparison = [...comparisonProducts, newComparisonProduct];
+      localStorage.setItem("comparisonCart", JSON.stringify(updatedComparison));
+    }
+
+    // Navigate to comparison page
+    window.location.href = "/comparison";
   };
 
   return (
@@ -148,9 +120,9 @@ export default function ProductDetailPage() {
       {/* Single Product Label */}
       <section className="bg-[#F9F1E7] py-4 px-4 rounded-lg flex items-center space-x-2 overflow-x-auto">
         <div className="flex items-center space-x-2 whitespace-nowrap">
-          <span className="text-[#9F9F9F]">{singleProductData.home}</span>
+          <span className="text-[#9F9F9F]">Home</span>
           <ChevronRight className="w-4 h-4 text-[#9F9F9F]" />
-          <span className="text-[#9F9F9F]">{singleProductData.shop}</span>
+          <span className="text-[#9F9F9F]">Shop</span>
           <ChevronRight className="w-4 h-4 text-[#9F9F9F]" />
           <span className="font-semibold">{name}</span>
         </div>
@@ -202,6 +174,7 @@ export default function ProductDetailPage() {
             {name}
           </h1>
           <p className="text-xl md:text-2xl font-medium">
+            RS.{" "}
             {price
               ? (parseFloat(price.replace(/[^\d.-]/g, "")) * quantity).toFixed(
                   2
@@ -218,6 +191,7 @@ export default function ProductDetailPage() {
               color2={"#FFC700"}
               className="flex"
             />
+            <div>5 Customer Reviews</div>
           </div>
 
           <p className="text-[#9F9F9F] text-base line-clamp-1">{description}</p>
@@ -225,9 +199,7 @@ export default function ProductDetailPage() {
           {/* Size */}
 
           <div className="space-y-2">
-            <p className="text-base text-[#9F9F9F] font-semibold">
-              {singleProductData.size}
-            </p>
+            <p className="text-base text-[#9F9F9F] font-semibold">Size</p>
             <div className="flex space-x-2">
               {["L", "XL", "XS"].map((size) => (
                 <button
@@ -271,30 +243,45 @@ export default function ProductDetailPage() {
                 className="bg-black text-white px-6 py-3 rounded-[10px] hover:bg-gray-800 transition-colors"
                 onClick={handleAddToCart}
               >
-                {singleProductData.addtocart}
+                Add To Cart
               </button>
-              <Link href={"/comparison"}>
+              {/* <Link href={"/comparison"}>
                 <button className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors">
-                  {singleProductData.compare}
+                + Compare
                 </button>
-              </Link>
+              </Link> */}
+              <button
+                className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors"
+                onClick={handleAddToComparison}
+              >
+                + Compare
+              </button>
+              <button
+                className="border border-black text-black px-6 py-3 rounded-[10px] hover:bg-black hover:text-white transition-colors"
+                onClick={() => {
+                  handleAddToWishlist();
+                  window.location.href = "/wishlist"; // Navigate to wishlist page
+                }}
+              >
+                Add to Wishlist
+              </button>
             </div>
           </div>
 
           <div className="text-[#9F9F9F] text-sm space-y-2">
             <p>
-              <strong>{singleProductData.sku}</strong> {id}
+              <strong>SKU:</strong> {id}
             </p>
             <p>
-              <strong>{singleProductData.category}</strong> {name}
+              <strong>Category:</strong> {name}
             </p>
             <p>
-              <strong>{singleProductData.tags}</strong> {tags}
+              <strong>Tags:</strong> {tags}
             </p>
             <div className="flex items-center space-x-2">
-              <strong>{singleProductData.share}</strong>
+              <strong>Share:</strong>
               <div className="flex space-x-2">
-                {[Facebook, Linkedin, Twitter].map((Icon, index) => (
+                {[FaFacebook, FaLinkedin, FaTwitter].map((Icon, index) => (
                   <a
                     key={index}
                     href="#"
@@ -329,27 +316,33 @@ export default function ProductDetailPage() {
 
         <div className="max-w-4xl mx-auto mt-8 space-y-4">
           <p className="text-[#9F9F9F] text-center text-base leading-relaxed">
-            {singleProductData.paragraph1}
+            Embodying the raw, wayward spirit of rock 'n' roll, the Kilburn
+            portable active stereo speaker takes the unmistakable look and sound
+            of Marshall, unplugs the chords, and takes the show on the road.
           </p>
           <p className="text-[#9F9F9F] text-center text-base leading-relaxed">
-            {singleProductData.paragraph2}
+            Weighing in under 7 pounds, the Kilburn is a lightweight piece of
+            vintage-styled engineering. Setting the bar as one of the loudest
+            speakers in its class, the Kilburn is a compact, stout-hearted hero
+            with a well-balanced audio which boasts a clear midrange and
+            extended highs for a sound that is both articulate and pronounced.
           </p>
         </div>
 
         {/* Cart Section */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          {[
-            singleProductData.cloudsofaimage,
-            singleProductData.cloudsofaimage,
-          ].map((image, index) => (
-            <div key={index} className={`bg-[#F9F1E7] rounded-2xl p-4`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 mt-8">
+          {leftSideImages.slice(0, 2).map((image, index) => (
+            <div
+              key={index}
+              className="flex justify-center items-center rounded-2xl p-4"
+            >
               <Image
-                src={urlFor(image).url()} // Generate URL dynamically
+                src={image as string} // Generate URL dynamically
                 alt={`Cloud Sofa Image ${index + 1}`} // Unique alt text for accessibility
                 width={600}
                 height={400}
-                className="rounded-[8px] object-cover w-full"
+                className="rounded-[8px] object-cover w-96 h-96"
               />
             </div>
           ))}

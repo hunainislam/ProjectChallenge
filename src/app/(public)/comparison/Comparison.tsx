@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
+import { MdDelete } from "react-icons/md";
 import { client } from "@/sanity/lib/client";
 import { Star, ChevronDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -43,12 +43,25 @@ interface ProductComparison {
   }[];
 }
 
+// Interface CartItem
+
+interface CartItem {
+  id: string;
+  title: string;
+  price: string;
+  productImage: string;
+  quantity: number;
+  description?: string;
+  tags?: string;
+}
+
 export default function Comparison() {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [openSection, setOpenSection] = useState<number | null>(null);
 
   const [ProductComparisonData, setProductComparisonData] =
     useState<ProductComparison | null>(null);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   // Fetch ProductComparison For Sanity
 
@@ -83,19 +96,29 @@ export default function Comparison() {
         setProductComparisonData(data);
       } catch (error) {
         console.error("Error fetching product comparison data:", error);
-        // Optionally, handle the error here (e.g., show a message to the user)
       }
     };
 
     fetchData();
+
+    // Get cart items from localStorage
+    const storedCartItems = localStorage.getItem("comparisonCart");
+    if (storedCartItems) {
+      setCartItems(JSON.parse(storedCartItems));
+    }
   }, []);
+
+  // Function to handle product deletion
+  const handleDeleteProduct = (index: number) => {
+    const updatedCartItems = cartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCartItems);
+    localStorage.setItem("comparisonCart", JSON.stringify(updatedCartItems));
+  };
 
   // Page Loading Condition
 
   if (!ProductComparisonData) {
-    return (
-      <div></div>
-    );
+    return <div></div>;
   }
 
   return (
@@ -104,7 +127,7 @@ export default function Comparison() {
 
       {/* Top Section - Responsive Grid */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Go to Product Page */}
 
         <div className="flex flex-col p-6 bg-white  rounded-lg">
@@ -118,65 +141,45 @@ export default function Comparison() {
           </span>
         </div>
 
-        {/* Product 1 Card */}
-
-        <div className="bg-white p-6  rounded-lg">
-          <div className="relative h-48 bg-[#F9F1E7] rounded-md mb-4">
-            <Image
-              src={urlFor(ProductComparisonData.sofaoneimage).url()}
-              alt={"Asgaard Sofa"}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-md"
-            />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">
-            {ProductComparisonData.asgaardsofa}
-          </h3>
-          <p className="text-sm font-medium text-[#B88E2F] mb-2">
-            {ProductComparisonData.rsOne}
-          </p>
-          <div className="flex items-center">
-            <div className="flex text-yellow-500">
-              {[...Array(4)].map((_, i) => (
-                <Star key={i} size={20} />
-              ))}
-              <Star size={20} className="text-gray-300" />
-            </div>
-            <p className="text-gray-600 ml-2 text-sm">
-              {ProductComparisonData.reviewsOne}
-            </p>
-          </div>
-        </div>
-
-        {/* Product 2 Card */}
-
-        <div className="bg-white p-6 rounded-lg">
-          <div className="relative h-48 bg-[#F9F1E7] rounded-md mb-4">
-            <Image
-              src={urlFor(ProductComparisonData.sofatwoimage).url()}
-              alt={"Outdoor Sofa Set"}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-md"
-            />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">
-            {ProductComparisonData.outdoorsofaset}
-          </h3>
-          <p className="text-sm font-medium text-[#B88E2F] mb-2">
-            {ProductComparisonData.rsTwo}
-          </p>
-          <div className="flex items-center">
-            <div className="flex text-yellow-500">
-              {[...Array(4)].map((_, i) => (
-                <Star key={i} size={20} />
-              ))}
-              <Star size={20} className="text-gray-300" />
-            </div>
-            <p className="text-gray-600 ml-2 text-sm">
-              {ProductComparisonData.reviewsTwo}
-            </p>
+        {/* Cart Items Section */}
+        <div className="mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+            {cartItems.map((item, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg">
+                <div className="relative h-48 bg-[#F9F1E7] rounded-md mb-4">
+                  <Image
+                    src={item.productImage}
+                    alt={item.title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm font-medium text-[#B88E2F] mb-2">
+                  {item.price}
+                </p>
+                <div className="flex items-center">
+                  <div className="flex text-yellow-500">
+                    {[...Array(4)].map((_, i) => (
+                      <Star key={i} size={20} />
+                    ))}
+                    <Star size={20} className="text-gray-300" />
+                  </div>
+                  <p className="text-gray-600 ml-2 text-sm">
+                    {item.quantity} reviews
+                  </p>
+                </div>
+                <button
+                  className="mt-2 px-6 py-2 text-red-500 hover:text-[#b88e2f] transition-colors"
+                  onClick={() => handleDeleteProduct(index)}
+                >
+                  <MdDelete className="w-6 h-6" />
+                </button>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -184,25 +187,25 @@ export default function Comparison() {
 
         <div className="flex flex-col p-6 bg-white  rounded-lg">
           <p className="text-lg font-semibold text-gray-800 mb-3">
-            {ProductComparisonData.addProduct}
+            {ProductComparisonData?.addProduct}
           </p>
           <select
             className="w-full px-4 py-2 bg-[#B88E2F] text-white rounded-md"
             value={selectedProduct}
             onChange={(e) => setSelectedProduct(e.target.value)}
           >
-            <option value="">{ProductComparisonData.chooseProduct}</option>
-            <option value="sofa1">{ProductComparisonData.asgaardsofa}</option>
+            <option value="">{ProductComparisonData?.chooseProduct}</option>
+            <option value="sofa1">{ProductComparisonData?.asgaardsofa}</option>
             <option value="sofa2">
-              {ProductComparisonData.outdoorsofaset}
+              {ProductComparisonData?.outdoorsofaset}
             </option>
           </select>
         </div>
       </div>
 
-      {/* /* Detailed Comparison Section - Mobile Accordion & Desktop Table */}
+      {/* Detailed Comparison Section - Mobile Accordion & Desktop Table */}
 
-      {ProductComparisonData.sectionsReference.map(
+      {ProductComparisonData?.sectionsReference.map(
         (section: any, sectionIndex: number) => (
           <div key={sectionIndex} className="bg-white rounded-lg p-6 mt-8">
             {/* Desktop View */}
@@ -213,13 +216,13 @@ export default function Comparison() {
               <div>
                 <div className="flex items-center py-2 border-b bg-gray-100">
                   <div className="w-1/4 text-gray-800 font-medium pl-4">
-                    {ProductComparisonData.specification}
+                    {ProductComparisonData?.specification}
                   </div>
                   <div className="w-1/4 text-gray-800 font-medium">
-                    {ProductComparisonData.asgaardsofa}
+                    {ProductComparisonData?.asgaardsofa}
                   </div>
                   <div className="w-1/4 text-gray-800 font-medium">
-                    {ProductComparisonData.outdoorsofaset}
+                    {ProductComparisonData?.outdoorsofaset}
                   </div>
                 </div>
                 {section.rows.map((row: any, rowIndex: number) => (
@@ -290,12 +293,12 @@ export default function Comparison() {
         <div className="w-full md:w-1/4 md:mr-4"></div>
         <div className="w-full md:w-1/4 mr-0 md:mr-4 mb-4 md:mb-0">
           <button className="w-full px-4 py-2 bg-[#B88E2F] text-white rounded-md hover:bg-[#9A7024] transition-colors">
-            {ProductComparisonData.addAsgaardSofaToCart}
+            {ProductComparisonData?.addAsgaardSofaToCart}
           </button>
         </div>
         <div className="w-full md:w-1/4">
           <button className="w-full px-4 py-2 bg-[#B88E2F] text-white rounded-md hover:bg-[#9A7024] transition-colors">
-            {ProductComparisonData.addOutdoorSofaToCart}
+            {ProductComparisonData?.addOutdoorSofaToCart}
           </button>
         </div>
       </div>
