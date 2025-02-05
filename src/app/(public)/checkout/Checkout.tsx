@@ -16,6 +16,7 @@ import {
 } from "../../../components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CreditCard, Building2, Package, ShieldCheck } from "lucide-react";
+import PaymentForm from "../payment/PaymentForm";
 import CheckoutHero from "../../../components/HeroSectionComponent/CheckoutHero";
 
 interface CheckoutFormProps {
@@ -36,11 +37,30 @@ interface CartItem {
   quantity: number;
 }
 
+interface PaymentFormProps {
+  onPaymentSubmitAction: (data: any) => void;
+  onCloseAction: () => void;
+}
+
 const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
-  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
-  const [showPaymentForm, setShowPaymentForm] = useState<boolean>(false);
   const router = useRouter();
   const [cartItem, setCartItem] = useState<CartItem[]>([]);
+  const [showPaymentForm, setShowPaymentForm] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+  const [bankDetailsCompleted, setBankDetailsCompleted] = useState(false);
+
+  const handlePaymentMethodChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const method = e.target.value;
+    setPaymentMethod(method);
+
+    if (method === "bank-transfer") {
+      setShowPaymentForm(true);
+    } else {
+      setShowPaymentForm(false);
+    }
+  };
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem("checkoutCart");
@@ -48,12 +68,6 @@ const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
       setCartItem(JSON.parse(storedCartItems));
     }
   }, []);
-
-  const handlePaymentMethodChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPaymentMethod(e.target.value);
-  };
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -98,9 +112,14 @@ const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
       return;
     }
 
-    // If no payment method is selected, show an error
+    // Payment method validation
     if (!paymentMethod) {
       toast.error("Please select a payment method!");
+      return;
+    }
+
+    if (paymentMethod === "bank-transfer" && !bankDetailsCompleted) {
+      toast.error("Please complete bank transfer details!");
       return;
     }
 
@@ -337,13 +356,13 @@ const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
                 <Separator />
                 {cartItem.map((item, index) => (
                   <div key={index} className="flex justify-between">
-                    <span className="flex-shrink-0">
+                    <span className="flex-shrink-0 overflow-hidden">
                       <Image
                         src={item.productImage}
                         alt={item.title}
-                        height={100}
-                        width={100}
-                        className="w-full h-auto sm:w-24 sm:h-24"
+                        height={500}
+                        width={500}
+                        className="w-28 h-28 object-cover rounded"
                       />
                     </span>
                     <span className="text-[16px] text-[#9F9F9F] sm:mr-56 mt-8">
@@ -383,10 +402,8 @@ const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
                 Payment Method
               </h3>
               <div className="space-y-2">
-                <div
-                  className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer"
-                  onClick={() => setShowPaymentForm(!showPaymentForm)}
-                >
+                {/* Bank Transfer Option */}
+                <div className="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer">
                   <input
                     type="radio"
                     id="bank-transfer"
@@ -396,14 +413,12 @@ const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
                     onChange={handlePaymentMethodChange}
                     className="h-4 w-4"
                   />
-                  <button
-                    type="button"
-                    onClick={() => router.push("/payment")}
-                    className="flex-1 text-left"
-                  >
+                  <label htmlFor="bank-transfer" className="flex-1">
                     Direct Bank Transfer
-                  </button>
+                  </label>
                 </div>
+
+                {/* Cash on Delivery Option */}
                 <div className="flex items-center space-x-2 p-3 border rounded-lg">
                   <input
                     type="radio"
@@ -420,6 +435,27 @@ const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
                 </div>
               </div>
             </div>
+            {/* Add payment modal */}
+            {showPaymentForm && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-8 rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                  <PaymentForm
+                    onPaymentSubmitAction={(data) => {
+                      localStorage.setItem(
+                        "paymentFormData",
+                        JSON.stringify(data)
+                      );
+                      setBankDetailsCompleted(true);
+                      setShowPaymentForm(false);
+                    }}
+                    onCloseAction={() => {
+                      setShowPaymentForm(false);
+                      setPaymentMethod(null);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
             {/* Place Order Button */}{" "}
             <Button
               onClick={handlePlaceOrder}
