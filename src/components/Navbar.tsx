@@ -110,7 +110,9 @@ export default function Navbar() {
             {/* Desktop Icons */}
             <div className="hidden lg:flex items-center space-x-8">
               {/* User Image */}
-              <Link href={"/admin"}>
+              <Link
+              target="_blank"
+              href={"https://project-challenge-admin-pannel.vercel.app/"}>
                 <Image
                   src={Admin}
                   alt="User Icon"
@@ -209,6 +211,9 @@ export default function Navbar() {
               {/* Mobile Icons */}
               <div className="flex items-center space-x-6">
                 {/* Admin Image */}
+                <Link
+              target="_blank"
+              href={"https://project-challenge-admin-pannel.vercel.app/"}>
                 <Image
                   src={Admin}
                   alt="User Icon"
@@ -216,6 +221,7 @@ export default function Navbar() {
                   width={500}
                   height={500}
                 />
+                </Link>
                 {/* Search Image */}
                 <Image
                   src={Search}
@@ -225,6 +231,7 @@ export default function Navbar() {
                   height={500}
                 />
                 {/* Wishlist Image */}
+                <Link href={"/wishlist"}>
                 <Image
                   src={Wishlist}
                   alt="Wishlist Icon"
@@ -232,6 +239,7 @@ export default function Navbar() {
                   width={500}
                   height={500}
                 />
+                </Link>
                 <Link href={"/cart"}>
                   {/* Cart Image */}
                   <Image

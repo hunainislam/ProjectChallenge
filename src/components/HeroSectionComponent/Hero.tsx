@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="relative flex h-screen w-full items-center justify-center bg-white sm:justify-end">
         {/* Background Image */}
 
-        <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute w-full h-full">
           <Image
             src={HeroImage}
             alt="Hero Image"
